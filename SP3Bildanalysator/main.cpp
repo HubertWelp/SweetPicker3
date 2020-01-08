@@ -1,5 +1,7 @@
 #include "kamera.h"
 #include <stdio.h>
+#include <chrono>
+#include <thread>
 
 #define PWD "/home/Student/git/SweetPicker3/SP3Bildanalysator"
 #define BILDABLAGE "/SP3Bilderkennung/aktuelleSzene.jpg"
@@ -22,13 +24,25 @@ int main(int argc, char *argv[])
         if(wahl == 1 || wahl == 2 || wahl == 3 || wahl == 4)
         {
             // altes Bild und alte Ergebnisse löschen
+            /* remove(PWD + BILDABLAGE);
+               remove(PWD + TEXTABLAGE); */
 
             // aktuelles Bild aufnehmen und im folgenden relativen Verzeichnis ablegen
             c.nehmeAuf(BILDABLAGE);
 
             // Ein Python-Skript vom SP3Objekterkenner ausführen (python programmname TEXTABLAGE wahl)
+            /* befehl = "python" + "programmname" + TEXTABLAGE + wahl + BILDABLAGE
+               system(befehl); */
 
             // warten, bis SP3Objektereknner fertig ist
+            for(int n=1 ; n<6 ; n++)
+            {
+                // Abfrage, ob SP3Objekterkenner fertig ist
+                printf("\n%i. Sekunde",n);
+
+                // wenn keine Textdatei voranden ist, führt es diese Wartefunktion aus
+                std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+            }
 
             // Erkennungsergebnis auslesen und auswerten
 
