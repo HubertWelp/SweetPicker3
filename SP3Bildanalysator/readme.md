@@ -4,7 +4,7 @@
 - [ ] Warten auf ein Zeichen vom SP3Koordinator über den UDP-Node
 - [x] altes Bild und alte Ergebnisse löschen
 - [x] neues Bild aufnehmen
-- [ ] das neue Bild zuschneiden, verarbeiten usw
+- [ ] das neue Bild zuschneiden, skalieren, verarbeiten .. etc
 - [x] das Bild im gewünschten Verzeichnis ablegen
 - [x] ein Python-Skript bereitstellen (Name des Programms und Parameter einfügen)
 - [ ] das Python-Skript ausführen
@@ -13,13 +13,15 @@
 - [ ] die wichtigen Informationen an SP3Koordinator schicken
 
 ## Status:
-in Bearbeitung
+in Bearbeitung aber lauffähig
 
 ## Probleme:
 keine
 
 ## Hinweise:
-keine
+- Die UDP-Klasse muss noch eingebettet werden
+- Schnittstelle zum SP3Koordinator ist noch zu implementieren
+- Schnittstelle zum SP3Objekterkenner ist noch zu implementieren
 
 ## Quellen:
 - [Kamera](https://www.opencv-srf.com/2010/09/object-detection-using-color-seperation.html)
