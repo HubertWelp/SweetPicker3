@@ -1,12 +1,12 @@
 #include "kamera.h"
 
-Kamera::Kamera(char* pfad)
+Kamera::Kamera(const char* pfad)
 {
     pwd = pfad;
     videostream = cv::VideoCapture (0);
 }
 
-void Kamera::nehmeAuf(char* pfad)
+void Kamera::nehmeAuf(const char* pfad)
 {
     cv::String ziel = cv::String (pwd) + cv::String(pfad);
     videostream.read(bild);

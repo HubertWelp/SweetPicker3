@@ -9,13 +9,13 @@
 class Kamera
 {
 public:
-    explicit Kamera(char* pfad);
-    void nehmeAuf(char* pfad);
+    explicit Kamera(const char* pfad);
+    void nehmeAuf(const char* pfad);
 
 private:
     cv::VideoCapture videostream;
     cv::Mat bild;
-    char* pwd;
+    const char* pwd;
 };
 
 #endif // KAMERA_H
