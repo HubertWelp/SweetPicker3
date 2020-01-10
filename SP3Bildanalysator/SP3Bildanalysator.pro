@@ -5,10 +5,13 @@ CONFIG += console c++11
 
 SOURCES += \
         main.cpp \
-    kamera.cpp
+    kamera.cpp \
+    verwalter.cpp
 
 HEADERS += \
-    kamera.h
+    kamera.h \
+    verwalter.h \
+    ressourcen.h
 
 INCLUDEPATH += /usr/local/include/opencv4/
 
