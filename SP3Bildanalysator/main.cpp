@@ -7,7 +7,7 @@
 #define PWD "/home/Student/git/SweetPicker3/SP3Bildanalysator"
 #define BILDABLAGE "/SP3Bilderkennung/aktuelleSzene.jpg"
 #define TEXTABLAGE "/SP3Bilderkennung/gefundeneObjekte.txt"
-#define PROGNAME "objekterkennen.py"
+#define PROGNAME "/home/Student/git/SweetPicker3/SP3Objekterkenner/SP3Objekterkenner.py"
 
 void fuehreSkriptAus(void);
 void loescheAlt(void);
@@ -31,6 +31,7 @@ int main(int argc, char *argv[])
         {
             // altes Bild und alte Ergebnisse löschen
             loescheAlt();
+            warte(2);
 
             // aktuelles Bild aufnehmen und im folgenden relativen Verzeichnis ablegen
             c.nehmeAuf(BILDABLAGE);
@@ -39,7 +40,7 @@ int main(int argc, char *argv[])
             fuehreSkriptAus();
 
             // warten, bis SP3Objektereknner fertig ist
-            warte(5);
+            warte(2);
 
             // Erkennungsergebnis auslesen und auswerten
 
@@ -55,7 +56,7 @@ int main(int argc, char *argv[])
 
 void fuehreSkriptAus(void)
 {
-    char* skript = (char *) malloc(200);
+    char* skript = (char *) malloc(300);
     //             6     +       20       +     83     +     83
     // befehl = "python" + "programmname" + BILDABLAGE + TEXTABLAGE
 
@@ -74,7 +75,7 @@ void fuehreSkriptAus(void)
     printf("\nIhr Skript sehe so aus: %s\n",skript);
 
     // Befehl absetzen
-    //system(skript);
+    system(skript);
 
     // Wartezeit
     std::this_thread::sleep_for(std::chrono::milliseconds(50));
