@@ -5,7 +5,7 @@ print (sys.argv[1])
 print (sys.argv[2])
 
 filepath = os.path.abspath(sys.argv[2])
-path = os.path.join(filepath, "helloworld.txt")
+path = os.path.join(filepath, "gefundeneObjekte.txt")
 
 print (path)
 file = open(path,"w")
