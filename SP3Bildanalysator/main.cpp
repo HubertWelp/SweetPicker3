@@ -1,12 +1,17 @@
 #include "ressourcen.h"
 
+#include <QApplication>
+
 #include "kamera.h"
 #include "verwalter.h"
+#include "udpnode.hpp"
 
 int main(int argc, char *argv[])
 {
     int wahl;
     const char* antwort;
+
+    QApplication a(argc,argv);
 
     // Erstellen von Objekten
     Kamera c(PWD);
@@ -56,5 +61,6 @@ int main(int argc, char *argv[])
             printf("--------------------------\n");
         }
     }
-    return 0;
+
+    return a.exec();
 }

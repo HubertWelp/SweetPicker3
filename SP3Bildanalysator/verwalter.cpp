@@ -72,3 +72,9 @@ const char* Verwalter::verarbeiteText(void)
     fgets(inhalt,90,datei);
     return  strstr(inhalt,"aktuell");
 }
+
+void Verwalter::messageReceived(std::string msg)
+{
+    printf("\nNachricht erhalten ! %s\n",msg.c_str());
+    sendmessage("Habe was empfangen");
+}

@@ -3,7 +3,9 @@
 
 #include "ressourcen.h"
 
-class Verwalter
+#include "udpnode.hpp"
+
+class Verwalter : public UDPNode
 {
 public:
     Verwalter();
@@ -12,6 +14,8 @@ public:
     void fuehreSkriptAus(void);
     void warte(int anzahl);
     const char* verarbeiteText(void);
+
+    void messageReceived(std::string msg) override;
 };
 
 #endif // VERWALTER_H
