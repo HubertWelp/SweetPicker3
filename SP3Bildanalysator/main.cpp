@@ -9,8 +9,9 @@
 #define TEXTABLAGE "/SP3Bilderkennung/gefundeneObjekte.txt"
 #define PROGNAME "objekterkennen.py"
 
-void fuehreSkriptAus(int sorte);
+void fuehreSkriptAus(void);
 void loescheAlt(void);
+void warte(int anzahl);
 
 int main(int argc, char *argv[])
 {
@@ -35,21 +36,14 @@ int main(int argc, char *argv[])
             c.nehmeAuf(BILDABLAGE);
 
             // Ein Python-Skript vom SP3Objekterkenner ausführen (python programmname TEXTABLAGE wahl)
-            fuehreSkriptAus(wahl);
+            fuehreSkriptAus();
 
             // warten, bis SP3Objektereknner fertig ist
-            for(int n=1 ; n<6 ; n++)
-            {
-                // Abfrage, ob SP3Objekterkenner fertig ist
-                printf("\n%i. Sekunde",n);
-
-                // wenn keine Textdatei voranden ist, führt es diese Wartefunktion aus
-                std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-            }
+            warte(5);
 
             // Erkennungsergebnis auslesen und auswerten
 
-            // Informationen zur Verfügbarkeit und Position der ausgewählten Süßigkeit an SP3Koordinator geben
+            // Informationen über Verfügbarkeit und Position der ausgewählten Süßigkeit an SP3Koordinator übergeben
 
         }
 
@@ -59,24 +53,22 @@ int main(int argc, char *argv[])
     return 0;
 }
 
-void fuehreSkriptAus(int sorte)
+void fuehreSkriptAus(void)
 {
     char* skript = (char *) malloc(200);
-    char zahl[1]; zahl[0] = sorte + 48;
-    //             6     +       20       + 48  +     35     +  1   +    38
-    // befehl = "python" + "programmname" + PWD + TEXTABLAGE + wahl + BILDABLAGE
+    //             6     +       20       +     83     +     83
+    // befehl = "python" + "programmname" + BILDABLAGE + TEXTABLAGE
 
     strcpy(skript,"python");
     strcat(skript," ");
     strcat(skript,PROGNAME);
     strcat(skript," ");
     strcat(skript,PWD);
-    strcat(skript," ");
-    strcat(skript,TEXTABLAGE);
-    strcat(skript," ");
-    strcat(skript,zahl);
-    strcat(skript," ");
     strcat(skript,BILDABLAGE);
+    strcat(skript," ");
+    strcat(skript,PWD);
+    strcat(skript,"/SP3Bilderkennung");
+
 
     // Ausgabe
     printf("\nIhr Skript sehe so aus: %s\n",skript);
@@ -101,4 +93,16 @@ void loescheAlt(void)
 
     // Wartezeit
     std::this_thread::sleep_for(std::chrono::milliseconds(50));
+}
+
+void warte(int anzahl)
+{
+    for(int n=1 ; n<=anzahl ; n++)
+    {
+        // Abfrage, ob SP3Objekterkenner fertig ist
+        printf("\n%i. Sekunde",n);
+
+        // wenn keine Textdatei voranden ist, führt es diese Wartefunktion aus
+        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+    }
 }
