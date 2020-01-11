@@ -32,7 +32,7 @@ void UDPNode::processPendingDatagrams()
 
     messageReceived(msg.toStdString());
 //    std::cout << msg.toStdString() << endl;
-//    Q_EMIT msgReceivedSignal(msg);
+    Q_EMIT msgReceivedSignal(msg);
 //    if(msgReceivedCallback)
 //        msgReceivedCallback(msg.toStdString());
 }
