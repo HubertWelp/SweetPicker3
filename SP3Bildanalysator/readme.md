@@ -9,13 +9,13 @@
 - [x] das Python-Skript ausführen
 - [x] wiederholte Abfrage in Intervallen, ob Objekterkenner fertig ist und die Textdatei gefundeneObjekte zur Verfügung steht
 - [x] die Textdatei auswerten und die wichtigen Informationen zusammenfassen
-- [ ] die wichtigen Informationen an SP3Koordinator schicken
+- [x] die wichtigen Informationen an SP3Koordinator schicken
 
 ## Status:
 in Bearbeitung aber lauffähig
 
 ## Probleme:
-- Die Rückmeldung an den SP3Koordinator muss noch implementiert und ausgeführt werden
+- Man muss nur die gewünschten Infos empfangen und verschicken (also Strings entsprechend ändern)
 
 ## Hinweise:
 - 1,2,3,4 stellen die Auswahl dar. 0 beendet das Programm. negative Zahlen stellen Fehlerfälle dar.
