@@ -22,6 +22,7 @@ public:
 
 private:
     Kamera* cam;
+    std::string rueckmeldung;
 };
 
 #endif // VERWALTER_H

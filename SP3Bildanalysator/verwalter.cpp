@@ -99,6 +99,12 @@ void Verwalter::messageReceived(std::string msg)
 
         // Informationen über Verfügbarkeit und Position der ausgewählten Süßigkeit an SP3Koordinator übergeben
         printf("\nSuche nach \"aktuell\" mit strstr(): %s, die Auswahl war %i\n--------fetig!--------\n",antwort,wahl);
+
+        std::string s1 = "x y z φ B ";
+        std::string s2 = std::to_string(wahl);
+        rueckmeldung = s1 + s2;
+
+        sendmessage(rueckmeldung);
     }
 
     else if(wahl == 0)

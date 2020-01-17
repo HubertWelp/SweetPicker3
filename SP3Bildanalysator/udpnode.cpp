@@ -53,7 +53,7 @@ void UDPNode::sendmessage(std::string msg,const std::string destIpAdress,const u
     QDataStream out(&datagram,QIODevice::WriteOnly);
     out.setVersion(QDataStream::Qt_4_8);
 //    std::cout << msg << std::endl;
-//    out << QString::fromStdString(msg);
+    out << QString::fromStdString(msg);
 
     socket.writeDatagram(datagram,ipAdress,portNr);
 }
