@@ -1,7 +1,7 @@
 # SP3Bildanalysator
 
 ## Aufgaben:
-- [ ] Warten auf ein Zeichen vom SP3Koordinator über den UDP-Node
+- [x] Warten auf ein Zeichen vom SP3Koordinator über den UDP-Node
 - [x] altes Bild und alte Ergebnisse löschen
 - [x] neues Bild aufnehmen
 - [x] das Bild im gewünschten Verzeichnis ablegen
@@ -15,9 +15,7 @@
 in Bearbeitung aber lauffähig
 
 ## Probleme:
-- Die UDP-Klasse muss noch eingebettet werden
-- Schnittstelle zum SP3Koordinator ist noch zu implementieren
-- Schnittstelle zum SP3Objekterkenner ist noch zu ergänzen
+- Die Rückmeldung an den SP3Koordinator muss noch implementiert und ausgeführt werden
 
 ## Hinweise:
 - 1,2,3,4 stellen die Auswahl dar. 0 beendet das Programm. negative Zahlen stellen Fehlerfälle dar.
