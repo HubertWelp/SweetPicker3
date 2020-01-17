@@ -2,7 +2,7 @@
 
 Verwalter::Verwalter()
 {
-
+    cam = new Kamera(PWD);
 }
 
 void Verwalter::loescheAlt()
@@ -75,6 +75,34 @@ const char* Verwalter::verarbeiteText(void)
 
 void Verwalter::messageReceived(std::string msg)
 {
-    printf("\nNachricht erhalten ! %s\n",msg.c_str());
-    sendmessage("Habe was empfangen");
+    wahl = atoi(msg.c_str());
+
+    printf("\nHabe %i empfangen\n",wahl);
+
+    if(wahl == 1 || wahl == 2 || wahl == 3 || wahl == 4)
+    {
+        // altes Bild und alte Ergebnisse löschen
+        loescheAlt();
+        warte(2);
+
+        // aktuelles Bild aufnehmen und im folgenden relativen Verzeichnis ablegen
+        cam->nehmeAuf(BILDABLAGE);
+
+        // Ein Python-Skript vom SP3Objekterkenner ausführen (python programmname TEXTABLAGE wahl)
+        fuehreSkriptAus();
+
+        // warten, bis SP3Objektereknner fertig ist
+        warte(2);
+
+        // Erkennungsergebnis auslesen und auswerten
+        antwort = verarbeiteText();
+
+        // Informationen über Verfügbarkeit und Position der ausgewählten Süßigkeit an SP3Koordinator übergeben
+        printf("\nSuche nach \"aktuell\" mit strstr(): %s, die Auswahl war %i\n--------fetig!--------\n",antwort,wahl);
+    }
+
+    else if(wahl == 0)
+    {
+        // Beenden
+    }
 }
