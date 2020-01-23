@@ -28,3 +28,6 @@ daher muss nur die Struktur der Textdatei gefundeneObjekete klar sein, damit es 
 ## Quellen:
 - [Kamera](https://www.opencv-srf.com/2010/09/object-detection-using-color-seperation.html)
 - [Timer](https://stackoverflow.com/questions/4184468/sleep-for-milliseconds)
+- [OpenCV Kontrast](https://www.opencv-srf.com/2018/02/change-contrast-of-images-and-videos.html)
+- [OpenCV SW-Bild](https://docs.opencv.org/4.2.0/de/d25/imgproc_color_conversions.html)
+- [OpenCV Bildgröße](https://docs.opencv.org/4.2.0/d6/d50/classcv_1_1Size__.html)

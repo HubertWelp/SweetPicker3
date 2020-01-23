@@ -3,7 +3,7 @@
 
 /* Definition von Konstanten */
 #define PWD "/home/Student/git/SweetPicker3/SP3Bildanalysator"
-#define BILDABLAGE "/SP3Bilderkennung/aktuelleSzene.jpg"
+#define BILDABLAGE "/SP3Bilderkennung/aktuelleSzene.png"
 #define TEXTABLAGE "/SP3Bilderkennung/gefundeneObjekte.txt"
 #define PROGNAME "/home/Student/git/SweetPicker3/SP3Objekterkenner/SP3Objekterkenner.py"
 
