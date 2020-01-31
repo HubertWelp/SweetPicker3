@@ -2,14 +2,21 @@
 
 GUI::GUI()
 {
+    orter = new SortenOrter("/home/Student/Bilder/Webcam/","aktuelleSzene.jpg");
+    orter->gebeKoordinatenein(100,100,300,300); // müssen noch entsprechend eingegeben
+
     logo = new QLabel(this);
     ueberschrift = new QLabel("Admin",this);
+    ueberschrift->setAlignment(Qt::AlignCenter);
     nutzerLabel = new QLabel("Nutzername: ",this);
     passLabel = new QLabel("Passwort: ",this);
+
     nutzerEingabe = new QLineEdit(this);
     passEingabe = new QLineEdit(this);
     passEingabe->setEchoMode(QLineEdit::Password);
+
     anmelde = new QPushButton("anmelden !",this);
+    zeichne = new QPushButton("zeichne !",this);
 
     QFont schrift;
     schrift.setBold(true);
@@ -36,8 +43,10 @@ GUI::GUI()
     main->addLayout(nutzer);
     main->addLayout(pass);
     main->addWidget(anmelde);
+    main->addWidget(zeichne);
 
     connect(anmelde,SIGNAL(clicked()),this,SLOT(anmeldeAnfrage()));
+    connect(zeichne,SIGNAL(clicked()),orter,SLOT(zeichne()));
 
     setLayout(main);
     setFixedSize(400,300);

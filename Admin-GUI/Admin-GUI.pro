@@ -26,10 +26,12 @@ CONFIG += c++11
 
 SOURCES += \
         main.cpp \
-        gui.cpp
+        gui.cpp \
+    sortenorter.cpp
 
 HEADERS += \
-        gui.h
+        gui.h \
+    sortenorter.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

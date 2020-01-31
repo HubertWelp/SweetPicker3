@@ -16,6 +16,7 @@
 #include <QMessageBox>
 #include <QPushButton>
 #include <QKeyEvent>
+#include "sortenorter.h"
 
 #define NUTZER "SP3"
 #define PASS "SP3"
@@ -41,12 +42,14 @@ private:
     QLineEdit* nutzerEingabe ;
     QLineEdit* passEingabe ;
     QPushButton* anmelde ;
+    QPushButton* zeichne ;
     QFont schrift;
     QPixmap bildLogo;
     QHBoxLayout* schicht1;
     QHBoxLayout* nutzer;
     QHBoxLayout* pass;
     QVBoxLayout* main;
+    SortenOrter* orter;
 };
 
 #endif // GUI_H
