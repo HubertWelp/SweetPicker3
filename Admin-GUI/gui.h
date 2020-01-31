@@ -17,6 +17,7 @@
 #include <QPushButton>
 #include <QKeyEvent>
 #include "sortenorter.h"
+#include "monitor.h"
 
 #define NUTZER "SP3"
 #define PASS "SP3"
@@ -32,6 +33,7 @@ public:
 
 public slots:
     void anmeldeAnfrage();
+    void zeigeMonitor();
     void keyPressEvent(QKeyEvent* pe) override;
 
 private:
@@ -41,8 +43,9 @@ private:
     QLabel* passLabel ;
     QLineEdit* nutzerEingabe ;
     QLineEdit* passEingabe ;
-    QPushButton* anmelde ;
-    QPushButton* zeichne ;
+    QPushButton* anmelden ;
+    QPushButton* zeichnen ;
+    QPushButton* beenden ;
     QFont schrift;
     QPixmap bildLogo;
     QHBoxLayout* schicht1;
@@ -50,6 +53,7 @@ private:
     QHBoxLayout* pass;
     QVBoxLayout* main;
     SortenOrter* orter;
+    Monitor* moni;
 };
 
 #endif // GUI_H

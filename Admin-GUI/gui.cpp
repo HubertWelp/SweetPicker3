@@ -4,6 +4,7 @@ GUI::GUI()
 {
     orter = new SortenOrter("/home/Student/Bilder/Webcam/","aktuelleSzene.jpg");
     orter->gebeKoordinatenein(100,100,300,300); // müssen noch entsprechend eingegeben
+    moni = new Monitor(this);
 
     logo = new QLabel(this);
     ueberschrift = new QLabel("Admin",this);
@@ -15,8 +16,9 @@ GUI::GUI()
     passEingabe = new QLineEdit(this);
     passEingabe->setEchoMode(QLineEdit::Password);
 
-    anmelde = new QPushButton("anmelden !",this);
-    zeichne = new QPushButton("zeichne !",this);
+    anmelden = new QPushButton("anmelden !",this);
+    beenden = new QPushButton("beenden !",this);
+    zeichnen = new QPushButton("zeichnen !",this);
 
     QFont schrift;
     schrift.setBold(true);
@@ -42,11 +44,14 @@ GUI::GUI()
     main->addLayout(schicht1);
     main->addLayout(nutzer);
     main->addLayout(pass);
-    main->addWidget(anmelde);
-    main->addWidget(zeichne);
+    main->addWidget(anmelden);
+    main->addWidget(zeichnen);
+    main->addWidget(beenden);
 
-    connect(anmelde,SIGNAL(clicked()),this,SLOT(anmeldeAnfrage()));
-    connect(zeichne,SIGNAL(clicked()),orter,SLOT(zeichne()));
+    connect(anmelden,SIGNAL(clicked()),this,SLOT(anmeldeAnfrage()));
+    connect(zeichnen,SIGNAL(clicked()),orter,SLOT(zeichne()));
+    connect(zeichnen,SIGNAL(clicked()),this,SLOT(zeigeMonitor()));
+    connect(beenden,SIGNAL(clicked()),this,SLOT(close()));
 
     setLayout(main);
     setFixedSize(400,300);
@@ -60,6 +65,11 @@ void GUI::anmeldeAnfrage()
         QMessageBox::information(this,"Anmelden","Richtige Daten");
     }
     else QMessageBox::information(this,"Anmelden","Falsche Daten");
+}
+
+void GUI::zeigeMonitor()
+{
+    QMessageBox::information(this,"Zeigen","Monitor öffnet sich");
 }
 
 void GUI::keyPressEvent(QKeyEvent *pe)

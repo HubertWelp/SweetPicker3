@@ -2,9 +2,9 @@
 ## Aufgaben
 - [x] Anmeldemöglichkeit
 - [x] Einen Rahmen um die ausgewählte Süßigkeit zeichnen
-- [ ] Anzeigen der aktuellen Szene
+- [x] Anzeigen der bearbeiteten Szene (mit Rahmen)
 - [ ] Anzeigen der aktuellen Auswahl
-- [ ] Anzeigen der aktuellen Parameter
+- [ ] Anzeigen des aktuellen Zustandes
 
 ## Status
 lauffähig
@@ -15,7 +15,9 @@ lauffähig
 - noch gibt es keine unterschiedlichen Zustände (nur einen Zustand)
 - mit "Enter" kann man die Eingaben abschicken 
 - mit "Esc" kann man die Anwendung beenden
-- Der Button zeichne ist nur zu Testzwecken eingefügt worden
+- Der Button "zeichnen" ist nur zu Testzwecken eingefügt worden
+- Mit dem Button in GUI "beenden" schließt sich die GUI
+- Mit dem Button in Monitor "beenden" sollte sich das Fenster schließen und zum Anmeldefenster zurückkehren
 
 ## Quellen
 [close](https://stackoverflow.com/questions/12674984/exit-application-in-qt)

@@ -1,11 +1,14 @@
 #include "gui.h"
+#include "monitor.h"
 #include <QApplication>
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    GUI w;
-    w.show();
+    Monitor m;
+    m.show();
+//    GUI w;
+//    w.show();
 
     return a.exec();
 }
