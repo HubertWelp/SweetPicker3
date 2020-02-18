@@ -16,12 +16,11 @@
 #include "sortenorter.h"
 #include "udpnode.hpp"
 
-class Monitor : public QWidget, UDPNode
+class Monitor : public QWidget
 {
     Q_OBJECT
 public:
     explicit Monitor(QWidget *parent = nullptr);
-    void messageReceived(std::string msg) override;
 
 signals:
 
