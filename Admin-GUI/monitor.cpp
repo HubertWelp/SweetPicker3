@@ -17,6 +17,8 @@ Monitor::Monitor(QWidget *parent) : QWidget(parent)
     anzErkObj = new QLabel("Anzahl erkannter Objekte: ");
     anzObj = 0;
     bild = new QLabel;
+    QPixmap bildQuelle("/home/Student/Bilder/Webcam/aktuelleSzene.jpg");
+    bild->setPixmap(bildQuelle);
     kW1 = new QLineEdit("Wert 1");
     kW1->setReadOnly(true);
     kW2 = new QLineEdit("Wert 2");

@@ -52,9 +52,9 @@ GUI::GUI()
 
     connect(anmelden,SIGNAL(clicked()),this,SLOT(anmeldeAnfrage()));
     connect(beenden,SIGNAL(clicked()),this,SLOT(close()));
+    connect(zuruck,SIGNAL(clicked()),this,SLOT(close()));
 
     setLayout(main);
-    //setFixedSize(400,300);
     setWindowTitle(tr("Sweet Picker 3 - Admin"));
 }
 
@@ -62,7 +62,6 @@ void GUI::anmeldeAnfrage()
 {
     if (passEingabe->text() == PASS)
     {
-        QMessageBox::information(this,"Anmelden","Richtige Daten");
         passEingabe->setText("");
         moni = new Monitor;
         moni->show();
