@@ -4,9 +4,7 @@ GUI::GUI()
 {
     orter = new SortenOrter("/home/Student/Bilder/Webcam/","aktuelleSzene.jpg");
     orter->gebeKoordinatenein(100,100,300,300); // müssen noch entsprechend eingegeben
-    moni = new Monitor(this);
 
-    logo = new QLabel(this);
     ueberschrift = new QLabel("Login zum Debugging:",this);
     ueberschrift->setAlignment(Qt::AlignCenter);
     passLabel = new QLabel("Admin Login: ",this);
@@ -15,7 +13,12 @@ GUI::GUI()
     passEingabe->setEchoMode(QLineEdit::Password);
 
     anmelden = new QPushButton("anmelden",this);
-    beenden = new QLabel("X");
+
+    beenden = new ClickLabel;
+    QPixmap exitBild (":/exit.png");
+    exitBild = exitBild.scaledToWidth(30);
+    beenden->setPixmap(exitBild);
+
     zuruck = new QPushButton("zurück",this);
     zuruck->setFixedWidth(80);
 
@@ -24,6 +27,7 @@ GUI::GUI()
     schrift.setPixelSize(14);
     ueberschrift->setFont(schrift);
 
+    logo = new QLabel;
     bildLogo.load(":/thga_logo.jpg"); bildLogo = bildLogo.scaledToHeight(80);
     logo->setPixmap(bildLogo);
 
@@ -50,7 +54,7 @@ GUI::GUI()
     connect(beenden,SIGNAL(clicked()),this,SLOT(close()));
 
     setLayout(main);
-    setFixedSize(400,300);
+    //setFixedSize(400,300);
     setWindowTitle(tr("Sweet Picker 3 - Admin"));
 }
 

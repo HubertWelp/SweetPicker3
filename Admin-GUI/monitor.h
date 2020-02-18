@@ -12,6 +12,7 @@
 #include <QMessageBox>
 #include <QPushButton>
 #include <QKeyEvent>
+#include "clicklabel.h"
 
 class Monitor : public QWidget
 {
@@ -22,6 +23,24 @@ public:
 signals:
 
 public slots:
+
+private:
+    QLabel* logo ;              // eigentlich ein Bild
+    QLabel* ueberschrift ;      // Name des Bildschirms
+    ClickLabel* beenden ;           // eigentlich ein Button
+    QLabel* parameter ;         // Label Parameter
+    QLabel* kamera ;            // Label Kamera
+    QLabel* bildverarbeitung ;  // Label Bildverarbeitung
+    QLabel* bilderkennung ;     // Label Bilderkennung
+    QLabel* anzErkObj ;         // Label für die Anzahl der erkannten Objekte
+    QLabel* bild;               // die aktuelleSzene.jpg
+    QLineEdit* kW1;             // Wert 1 für Kamera
+    QLineEdit* kW2;             // Wert 2 für Kamera
+    QLineEdit* bvW1;            // Wert 1 für Bildverarbeitung
+    QLineEdit* bvW2;            // Wert 2 für Bildverarbeitung
+    QPushButton* andUber;       // Button zur Übernahme der Änderungen
+
+    int anzObj;
 };
 
 #endif // MONITOR_H

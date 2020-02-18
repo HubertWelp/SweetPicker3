@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/">
         <file>thga_logo.jpg</file>
+        <file>exit.png</file>
     </qresource>
 </RCC>

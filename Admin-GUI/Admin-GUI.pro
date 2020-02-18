@@ -25,12 +25,14 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
+    clicklabel.cpp \
         main.cpp \
         gui.cpp \
 sortenorter.cpp \
     monitor.cpp
 
 HEADERS += \
+    clicklabel.h \
         gui.h \
 sortenorter.h \
     monitor.h

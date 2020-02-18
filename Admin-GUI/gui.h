@@ -18,6 +18,7 @@
 #include <QKeyEvent>
 #include "sortenorter.h"
 #include "monitor.h"
+#include "clicklabel.h"
 
 #define NUTZER "SP3"
 #define PASS "SP3"
@@ -43,7 +44,7 @@ private:
     QLineEdit* passEingabe ;
     QPushButton* anmelden ;
     QPushButton* zuruck ;
-    QLabel* beenden ;
+    ClickLabel* beenden ;
     QFont schrift;
     QPixmap bildLogo;
     QHBoxLayout* oben;
