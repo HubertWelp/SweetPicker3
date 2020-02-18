@@ -10,14 +10,15 @@
 lauffähig
 
 ## Anmerkung
-- man kann sich nur mit Nutzernamen: SP3 und Passwort: SP3 anmelden (siehe Konstanten in gui.h)
+- man kann sich nur mit dem richtigen Passwort anmelden (siehe Konfig.txt)
 - das Passwort wird verdeckt und als Sterne angezeigt und nicht als Text
-- noch gibt es keine unterschiedlichen Zustände (nur einen Zustand)
 - mit "Enter" kann man die Eingaben abschicken 
-- mit "Esc" kann man die Anwendung beenden
-- Der Button "zeichnen" ist nur zu Testzwecken eingefügt worden
-- Mit dem Button in GUI "beenden" schließt sich die GUI
-- Mit dem Button in Monitor "beenden" sollte sich das Fenster schließen und zum Anmeldefenster zurückkehren
+- mit "Esc" kann man das Anmelde-Fenster beenden
+- mit dem Button "rotes X" und dem Button "zurück" kann man das Anmelde-Fenster schließen
+- Der Stretch Factor und das Spacing in den Layouts müssen noch passend eingestellt werden
+- Dem im Bild eingezeichneten Rahmen müssen noch die richtigen Korrdinaten übergeben werden
+- Das Bild wird beim Aufploppen der Admin-GUI einmalig geladen (es muss eigentlich automatisch nach Anfrage von SP3Bildanalysator über UDP Node geladen werden)
+- der Button "Änderungen übernehmen" ist ein Dummy
 
 ## Quellen
 [close](https://stackoverflow.com/questions/12674984/exit-application-in-qt)
