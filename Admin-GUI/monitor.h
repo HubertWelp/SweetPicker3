@@ -14,12 +14,14 @@
 #include <QKeyEvent>
 #include "clicklabel.h"
 #include "sortenorter.h"
+#include "udpnode.hpp"
 
-class Monitor : public QWidget
+class Monitor : public QWidget, UDPNode
 {
     Q_OBJECT
 public:
     explicit Monitor(QWidget *parent = nullptr);
+    void messageReceived(std::string msg) override;
 
 signals:
 

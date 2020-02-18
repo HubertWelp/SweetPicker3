@@ -29,13 +29,15 @@ SOURCES += \
         main.cpp \
         gui.cpp \
 sortenorter.cpp \
-    monitor.cpp
+    monitor.cpp \
+    udpnode.cpp
 
 HEADERS += \
     clicklabel.h \
         gui.h \
 sortenorter.h \
-    monitor.h
+    monitor.h \
+    udpnode.hpp
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
