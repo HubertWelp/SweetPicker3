@@ -24,6 +24,7 @@ public:
 signals:
 
 public slots:
+    void aktualisiert();
 
 private:
     QLabel* logo ;              // eigentlich ein Bild

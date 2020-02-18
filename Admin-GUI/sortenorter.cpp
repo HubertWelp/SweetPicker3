@@ -7,15 +7,7 @@ SortenOrter::SortenOrter(QString bildPfad)
     bild = QPixmap(bildPfad);
 }
 
-void SortenOrter::gebeKoordinatenein(int x1, int y1, int x2, int y2)
-{
-    o_x = x1;
-    u_x = x2;
-    o_y = y1;
-    u_y = y2;
-}
-
-QPixmap SortenOrter::zeichne()
+QPixmap SortenOrter::zeichne(int o_x, int o_y, int u_x, int u_y)
 {
     QPainter stift(&bild);
     stift.setPen(QPen(farbe,3));

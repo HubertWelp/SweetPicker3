@@ -12,12 +12,11 @@ class SortenOrter : public QWidget
     Q_OBJECT
 public:
     explicit SortenOrter(QString bildPfad);
-    void gebeKoordinatenein(int x1, int y1, int x2, int y2);
 
 signals:
 
 public slots:
-    QPixmap zeichne();
+    QPixmap zeichne(int x1, int y1, int x2, int y2);
 
 private:
     QPixmap bild;
