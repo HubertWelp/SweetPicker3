@@ -35,7 +35,7 @@ public:
     * @param [in] port The port number to be used for the communication socket.
     *
     */
-    explicit UDPNode(unsigned short port=5842,QObject *parent = nullptr);
+    explicit UDPNode(unsigned short port=5844,QObject *parent = nullptr);
     /** @brief send a text message
     *
     * Sends a text message to a specified destination.
@@ -44,7 +44,7 @@ public:
     * @param [in] destIpAdress The IP-adress of the receiving server host
     * @param [in] desPortNr The port number of the receiving server program
     */
-    void sendmessage(std::string msg,const std::string destIpAdress="127.0.0.1",const unsigned short destPortNr=5843);
+    void sendmessage(std::string msg,const std::string destIpAdress="127.0.0.1",const unsigned short destPortNr=5842);
 //    void setCallback(void (*cb)(std::string msg));
 Q_SIGNALS:
     /** @brief Qt-Signal emitted on message reception

@@ -21,6 +21,7 @@ class Monitor : public QWidget
     Q_OBJECT
 public:
     explicit Monitor(QWidget *parent = nullptr);
+    void setRGB(int setR, int setG, int setB);
 
 signals:
 
@@ -45,6 +46,7 @@ private:
     SortenOrter* orter;
 
     int anzObj;
+    int r,g,b;
 };
 
 #endif // MONITOR_H
