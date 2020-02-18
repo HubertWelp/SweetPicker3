@@ -58,6 +58,7 @@ Monitor::Monitor(QWidget *parent) : QWidget(parent)
 
     setLayout(main);
     connect(beenden,SIGNAL(clicked()),this,SLOT(close()));
+    setWindowTitle(tr("Sweet Picker 3 - Admin-GUI"));
 }
 
 void Monitor::setRGB(int setR, int setG, int setB)

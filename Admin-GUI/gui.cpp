@@ -58,7 +58,7 @@ GUI::GUI()
     connect(logo,SIGNAL(clicked()),this,SLOT(easteregg()));
 
     setLayout(main);
-    setWindowTitle(tr("Sweet Picker 3 - Admin"));
+    setWindowTitle(tr("Sweet Picker 3 - Anmelde-Fenster"));
 }
 
 bool GUI::konfigEinlesen(QString pfad)
