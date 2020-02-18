@@ -69,7 +69,7 @@ void GUI::anmeldeAnfrage()
         moni = new Monitor;
         moni->show();
     }
-    else QMessageBox::information(this,"Anmelden","Falsche Daten");
+    else QMessageBox::information(this,"Anmelden","Falsche Daten"); passEingabe->setText("");
 }
 
 void GUI::zeigeMonitor()
