@@ -7,50 +7,46 @@ GUI::GUI()
     moni = new Monitor(this);
 
     logo = new QLabel(this);
-    ueberschrift = new QLabel("Admin",this);
+    ueberschrift = new QLabel("Login zum Debugging:",this);
     ueberschrift->setAlignment(Qt::AlignCenter);
-    nutzerLabel = new QLabel("Nutzername: ",this);
-    passLabel = new QLabel("Passwort: ",this);
+    passLabel = new QLabel("Admin Login: ",this);
 
-    nutzerEingabe = new QLineEdit(this);
     passEingabe = new QLineEdit(this);
     passEingabe->setEchoMode(QLineEdit::Password);
 
-    anmelden = new QPushButton("anmelden !",this);
-    beenden = new QPushButton("beenden !",this);
-    zeichnen = new QPushButton("zeichnen !",this);
+    anmelden = new QPushButton("anmelden",this);
+    beenden = new QLabel("X");
+    zuruck = new QPushButton("zurück",this);
+    zuruck->setFixedWidth(80);
 
     QFont schrift;
     schrift.setBold(true);
-    schrift.setPointSize(32);
+    schrift.setPixelSize(14);
     ueberschrift->setFont(schrift);
 
-    bildLogo.load("/home/Student/SP3/logo.jpg"); bildLogo = bildLogo.scaledToHeight(80);
+    bildLogo.load(":/thga_logo.jpg"); bildLogo = bildLogo.scaledToHeight(80);
     logo->setPixmap(bildLogo);
 
-    schicht1 = new QHBoxLayout;
-    schicht1->addWidget(ueberschrift);
-    schicht1->addWidget(logo);
+    oben = new QHBoxLayout;
+    oben->addWidget(beenden);
+    oben->addWidget(ueberschrift);
+    oben->addWidget(logo);
 
-    nutzer = new QHBoxLayout;
-    nutzer->addWidget(nutzerLabel);
-    nutzer->addWidget(nutzerEingabe);
+    mitte = new QVBoxLayout;
+    mitte->addWidget(passLabel);
+    mitte->addWidget(passEingabe);
+    mitte->addWidget(anmelden);
 
-    pass = new QHBoxLayout;
-    pass->addWidget(passLabel);
-    pass->addWidget(passEingabe);
+    unten = new QHBoxLayout;
+    unten->addWidget(zuruck);
+    unten->setAlignment(Qt::AlignLeft);
 
     main = new QVBoxLayout;
-    main->addLayout(schicht1);
-    main->addLayout(nutzer);
-    main->addLayout(pass);
-    main->addWidget(anmelden);
-    main->addWidget(zeichnen);
-    main->addWidget(beenden);
+    main->addLayout(oben);
+    main->addLayout(mitte);
+    main->addLayout(unten);
 
     connect(anmelden,SIGNAL(clicked()),this,SLOT(anmeldeAnfrage()));
-    connect(zeichnen,SIGNAL(clicked()),orter,SLOT(zeichne()));
-    connect(zeichnen,SIGNAL(clicked()),this,SLOT(zeigeMonitor()));
     connect(beenden,SIGNAL(clicked()),this,SLOT(close()));
 
     setLayout(main);
@@ -60,7 +56,7 @@ GUI::GUI()
 
 void GUI::anmeldeAnfrage()
 {
-    if (nutzerEingabe->text() == NUTZER && passEingabe->text() == PASS)
+    if (passEingabe->text() == PASS)
     {
         QMessageBox::information(this,"Anmelden","Richtige Daten");
     }

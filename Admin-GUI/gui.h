@@ -39,18 +39,16 @@ public slots:
 private:
     QLabel* logo;
     QLabel* ueberschrift ;
-    QLabel* nutzerLabel ;
     QLabel* passLabel ;
-    QLineEdit* nutzerEingabe ;
     QLineEdit* passEingabe ;
     QPushButton* anmelden ;
-    QPushButton* zeichnen ;
-    QPushButton* beenden ;
+    QPushButton* zuruck ;
+    QLabel* beenden ;
     QFont schrift;
     QPixmap bildLogo;
-    QHBoxLayout* schicht1;
-    QHBoxLayout* nutzer;
-    QHBoxLayout* pass;
+    QHBoxLayout* oben;
+    QVBoxLayout* mitte;
+    QHBoxLayout* unten;
     QVBoxLayout* main;
     SortenOrter* orter;
     Monitor* moni;
