@@ -63,6 +63,7 @@ void GUI::anmeldeAnfrage()
     if (passEingabe->text() == PASS)
     {
         QMessageBox::information(this,"Anmelden","Richtige Daten");
+        passEingabe->setText("");
         moni = new Monitor;
         moni->show();
     }
