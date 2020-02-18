@@ -1,10 +1,10 @@
 #include "sortenorter.h"
 
-SortenOrter::SortenOrter(QString bildPfad, QString bildName)
+SortenOrter::SortenOrter(QString bildPfad)
 {
     pfad = bildPfad;
     farbe = QColor(0,255,255);
-    bild = QImage(bildPfad+bildName);
+    bild = QPixmap(bildPfad);
 }
 
 void SortenOrter::gebeKoordinatenein(int x1, int y1, int x2, int y2)
@@ -15,12 +15,12 @@ void SortenOrter::gebeKoordinatenein(int x1, int y1, int x2, int y2)
     u_y = y2;
 }
 
-void SortenOrter::zeichne()
+QPixmap SortenOrter::zeichne()
 {
     QPainter stift(&bild);
     stift.setPen(QPen(farbe,3));
     stift.drawRect(o_x,o_y,u_x-o_x,u_y-o_x);
     update();
 
-    bild.save(pfad+"bearbeiteteSzene.jpg");
+    return bild;
 }

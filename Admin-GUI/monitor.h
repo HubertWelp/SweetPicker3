@@ -13,6 +13,7 @@
 #include <QPushButton>
 #include <QKeyEvent>
 #include "clicklabel.h"
+#include "sortenorter.h"
 
 class Monitor : public QWidget
 {
@@ -39,6 +40,7 @@ private:
     QLineEdit* bvW1;            // Wert 1 für Bildverarbeitung
     QLineEdit* bvW2;            // Wert 2 für Bildverarbeitung
     QPushButton* andUber;       // Button zur Übernahme der Änderungen
+    SortenOrter* orter;
 
     int anzObj;
 };

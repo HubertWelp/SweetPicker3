@@ -3,7 +3,7 @@
 
 #include <QWidget>
 #include <QColor>
-#include <QImage>
+#include <QPixmap>
 #include <QPainter>
 #include <QString>
 
@@ -11,16 +11,16 @@ class SortenOrter : public QWidget
 {
     Q_OBJECT
 public:
-    explicit SortenOrter(QString bildPfad,QString bildName);
+    explicit SortenOrter(QString bildPfad);
     void gebeKoordinatenein(int x1, int y1, int x2, int y2);
 
 signals:
 
 public slots:
-    void zeichne();
+    QPixmap zeichne();
 
 private:
-    QImage bild;
+    QPixmap bild;
     QColor farbe;
     QString pfad;
     int o_x;

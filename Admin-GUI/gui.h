@@ -16,7 +16,6 @@
 #include <QMessageBox>
 #include <QPushButton>
 #include <QKeyEvent>
-#include "sortenorter.h"
 #include "monitor.h"
 #include "clicklabel.h"
 
@@ -52,7 +51,6 @@ private:
     QVBoxLayout* mitte;
     QHBoxLayout* unten;
     QVBoxLayout* main;
-    SortenOrter* orter;
     Monitor* moni;
 
     int easegg;

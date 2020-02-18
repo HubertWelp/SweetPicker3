@@ -2,9 +2,6 @@
 
 GUI::GUI()
 {
-    orter = new SortenOrter("/home/Student/Bilder/Webcam/","aktuelleSzene.jpg");
-    orter->gebeKoordinatenein(100,100,300,300); // müssen noch entsprechend eingegeben
-
     ueberschrift = new QLabel("Login zum Debugging:",this);
     ueberschrift->setAlignment(Qt::AlignCenter);
     passLabel = new QLabel("Admin Login: ",this);
