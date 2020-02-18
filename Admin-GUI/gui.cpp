@@ -27,7 +27,7 @@ GUI::GUI()
     schrift.setPixelSize(14);
     ueberschrift->setFont(schrift);
 
-    logo = new QLabel;
+    logo = new ClickLabel;
     bildLogo.load(":/thga_logo.jpg"); bildLogo = bildLogo.scaledToHeight(80);
     logo->setPixmap(bildLogo);
 
@@ -50,9 +50,12 @@ GUI::GUI()
     main->addLayout(mitte);
     main->addLayout(unten);
 
+    easegg = 0;
+
     connect(anmelden,SIGNAL(clicked()),this,SLOT(anmeldeAnfrage()));
     connect(beenden,SIGNAL(clicked()),this,SLOT(close()));
     connect(zuruck,SIGNAL(clicked()),this,SLOT(close()));
+    connect(logo,SIGNAL(clicked()),this,SLOT(easteregg()));
 
     setLayout(main);
     setWindowTitle(tr("Sweet Picker 3 - Admin"));
@@ -72,6 +75,16 @@ void GUI::anmeldeAnfrage()
 void GUI::zeigeMonitor()
 {
     QMessageBox::information(this,"Zeigen","Monitor öffnet sich");
+}
+
+void GUI::easteregg()
+{
+    easegg++;
+    if(easegg==3)
+    {
+        QMessageBox::information(this,"Easter Egg","Hurra ! Sie haben das Easter Egg gefunden");
+        easegg = 0;
+    }
 }
 
 void GUI::keyPressEvent(QKeyEvent *pe)

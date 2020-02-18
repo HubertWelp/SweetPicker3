@@ -35,10 +35,11 @@ public:
 public slots:
     void anmeldeAnfrage();
     void zeigeMonitor();
+    void easteregg();
     void keyPressEvent(QKeyEvent* pe) override;
 
 private:
-    QLabel* logo;
+    ClickLabel* logo;
     QLabel* ueberschrift ;
     QLabel* passLabel ;
     QLineEdit* passEingabe ;
@@ -53,6 +54,8 @@ private:
     QVBoxLayout* main;
     SortenOrter* orter;
     Monitor* moni;
+
+    int easegg;
 };
 
 #endif // GUI_H
