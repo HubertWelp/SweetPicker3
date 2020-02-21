@@ -1,9 +1,9 @@
 #include "sortenorter.h"
 
-SortenOrter::SortenOrter(QString bildPfad)
+SortenOrter::SortenOrter(QString bildPfad, int r, int g, int b)
 {
     pfad = bildPfad;
-    farbe = QColor(0,255,255);
+    farbe = QColor(r,g,b);
     bild = QPixmap(bildPfad);
 }
 

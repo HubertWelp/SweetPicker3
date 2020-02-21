@@ -58,12 +58,20 @@ Monitor::Monitor(QWidget *parent) : QWidget(parent)
 
     setLayout(main);
     connect(beenden,SIGNAL(clicked()),this,SLOT(close()));
+    setWindowTitle(tr("Sweet Picker 3 - Admin-GUI"));
+}
+
+void Monitor::setRGB(int setR, int setG, int setB)
+{
+    r = setR;
+    g = setG;
+    b = setB;
 }
 
 void Monitor::aktualisiert()
 {
     QPixmap bildQuelle;
-    orter = new SortenOrter("/home/Student/Bilder/Webcam/aktuelleSzene.jpg");
+    orter = new SortenOrter("/home/Student/Bilder/Webcam/aktuelleSzene.jpg",r,g,b);
     bildQuelle = orter->zeichne(100,100,300,300); // müssen noch entsprechend eingegeben
     bild->setPixmap(bildQuelle);
     update();

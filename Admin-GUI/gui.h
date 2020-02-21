@@ -19,7 +19,6 @@
 #include "monitor.h"
 #include "clicklabel.h"
 
-#define NUTZER "SP3"
 #define PASS "SP3"
 
 /********************* Deklaration der Klasse *********************/
@@ -30,6 +29,7 @@ class GUI : public QWidget
 
 public:
     GUI();
+    bool konfigEinlesen(QString pfad);
 
 public slots:
     void anmeldeAnfrage();
@@ -52,6 +52,8 @@ private:
     QHBoxLayout* unten;
     QVBoxLayout* main;
     Monitor* moni;
+
+    QString passwort;
 
     int easegg;
 };

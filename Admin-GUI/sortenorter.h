@@ -11,7 +11,7 @@ class SortenOrter : public QWidget
 {
     Q_OBJECT
 public:
-    explicit SortenOrter(QString bildPfad);
+    explicit SortenOrter(QString bildPfad, int r, int g, int b);
 
 signals:
 
