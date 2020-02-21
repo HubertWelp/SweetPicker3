@@ -1,2 +1,2 @@
 Passwort: SP3
-Farbe: 0 255 255
+Farbe: 255 0 0

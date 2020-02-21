@@ -3,7 +3,7 @@
 GUI::GUI()
 {
     moni = new Monitor;
-    konfigEinlesen("/home/Student/git/SP3/SweetPicker3/Admin-GUI/konfig.txt");
+    konfigEinlesen("/home/Student/git/SweetPicker3/Admin-GUI/konfig.txt");
     moni->aktualisiert();
     ueberschrift = new QLabel("Login zum Debugging:",this);
     ueberschrift->setAlignment(Qt::AlignCenter);

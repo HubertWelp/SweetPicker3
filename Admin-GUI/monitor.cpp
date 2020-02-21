@@ -71,7 +71,7 @@ void Monitor::setRGB(int setR, int setG, int setB)
 void Monitor::aktualisiert()
 {
     QPixmap bildQuelle;
-    orter = new SortenOrter("/home/Student/Bilder/Webcam/aktuelleSzene.jpg",r,g,b);
+    orter = new SortenOrter("/home/Student/git/SweetPicker3/SP3Bildanalysator/SP3Bilderkennung/aktuelleSzene.png",r,g,b);
     bildQuelle = orter->zeichne(100,100,300,300); // müssen noch entsprechend eingegeben
     bild->setPixmap(bildQuelle);
     update();
