@@ -11,6 +11,7 @@ print (path)
 file = open(path,"w")
 
 file.write(sys.argv[1])
+file.write("SP3 Abnahme")
 #file.write("\n")
 #file.write(sys.argv[2])
 file.close
