@@ -1,0 +1,16 @@
+item {
+    id: 1
+    name: 'Maoam'
+}
+item {
+    id: 2
+    name: 'Snickers'
+}
+item {
+    id: 3
+    name: 'Milkyway'
+}
+item {
+    id: 4
+    name: 'Riegel'
+}
