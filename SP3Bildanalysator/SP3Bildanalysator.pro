@@ -19,9 +19,9 @@ HEADERS += \
     ressourcen.h \
     udpnode.hpp
 
-INCLUDEPATH += /usr/local/include/opencv4/
+INCLUDEPATH += /usr/local/opencv/include/opencv4
 
-LIBS += -L/usr/local/lib \
+LIBS += -L/usr/local/opencv/lib \
         -lopencv_core \
         -lopencv_imgproc \
         -lopencv_imgcodecs \
