@@ -24,6 +24,7 @@ in Bearbeitung aber lauffähig
 daher muss nur die Struktur der Textdatei gefundeneObjekete klar sein, damit es richtig analysiert wird
 - Als Ergebnis der Analyse stellt er ein char-Array zur Verfügung, das über den UDP-Node geschickt werden kann
 - noch ist zu tun, die Eingaben über die Tastatur und Ausgaben auf dem Terminal durch die Kommunikation mit UDP zu ersetzen.
+- in der zum Testzweck hinzugefügten Textdatei testAusgabe.txt stehen 3 Schlagwörter (detection_classes, detection_scores, detection_boxes)
 
 ## Quellen:
 - [Kamera](https://www.opencv-srf.com/2010/09/object-detection-using-color-seperation.html)
