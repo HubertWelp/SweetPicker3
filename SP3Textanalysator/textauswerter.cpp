@@ -15,7 +15,7 @@ bool Textauswerter::werteAus()
         QMessageBox::warning(this,"Datei öffnen","Datei konnte nicht geöffnet werden !");
     }
 
-    QTextStream datenstrom;
+    QTextStream datenstrom(&text);
     QString string;
 
     while(datenstrom.readLineInto(&string,MAXLESEN))
@@ -24,17 +24,17 @@ bool Textauswerter::werteAus()
 
         if (string.contains(DCLASS,Qt::CaseInsensitive))
         {
-            QMessageBox::warning(this,"Auswertung","Klassen werden ausgewertet");
+            QMessageBox::information(this,"detection_classes","Klassen werden ausgewertet");
             detection_classes();
         }
         else if (string.contains(DSCORE,Qt::CaseInsensitive))
         {
-            QMessageBox::warning(this,"Auswertung","Erkennungsraten werden ausgewertet");
+            QMessageBox::information(this,"detection_scores","Erkennungsraten werden ausgewertet");
             detection_scores();
         }
         else if (string.contains(DBOX,Qt::CaseInsensitive))
         {
-            QMessageBox::warning(this,"Auswertung","Boxen werden ausgewertet");
+            QMessageBox::information(this,"detection_boxes","Boxen werden ausgewertet");
             detection_boxes();
         }
     }
@@ -45,7 +45,7 @@ bool Textauswerter::detection_classes()
     // Die Text-Datei erneuert öffnen
     QFile text (PFAD);
     text.open(QIODevice::ReadOnly);
-    QTextStream datenstrom;
+    QTextStream datenstrom(&text);
     QString linie;
 
     // Den Cursor sozusagen auf die aktuelle Zeile bringen
@@ -62,7 +62,7 @@ bool Textauswerter::detection_scores()
     // Die Text-Datei erneuert öffnen
     QFile text (PFAD);
     text.open(QIODevice::ReadOnly);
-    QTextStream datenstrom;
+    QTextStream datenstrom(&text);
     QString linie;
 
     // Den Cursor sozusagen auf die aktuelle Zeile bringen
@@ -79,7 +79,7 @@ bool Textauswerter::detection_boxes()
     // Die Text-Datei erneuert öffnen
     QFile text (PFAD);
     text.open(QIODevice::ReadOnly);
-    QTextStream datenstrom;
+    QTextStream datenstrom(&text);
     QString linie;
 
     // Den Cursor sozusagen auf die aktuelle Zeile bringen

@@ -20,9 +20,9 @@ class Textauswerter : public QWidget
 public:
     Textauswerter(QWidget *parent = 0);
     bool werteAus();
-    bool detection_classes(const QString zeile);
-    bool detection_scores(const QString zeile);
-    bool detection_boxes(const QString zeile);
+    bool detection_classes();
+    bool detection_scores();
+    bool detection_boxes();
     ~Textauswerter();
 
 private:
