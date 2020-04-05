@@ -88,6 +88,11 @@ bool Textauswerter::detection_classes(int aktlZeile)
         QMessageBox::information(this,QString(DCLASS) + " Zeile" + QString::number(aktlZeile),linie);
 
         // Hier weiter
+        // Die Anzahl der Vorhandenen Elemente im Array ermitteln (Anzahl der Leerzeichen + 1)
+
+        // Erste Klammer oder Leerzeichen entfernen
+
+        // String mittels " " aufteilen und ins Array ergK[] eintragen
     }
     while(!linie.contains("]"));
 
@@ -101,7 +106,7 @@ bool Textauswerter::detection_classes(int aktlZeile)
 
 /**
 * Diese Funktion sucht nach dem Schlüsselwort "detection_scores" in der Text-Datei und liest die Zahlen danach ein.
-* Diese Zahlen stellen die Erkennungsrate der gefundenen Klassen dar und werden in Array gespeichert dann entsprechend später bearbeitet.
+* Diese Zahlen stellen die Erkennungsrate der gefundenen Klassen dar und werden in Arrays gespeichert dann entsprechend später bearbeitet.
 *
 * @param [in] aktlZeile hat die Zeilennummer, an der der Cursor in der Schleife in {@link werteAus} steht, so dass diese Funktion ab da weiter einliest.
 * @return true, falls der Ablauf der Funktion reibungslos lief
@@ -129,6 +134,11 @@ bool Textauswerter::detection_scores(int aktlZeile)
         QMessageBox::information(this,QString(DSCORE) + " Zeile" + QString::number(aktlZeile),linie);
 
         // Hier weiter
+        // Die Anzahl der Vorhandenen Elemente im Array ermitteln (Anzahl der Punkte)
+
+        // Erste Klammer oder Leerzeichen entfernen
+
+        // String mittels " " aufteilen und ins Array ergS[] eintragen
     }
     while(!linie.contains("]"));
 
@@ -170,6 +180,11 @@ bool Textauswerter::detection_boxes(int aktlZeile)
         QMessageBox::information(this,QString(DBOX) + " Zeile" + QString::number(aktlZeile),linie);
 
         // Hier weiter
+        // Die Anzahl der Vorhandenen Elemente im Array ermitteln (Anzahl der Punkte)
+
+        // Erste Doppel-Klammer oder Leerzeichen+Klammer entfernen
+
+        // String mittels " " aufteilen und ins Array ergB[] eintragen
     }
     while(!linie.contains("]]"));
 
