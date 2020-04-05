@@ -13,6 +13,8 @@
 #include <QString>
 #include <QMessageBox>
 
+struct RBox {double a; double b; double c; double d;};
+
 class Textauswerter : public QWidget
 {
     Q_OBJECT
@@ -26,6 +28,9 @@ public:
     ~Textauswerter();
 
 private:
+    int ergK[105];
+    float ergW[105];
+    RBox ergB[105];
     int anzGlsnZeilen;
 };
 

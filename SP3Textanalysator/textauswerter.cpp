@@ -60,7 +60,7 @@ int Textauswerter::werteAus()
 
 /**
 * Diese Funktion sucht nach dem Schlüsselwort "detection_classes" in der Text-Datei und liest die Zahlen danach ein.
-* Diese Zahlen stellen die Klassen der Erennungsergebnisse dar und werden in Strings gespeichert dann entsprechend später bearbeitet.
+* Diese Zahlen stellen die Klassen der Erennungsergebnisse dar und werden in Arrays gespeichert dann entsprechend später bearbeitet.
 *
 * @param [in] aktlZeile hat die Zeilennummer, an der der Cursor in der Schleife in {@link werteAus} steht, so dass diese Funktion ab da weiter einliest.
 * @return true, falls der Ablauf der Funktion reibungslos lief
@@ -87,6 +87,7 @@ bool Textauswerter::detection_classes(int aktlZeile)
         // Ausgabe des Inhalts der aktuellen Zeile
         QMessageBox::information(this,QString(DCLASS) + " Zeile" + QString::number(aktlZeile),linie);
 
+        // Hier weiter
     }
     while(!linie.contains("]"));
 
@@ -100,7 +101,7 @@ bool Textauswerter::detection_classes(int aktlZeile)
 
 /**
 * Diese Funktion sucht nach dem Schlüsselwort "detection_scores" in der Text-Datei und liest die Zahlen danach ein.
-* Diese Zahlen stellen die Erkennungsrate der gefundenen Klassen dar und werden in Strings gespeichert dann entsprechend später bearbeitet.
+* Diese Zahlen stellen die Erkennungsrate der gefundenen Klassen dar und werden in Array gespeichert dann entsprechend später bearbeitet.
 *
 * @param [in] aktlZeile hat die Zeilennummer, an der der Cursor in der Schleife in {@link werteAus} steht, so dass diese Funktion ab da weiter einliest.
 * @return true, falls der Ablauf der Funktion reibungslos lief
@@ -126,6 +127,8 @@ bool Textauswerter::detection_scores(int aktlZeile)
 
         // Ausgabe des Inhalts der aktuellen Zeile
         QMessageBox::information(this,QString(DSCORE) + " Zeile" + QString::number(aktlZeile),linie);
+
+        // Hier weiter
     }
     while(!linie.contains("]"));
 
@@ -139,7 +142,7 @@ bool Textauswerter::detection_scores(int aktlZeile)
 
 /**
 * Diese Funktion sucht nach dem Schlüsselwort "detection_boxes" in der Text-Datei und liest die Koordinaten danach ein.
-* Diese Koordinaten formen eine Box und werden in Strings gespeichert.
+* Diese Koordinaten formen eine Box und werden in Arrays gespeichert.
 *
 * @param [in] aktlZeile hat die Zeilennummer, an der der Cursor in der Schleife in {@link werteAus} steht, so dass diese Funktion ab da weiter einliest.
 * @return true, falls der Ablauf der Funktion reibungslos lief
@@ -165,6 +168,8 @@ bool Textauswerter::detection_boxes(int aktlZeile)
 
         // Ausgabe des Inhalts der aktuellen Zeile
         QMessageBox::information(this,QString(DBOX) + " Zeile" + QString::number(aktlZeile),linie);
+
+        // Hier weiter
     }
     while(!linie.contains("]]"));
 
