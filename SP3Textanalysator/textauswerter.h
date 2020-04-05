@@ -5,7 +5,7 @@
 #define DCLASS "detection_classes"
 #define DSCORE "detection_scores"
 #define DBOX "detection_boxes"
-#define MAXLESEN 40
+#define MAXLESEN 100
 
 #include <QWidget>
 #include <QFile>
@@ -18,11 +18,11 @@ class Textauswerter : public QWidget
     Q_OBJECT
 
 public:
-    Textauswerter(QWidget *parent = 0);
-    bool werteAus();
-    bool detection_classes();
-    bool detection_scores();
-    bool detection_boxes();
+    Textauswerter(QWidget *parent = nullptr);
+    int werteAus();
+    bool detection_classes(int aktlZeile);
+    bool detection_scores(int aktlZeile);
+    bool detection_boxes(int aktlZeile);
     ~Textauswerter();
 
 private:

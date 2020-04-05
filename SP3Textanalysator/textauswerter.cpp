@@ -1,12 +1,21 @@
 #include "textauswerter.h"
 
+/**
+* Konstruktor
+*/
 Textauswerter::Textauswerter(QWidget *parent)
-    : QWidget(parent), anzGlsnZeilen(0)
+    : QWidget(parent)
 {
 
 }
 
-bool Textauswerter::werteAus()
+/**
+* Diese Funktion wertet den Text in der Text-Datei aus und benutzt dafür die Funktionen:
+* {@link detection_classes}, {@link detection_scores} und {@link detection_boxes}
+*
+* @return die Anzahl der erfolgreich o.g. aufgrufenen Funktionen
+*/
+int Textauswerter::werteAus()
 {
     QFile text (PFAD);
 
@@ -17,6 +26,8 @@ bool Textauswerter::werteAus()
 
     QTextStream datenstrom(&text);
     QString string;
+    anzGlsnZeilen = 0;
+    int erfolgreich = 0;
 
     while(datenstrom.readLineInto(&string,MAXLESEN))
     {
@@ -25,22 +36,36 @@ bool Textauswerter::werteAus()
         if (string.contains(DCLASS,Qt::CaseInsensitive))
         {
             QMessageBox::information(this,"detection_classes","Klassen werden ausgewertet");
-            detection_classes();
+            if (detection_classes(anzGlsnZeilen)) erfolgreich++;
         }
         else if (string.contains(DSCORE,Qt::CaseInsensitive))
         {
             QMessageBox::information(this,"detection_scores","Erkennungsraten werden ausgewertet");
-            detection_scores();
+            if (detection_scores(anzGlsnZeilen)) erfolgreich++;
         }
         else if (string.contains(DBOX,Qt::CaseInsensitive))
         {
             QMessageBox::information(this,"detection_boxes","Boxen werden ausgewertet");
-            detection_boxes();
+            if (detection_boxes(anzGlsnZeilen)) erfolgreich++;
         }
     }
+
+    // Der Cursor steht am Ende der Datei
+    QMessageBox::information(this,"gefundenenObjekteTest.txt","Ich stehe jetzt am Ende der Datei");
+    text.close();
+
+    // Return-Bedingung
+    return erfolgreich;
 }
 
-bool Textauswerter::detection_classes()
+/**
+* Diese Funktion sucht nach dem Schlüsselwort "detection_classes" in der Text-Datei und liest die Zahlen danach ein.
+* Diese Zahlen stellen die Klassen der Erennungsergebnisse dar und werden in Strings gespeichert dann entsprechend später bearbeitet.
+*
+* @param [in] aktlZeile hat die Zeilennummer, an der der Cursor in der Schleife in {@link werteAus} steht, so dass diese Funktion ab da weiter einliest.
+* @return true, falls der Ablauf der Funktion reibungslos lief
+*/
+bool Textauswerter::detection_classes(int aktlZeile)
 {
     // Die Text-Datei erneuert öffnen
     QFile text (PFAD);
@@ -48,16 +73,39 @@ bool Textauswerter::detection_classes()
     QTextStream datenstrom(&text);
     QString linie;
 
-    // Den Cursor sozusagen auf die aktuelle Zeile bringen
-    for (int n=0 ; n<anzGlsnZeilen ; n++) {datenstrom.readLineInto(&linie,MAXLESEN);}
+    // Den Cursor auf die aktuelle Zeile setzen
+    for (int n=0 ; n<aktlZeile ; n++) {datenstrom.readLineInto(&linie,MAXLESEN);}
+    QMessageBox::information(this,QString(DCLASS) + " starten","Ich stehe jetzt in der " + QString::number(aktlZeile) + ".ten Zeile");
 
     // Hier die gewünschten Daten einlesen
-    // Erste Klammer entfernen
-    // Zahlen von jeder Zeile in Strings einlesen
-    // Letzte Klammer finden und Funktion beenden
+    do
+    {
+        // Weitere Zeile einlesen
+        datenstrom.readLineInto(&linie,MAXLESEN);
+        aktlZeile++;
+
+        // Ausgabe des Inhalts der aktuellen Zeile
+        QMessageBox::information(this,QString(DCLASS) + " Zeile" + QString::number(aktlZeile),linie);
+
+    }
+    while(!linie.contains("]"));
+
+    // Die Text-Datei schließen
+    QMessageBox::information(this,QString(DCLASS) + " beenden","Ich stehe jetzt in der " + QString::number(aktlZeile) + ".ten Zeile");
+    text.close();
+
+    // Rückgabe
+    return true;
 }
 
-bool Textauswerter::detection_scores()
+/**
+* Diese Funktion sucht nach dem Schlüsselwort "detection_scores" in der Text-Datei und liest die Zahlen danach ein.
+* Diese Zahlen stellen die Erkennungsrate der gefundenen Klassen dar und werden in Strings gespeichert dann entsprechend später bearbeitet.
+*
+* @param [in] aktlZeile hat die Zeilennummer, an der der Cursor in der Schleife in {@link werteAus} steht, so dass diese Funktion ab da weiter einliest.
+* @return true, falls der Ablauf der Funktion reibungslos lief
+*/
+bool Textauswerter::detection_scores(int aktlZeile)
 {
     // Die Text-Datei erneuert öffnen
     QFile text (PFAD);
@@ -65,16 +113,38 @@ bool Textauswerter::detection_scores()
     QTextStream datenstrom(&text);
     QString linie;
 
-    // Den Cursor sozusagen auf die aktuelle Zeile bringen
-    for (int n=0 ; n<anzGlsnZeilen ; n++) {datenstrom.readLineInto(&linie,MAXLESEN);}
+    // Den Cursor auf die aktuelle Zeile bringen
+    for (int n=0 ; n<aktlZeile ; n++) {datenstrom.readLineInto(&linie,MAXLESEN);}
+    QMessageBox::information(this,QString(DSCORE) + " starten","Ich stehe jetzt in der " + QString::number(aktlZeile) + ".ten Zeile");
 
     // Hier die gewünschten Daten einlesen
-    // Erste Klammer entfernen
-    // Zahlen von jeder Zeile in Strings einlesen
-    // Letzte Klammer finden und Funktion beenden
+    do
+    {
+        // Weitere Zeile einlesen
+        datenstrom.readLineInto(&linie,MAXLESEN);
+        aktlZeile++;
+
+        // Ausgabe des Inhalts der aktuellen Zeile
+        QMessageBox::information(this,QString(DSCORE) + " Zeile" + QString::number(aktlZeile),linie);
+    }
+    while(!linie.contains("]"));
+
+    // Die Text-Datei schließen
+    QMessageBox::information(this,QString(DSCORE) + " beenden","Ich stehe jetzt in der " + QString::number(aktlZeile) + ".ten Zeile");
+    text.close();
+
+    // Rückgabe
+    return true;
 }
 
-bool Textauswerter::detection_boxes()
+/**
+* Diese Funktion sucht nach dem Schlüsselwort "detection_boxes" in der Text-Datei und liest die Koordinaten danach ein.
+* Diese Koordinaten formen eine Box und werden in Strings gespeichert.
+*
+* @param [in] aktlZeile hat die Zeilennummer, an der der Cursor in der Schleife in {@link werteAus} steht, so dass diese Funktion ab da weiter einliest.
+* @return true, falls der Ablauf der Funktion reibungslos lief
+*/
+bool Textauswerter::detection_boxes(int aktlZeile)
 {
     // Die Text-Datei erneuert öffnen
     QFile text (PFAD);
@@ -82,15 +152,33 @@ bool Textauswerter::detection_boxes()
     QTextStream datenstrom(&text);
     QString linie;
 
-    // Den Cursor sozusagen auf die aktuelle Zeile bringen
-    for (int n=0 ; n<anzGlsnZeilen ; n++) {datenstrom.readLineInto(&linie,MAXLESEN);}
+    // Den Cursor auf die aktuelle Zeile bringen
+    for (int n=0 ; n<aktlZeile ; n++) {datenstrom.readLineInto(&linie,MAXLESEN);}
+    QMessageBox::information(this,QString(DBOX) + " starten","Ich stehe jetzt in der " + QString::number(aktlZeile) + ".ten Zeile");
 
     // Hier die gewünschten Daten einlesen
-    // Erste Klammer entfernen
-    // Zahlen von jeder Zeile in Strings einlesen
-    // Letzte Klammer finden und Funktion beenden
+    do
+    {
+        // Weitere Zeile einlesen
+        datenstrom.readLineInto(&linie,MAXLESEN);
+        aktlZeile++;
+
+        // Ausgabe des Inhalts der aktuellen Zeile
+        QMessageBox::information(this,QString(DBOX) + " Zeile" + QString::number(aktlZeile),linie);
+    }
+    while(!linie.contains("]]"));
+
+    // Die Text-Datei schließen
+    QMessageBox::information(this,QString(DBOX) + " beenden","Ich stehe jetzt in der " + QString::number(aktlZeile) + ".ten Zeile");
+    text.close();
+
+    // Rückgabe
+    return true;
 }
 
+/**
+* Destruktor
+*/
 Textauswerter::~Textauswerter()
 {
 
