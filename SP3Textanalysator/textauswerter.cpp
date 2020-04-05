@@ -13,7 +13,7 @@ Textauswerter::Textauswerter(QWidget *parent)
 * Diese Funktion wertet den Text in der Text-Datei aus und benutzt dafür die Funktionen:
 * {@link detection_classes}, {@link detection_scores} und {@link detection_boxes}
 *
-* @version 0.5
+* @version 0.6
 * @return die Anzahl der erfolgreich o.g. aufgrufenen Funktionen
 */
 int Textauswerter::werteAus()
@@ -119,7 +119,7 @@ bool Textauswerter::detection_classes(int aktlZeile)
 * Diese Funktion sucht nach dem Schlüsselwort "detection_scores" in der Text-Datei und liest die Zahlen danach ein.
 * Diese Zahlen stellen die Erkennungsrate der gefundenen Klassen dar und werden in Arrays gespeichert dann entsprechend später bearbeitet.
 *
-* @version 0.5
+* @version 1.0
 * @param [in] aktlZeile hat die Zeilennummer, an der der Cursor in der Schleife in {@link werteAus} steht, so dass diese Funktion ab da weiter einliest.
 * @return true, falls der Ablauf der Funktion reibungslos lief
 */
@@ -130,6 +130,7 @@ bool Textauswerter::detection_scores(int aktlZeile)
     text.open(QIODevice::ReadOnly);
     QTextStream datenstrom(&text);
     QString linie;
+    int cursor=0,laenge=10,anzZeichen,anzZeilen=0;
 
     // Den Cursor auf die aktuelle Zeile bringen
     for (int n=0 ; n<aktlZeile ; n++) {datenstrom.readLineInto(&linie,MAXLESEN);}
@@ -145,12 +146,20 @@ bool Textauswerter::detection_scores(int aktlZeile)
         // Ausgabe des Inhalts der aktuellen Zeile
         QMessageBox::information(this,QString(DSCORE) + " Zeile" + QString::number(aktlZeile),linie);
 
-        // Hier weiter
-        // Die Anzahl der Vorhandenen Elemente im Array ermitteln (Anzahl der Punkte)
+        // Die Anzahl der Vorhandenen Elemente im String ermitteln (Anzahl der Punkte)
+        anzZeichen = linie.count('.');
 
-        // Erste Klammer oder Leerzeichen entfernen
+        // Die Zahlen (Erkennungsraten) in das Array ergW[] einschreiben
+        for (int i=0 ; i<anzZeichen ; i++ )
+        {
+            cursor = linie.indexOf('.') - 1;
+            ergW[i+anzZeilen] = linie.mid(cursor,laenge).toDouble();
+            QMessageBox::information(this,"Elemente einlesen","ergW[" + QString::number(i+anzZeilen) + "] = " + QString::number(ergW[i+anzZeilen]));
+            linie = linie.mid(laenge);
+        }
 
-        // String mittels " " aufteilen und ins Array ergS[] eintragen
+        // Variable zur Erhöhung der Anzahl des Indexes beim Einlesen neuer Zeilen
+        anzZeilen = anzZeilen + anzZeichen;
     }
     while(!linie.contains("]"));
 

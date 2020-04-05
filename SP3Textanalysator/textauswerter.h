@@ -29,7 +29,7 @@ public:
 
 private:
     int ergK[105];
-    float ergW[105];
+    double ergW[105];
     RBox ergB[105];
     int anzGlsnZeilen;
 };
