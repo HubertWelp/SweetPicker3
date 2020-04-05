@@ -13,6 +13,7 @@ Textauswerter::Textauswerter(QWidget *parent)
 * Diese Funktion wertet den Text in der Text-Datei aus und benutzt dafür die Funktionen:
 * {@link detection_classes}, {@link detection_scores} und {@link detection_boxes}
 *
+* @version 0.5
 * @return die Anzahl der erfolgreich o.g. aufgrufenen Funktionen
 */
 int Textauswerter::werteAus()
@@ -62,6 +63,7 @@ int Textauswerter::werteAus()
 * Diese Funktion sucht nach dem Schlüsselwort "detection_classes" in der Text-Datei und liest die Zahlen danach ein.
 * Diese Zahlen stellen die Klassen der Erennungsergebnisse dar und werden in Arrays gespeichert dann entsprechend später bearbeitet.
 *
+* @version 1.0
 * @param [in] aktlZeile hat die Zeilennummer, an der der Cursor in der Schleife in {@link werteAus} steht, so dass diese Funktion ab da weiter einliest.
 * @return true, falls der Ablauf der Funktion reibungslos lief
 */
@@ -72,6 +74,7 @@ bool Textauswerter::detection_classes(int aktlZeile)
     text.open(QIODevice::ReadOnly);
     QTextStream datenstrom(&text);
     QString linie;
+    int element=0,laenge,anzZeichen;
 
     // Den Cursor auf die aktuelle Zeile setzen
     for (int n=0 ; n<aktlZeile ; n++) {datenstrom.readLineInto(&linie,MAXLESEN);}
@@ -87,12 +90,20 @@ bool Textauswerter::detection_classes(int aktlZeile)
         // Ausgabe des Inhalts der aktuellen Zeile
         QMessageBox::information(this,QString(DCLASS) + " Zeile" + QString::number(aktlZeile),linie);
 
-        // Hier weiter
-        // Die Anzahl der Vorhandenen Elemente im Array ermitteln (Anzahl der Leerzeichen + 1)
+        // Die Anzahl der Vorhandenen Elemente im String sowie die String-Länge ermitteln (Anzahl der Leerzeichen + 1)
+        anzZeichen = linie.count(QChar(' ')) + 1 ;
+        laenge = linie.size();
 
-        // Erste Klammer oder Leerzeichen entfernen
-
-        // String mittels " " aufteilen und ins Array ergK[] eintragen
+        // Die Zahlen (Klassen) in das Array ergK[] einschreiben
+        for (int i=0 ; i<laenge ; i++ )
+        {
+            if(linie.at(i).isDigit())
+            {
+                ergK[element] = linie.at(i).digitValue();
+                QMessageBox::information(this,"Elemente einlesen","ergK[" + QString::number(element) + "] = " + QString::number(ergK[element]));
+                element++;
+            }
+        }
     }
     while(!linie.contains("]"));
 
@@ -108,6 +119,7 @@ bool Textauswerter::detection_classes(int aktlZeile)
 * Diese Funktion sucht nach dem Schlüsselwort "detection_scores" in der Text-Datei und liest die Zahlen danach ein.
 * Diese Zahlen stellen die Erkennungsrate der gefundenen Klassen dar und werden in Arrays gespeichert dann entsprechend später bearbeitet.
 *
+* @version 0.5
 * @param [in] aktlZeile hat die Zeilennummer, an der der Cursor in der Schleife in {@link werteAus} steht, so dass diese Funktion ab da weiter einliest.
 * @return true, falls der Ablauf der Funktion reibungslos lief
 */
@@ -154,6 +166,7 @@ bool Textauswerter::detection_scores(int aktlZeile)
 * Diese Funktion sucht nach dem Schlüsselwort "detection_boxes" in der Text-Datei und liest die Koordinaten danach ein.
 * Diese Koordinaten formen eine Box und werden in Arrays gespeichert.
 *
+* @version 0.5
 * @param [in] aktlZeile hat die Zeilennummer, an der der Cursor in der Schleife in {@link werteAus} steht, so dass diese Funktion ab da weiter einliest.
 * @return true, falls der Ablauf der Funktion reibungslos lief
 */
