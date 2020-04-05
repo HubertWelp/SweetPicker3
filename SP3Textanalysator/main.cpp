@@ -5,7 +5,9 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     Textauswerter w;
-    int erg = w.werteAus();
+    int erg = w.leseEin();
+
+    // Ergebnis der Auswertung ausgeben
     if(erg == 1)
     {
         QMessageBox::warning(&w,"Anwendung","Nur 1 Ergebnis wurde ausgewertet");

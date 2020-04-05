@@ -10,13 +10,13 @@ Textauswerter::Textauswerter(QWidget *parent)
 }
 
 /**
-* Diese Funktion wertet den Text in der Text-Datei aus und benutzt dafür die Funktionen:
+* Diese Funktion liest den Text von der Text-Datei ein und benutzt dafür die Funktionen:
 * {@link detection_classes}, {@link detection_scores} und {@link detection_boxes}
 *
-* @version 0.6
+* @version 0.7
 * @return die Anzahl der erfolgreich o.g. aufgrufenen Funktionen
 */
-int Textauswerter::werteAus()
+int Textauswerter::leseEin()
 {
     QFile text (PFAD);
 
@@ -59,6 +59,11 @@ int Textauswerter::werteAus()
     return erfolgreich;
 }
 
+bool Textauswerter::werteAus()
+{
+
+}
+
 /**
 * Diese Funktion sucht nach dem Schlüsselwort "detection_classes" in der Text-Datei und liest die Zahlen danach ein.
 * Diese Zahlen stellen die Klassen der Erennungsergebnisse dar und werden in Arrays gespeichert dann entsprechend später bearbeitet.
@@ -78,7 +83,7 @@ bool Textauswerter::detection_classes(int aktlZeile)
 
     // Den Cursor auf die aktuelle Zeile setzen
     for (int n=0 ; n<aktlZeile ; n++) {datenstrom.readLineInto(&linie,MAXLESEN);}
-    QMessageBox::information(this,QString(DCLASS) + " starten","Ich stehe jetzt in der " + QString::number(aktlZeile) + ".ten Zeile");
+//    QMessageBox::information(this,QString(DCLASS) + " starten","Ich stehe jetzt in der " + QString::number(aktlZeile) + ".ten Zeile");
 
     // Hier die gewünschten Daten einlesen
     do
@@ -88,19 +93,19 @@ bool Textauswerter::detection_classes(int aktlZeile)
         aktlZeile++;
 
         // Ausgabe des Inhalts der aktuellen Zeile
-        QMessageBox::information(this,QString(DCLASS) + " Zeile" + QString::number(aktlZeile),linie);
+//        QMessageBox::information(this,QString(DCLASS) + " Zeile" + QString::number(aktlZeile),linie);
 
         // Die Anzahl der Vorhandenen Elemente im String sowie die String-Länge ermitteln (Anzahl der Leerzeichen + 1)
         anzZeichen = linie.count(QChar(' ')) + 1 ;
         laenge = linie.size();
 
         // Die Zahlen (Klassen) in das Array ergK[] einschreiben
-        for (int i=0 ; i<laenge ; i++ )
+        for (int i=0 ; i<laenge ; i++)
         {
             if(linie.at(i).isDigit())
             {
                 ergK[element] = linie.at(i).digitValue();
-                QMessageBox::information(this,"Elemente einlesen","ergK[" + QString::number(element) + "] = " + QString::number(ergK[element]));
+//                QMessageBox::information(this,"Elemente einlesen","ergK[" + QString::number(element) + "] = " + QString::number(ergK[element]));
                 element++;
             }
         }
@@ -108,7 +113,7 @@ bool Textauswerter::detection_classes(int aktlZeile)
     while(!linie.contains("]"));
 
     // Die Text-Datei schließen
-    QMessageBox::information(this,QString(DCLASS) + " beenden","Ich stehe jetzt in der " + QString::number(aktlZeile) + ".ten Zeile");
+//    QMessageBox::information(this,QString(DCLASS) + " beenden","Ich stehe jetzt in der " + QString::number(aktlZeile) + ".ten Zeile");
     text.close();
 
     // Rückgabe
@@ -134,7 +139,7 @@ bool Textauswerter::detection_scores(int aktlZeile)
 
     // Den Cursor auf die aktuelle Zeile bringen
     for (int n=0 ; n<aktlZeile ; n++) {datenstrom.readLineInto(&linie,MAXLESEN);}
-    QMessageBox::information(this,QString(DSCORE) + " starten","Ich stehe jetzt in der " + QString::number(aktlZeile) + ".ten Zeile");
+//    QMessageBox::information(this,QString(DSCORE) + " starten","Ich stehe jetzt in der " + QString::number(aktlZeile) + ".ten Zeile");
 
     // Hier die gewünschten Daten einlesen
     do
@@ -144,17 +149,17 @@ bool Textauswerter::detection_scores(int aktlZeile)
         aktlZeile++;
 
         // Ausgabe des Inhalts der aktuellen Zeile
-        QMessageBox::information(this,QString(DSCORE) + " Zeile" + QString::number(aktlZeile),linie);
+//        QMessageBox::information(this,QString(DSCORE) + " Zeile" + QString::number(aktlZeile),linie);
 
         // Die Anzahl der Vorhandenen Elemente im String ermitteln (Anzahl der Punkte)
         anzZeichen = linie.count('.');
 
         // Die Zahlen (Erkennungsraten) in das Array ergW[] einschreiben
-        for (int i=0 ; i<anzZeichen ; i++ )
+        for (int i=0 ; i<anzZeichen ; i++)
         {
             cursor = linie.indexOf('.') - 1;
             ergW[i+anzZeilen] = linie.mid(cursor,laenge).toDouble();
-            QMessageBox::information(this,"Elemente einlesen","ergW[" + QString::number(i+anzZeilen) + "] = " + QString::number(ergW[i+anzZeilen]));
+//            QMessageBox::information(this,"Elemente einlesen","ergW[" + QString::number(i+anzZeilen) + "] = " + QString::number(ergW[i+anzZeilen]));
             linie = linie.mid(laenge);
         }
 
@@ -164,7 +169,7 @@ bool Textauswerter::detection_scores(int aktlZeile)
     while(!linie.contains("]"));
 
     // Die Text-Datei schließen
-    QMessageBox::information(this,QString(DSCORE) + " beenden","Ich stehe jetzt in der " + QString::number(aktlZeile) + ".ten Zeile");
+//    QMessageBox::information(this,QString(DSCORE) + " beenden","Ich stehe jetzt in der " + QString::number(aktlZeile) + ".ten Zeile");
     text.close();
 
     // Rückgabe
@@ -175,7 +180,7 @@ bool Textauswerter::detection_scores(int aktlZeile)
 * Diese Funktion sucht nach dem Schlüsselwort "detection_boxes" in der Text-Datei und liest die Koordinaten danach ein.
 * Diese Koordinaten formen eine Box und werden in Arrays gespeichert.
 *
-* @version 0.5
+* @version 1.0
 * @param [in] aktlZeile hat die Zeilennummer, an der der Cursor in der Schleife in {@link werteAus} steht, so dass diese Funktion ab da weiter einliest.
 * @return true, falls der Ablauf der Funktion reibungslos lief
 */
@@ -186,10 +191,11 @@ bool Textauswerter::detection_boxes(int aktlZeile)
     text.open(QIODevice::ReadOnly);
     QTextStream datenstrom(&text);
     QString linie;
+    int cursor=0,laenge=10,anzZeilen=0,anzZeichen=4;
 
     // Den Cursor auf die aktuelle Zeile bringen
     for (int n=0 ; n<aktlZeile ; n++) {datenstrom.readLineInto(&linie,MAXLESEN);}
-    QMessageBox::information(this,QString(DBOX) + " starten","Ich stehe jetzt in der " + QString::number(aktlZeile) + ".ten Zeile");
+//    QMessageBox::information(this,QString(DBOX) + " starten","Ich stehe jetzt in der " + QString::number(aktlZeile) + ".ten Zeile");
 
     // Hier die gewünschten Daten einlesen
     do
@@ -199,19 +205,42 @@ bool Textauswerter::detection_boxes(int aktlZeile)
         aktlZeile++;
 
         // Ausgabe des Inhalts der aktuellen Zeile
-        QMessageBox::information(this,QString(DBOX) + " Zeile" + QString::number(aktlZeile),linie);
+//        QMessageBox::information(this,QString(DBOX) + " Zeile" + QString::number(aktlZeile),linie);
 
-        // Hier weiter
-        // Die Anzahl der Vorhandenen Elemente im Array ermitteln (Anzahl der Punkte)
+        // Die Zahlen (Koordinaten) in das Array ergB[] einschreiben
+        for (int i=0 ; i<anzZeichen ; i++)
+        {
+            cursor = linie.indexOf('.') - 1;
+            if (i==0)
+            {
+                ergB[anzZeilen].a = linie.mid(cursor,laenge).toDouble();
+//                QMessageBox::information(this,"Elemente einlesen","ergB[" + QString::number(anzZeilen) + "].a = " + QString::number(ergB[anzZeilen].a));
+            }
+            else if (i==1)
+            {
+                ergB[anzZeilen].b = linie.mid(cursor,laenge).toDouble();
+//                QMessageBox::information(this,"Elemente einlesen","ergB[" + QString::number(anzZeilen) + "].b = " + QString::number(ergB[anzZeilen].b));
+            }
+            else if (i==2)
+            {
+                ergB[anzZeilen].c = linie.mid(cursor,laenge).toDouble();
+//                QMessageBox::information(this,"Elemente einlesen","ergB[" + QString::number(anzZeilen) + "].c = " + QString::number(ergB[anzZeilen].c));
+            }
+            else if (i==3)
+            {
+                ergB[anzZeilen].d = linie.mid(cursor,laenge).toDouble();
+//                QMessageBox::information(this,"Elemente einlesen","ergB[" + QString::number(anzZeilen) + "].d = " + QString::number(ergB[anzZeilen].d));
+            }
+            linie = linie.mid(laenge);
+        }
 
-        // Erste Doppel-Klammer oder Leerzeichen+Klammer entfernen
-
-        // String mittels " " aufteilen und ins Array ergB[] eintragen
+        // Variable zur Erhöhung der Anzahl des Indexes beim Einlesen neuer Zeilen
+        anzZeilen++;;
     }
     while(!linie.contains("]]"));
 
     // Die Text-Datei schließen
-    QMessageBox::information(this,QString(DBOX) + " beenden","Ich stehe jetzt in der " + QString::number(aktlZeile) + ".ten Zeile");
+//    QMessageBox::information(this,QString(DBOX) + " beenden","Ich stehe jetzt in der " + QString::number(aktlZeile) + ".ten Zeile");
     text.close();
 
     // Rückgabe

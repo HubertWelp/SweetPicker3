@@ -21,7 +21,8 @@ class Textauswerter : public QWidget
 
 public:
     Textauswerter(QWidget *parent = nullptr);
-    int werteAus();
+    int leseEin();
+    bool werteAus();
     bool detection_classes(int aktlZeile);
     bool detection_scores(int aktlZeile);
     bool detection_boxes(int aktlZeile);

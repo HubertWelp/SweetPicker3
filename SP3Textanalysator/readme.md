@@ -12,6 +12,7 @@ Daher wird eine Klasse zur Textauswertung erstellt und später in SP3Bildanalysat
 - Eine Anpassung der Auswertung ist einfach und zentral in der Header-Datei der Klasse Textauswerter durchzuführen
 - Es spielt keine Rolle, wo und in welcher Reihenfolge die gesuchten Sätze in der Text-Datei stehen. Die Suche ist adaptiv.
 - Eine globale Member-Variable anzulegen und sie während des Auswertungsprozesses entsprechend zu belegen hat nicht funktioniert. Deswegen wird diese Member-Variable als Parameter an die jeweilige Funktion übergeben.
+- Die Anwendung kann die gesuchten Daten in Arrays abspeichern. Nun müssen die sortiert und ausgewertet werden
 
 ## Stand
-05.04.2020
+06.04.2020
