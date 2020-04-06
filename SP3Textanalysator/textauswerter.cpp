@@ -63,7 +63,7 @@ int Textauswerter::liesEin()
 * Diese Funktion sucht im Member-Array der Klassen nach der gewünschten Klasse und ermittelt den Index der Klasse mit der höchsten Wahrscheinlichkeit.
 * Dann werden die Koordinaten dieser Klasse zurückgegeben.
 *
-* @version 0.2
+* @version 1.0
 * @param wk [in] die gewünschte/gesuchte Klasse
 * @return die Koordinaten der gewünschten/gesuchten Klasse
 */
@@ -97,6 +97,7 @@ RBox Textauswerter::werteAus(int wk)
     QMessageBox::information(this,"werteAus","Index " + QString::number(ziel) + " hat die größte Wahrscheinlichkeit: " + QString::number(ergW[ziel]));
 
     // Die Koordinaten der am besten passenden Klasse zurückgeben
+    return ergB[ziel];
 }
 
 /**
