@@ -5,7 +5,7 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     Textauswerter w;
-    RBox ergKoordinaten;
+    Punkt ergKoordinaten;
     int erg = w.liesEin();
 
     // Ergebnis des Einlesens ausgeben
@@ -30,8 +30,8 @@ int main(int argc, char *argv[])
         QMessageBox::warning(&w,"Einlesen","Es wurden wiederholte Ergebnisse eingelesen");
     }
 
-    ergKoordinaten = w.werteAus(2);
-    QMessageBox::information(&w,"Auswerten","Die gewünschten Koordinaten sind:\na: " + QString::number(ergKoordinaten.a) + "\nb: " + QString::number(ergKoordinaten.b) + "\nc: " + QString::number(ergKoordinaten.c) + "\nd: " + QString::number(ergKoordinaten.d));
+    ergKoordinaten = w.werteAus(4);
+    QMessageBox::information(&w,"Auswerten","Die gewünschten Koordinaten sind:\nx: " + QString::number(ergKoordinaten.x) + "\ny: " + QString::number(ergKoordinaten.y));
 
     return erg;
 }

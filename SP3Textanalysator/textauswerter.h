@@ -8,6 +8,8 @@
 #define MAXLESEN 100    // Anzahl der aus der Textdatei ins Array einzulesenden Elemente
 #define ANZELEMENT 105  // Größe des Arrays (5 Elemente Puffer)
 #define ANZSUCHE 10     // Maximale Anzahl der auszusuchenden Elemente (die Indexe der 10 zuerst auftauchenden Klassen werden ermittelt)
+#define BILDBRT 640     // Bildbreite
+#define BILDHHE 480     // Bildhöhe
 
 #include <QWidget>
 #include <QFile>
@@ -16,6 +18,7 @@
 #include <QMessageBox>
 
 struct RBox {double a; double b; double c; double d;};
+struct Punkt {int x;int y;};
 
 class Textauswerter : public QWidget
 {
@@ -24,7 +27,7 @@ class Textauswerter : public QWidget
 public:
     Textauswerter(QWidget *parent = nullptr);
     int liesEin();
-    RBox werteAus(int wk);
+    Punkt werteAus(int wk);
     bool detection_classes(int aktlZeile);
     bool detection_scores(int aktlZeile);
     bool detection_boxes(int aktlZeile);

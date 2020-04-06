@@ -67,7 +67,7 @@ int Textauswerter::liesEin()
 * @param wk [in] die gewünschte/gesuchte Klasse
 * @return die Koordinaten der gewünschten/gesuchten Klasse
 */
-RBox Textauswerter::werteAus(int wk)
+Punkt Textauswerter::werteAus(int wk)
 {
     int m[ANZSUCHE];    // Index-Array der Klassen
     int ki;     // Zähler-Variable für das Klassen-Array
@@ -77,7 +77,7 @@ RBox Textauswerter::werteAus(int wk)
     // Die Indexe der gesuchten Klasse aussuchen und in m[] einschreiben
     for (ki=0 ; ki<ANZELEMENT ; ki++ )
     {
-        if (ergK[ki] == wk && mi<ANZSUCHE-1)
+        if (ergK[ki] == wk && mi<ANZSUCHE)
         {
             m[mi] = ki;
             QMessageBox::information(this,"werteAus","m[" + QString::number(mi) + "] = " + QString::number(ki));
@@ -97,7 +97,10 @@ RBox Textauswerter::werteAus(int wk)
     QMessageBox::information(this,"werteAus","Index " + QString::number(ziel) + " hat die größte Wahrscheinlichkeit: " + QString::number(ergW[ziel]));
 
     // Die Koordinaten der am besten passenden Klasse zurückgeben
-    return ergB[ziel];
+    Punkt erg;
+    erg.x = BILDBRT * ( ergB[ziel].b/2 + ergB[ziel].d/2 );
+    erg.y = BILDHHE * ( ergB[ziel].a/2 + ergB[ziel].c/2 );
+    return erg;
 }
 
 /**
