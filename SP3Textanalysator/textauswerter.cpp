@@ -13,10 +13,10 @@ Textauswerter::Textauswerter(QWidget *parent)
 * Diese Funktion liest den Text von der Text-Datei ein und benutzt dafür die Funktionen:
 * {@link detection_classes}, {@link detection_scores} und {@link detection_boxes}
 *
-* @version 0.7
+* @version 1.0
 * @return die Anzahl der erfolgreich o.g. aufgrufenen Funktionen
 */
-int Textauswerter::leseEin()
+int Textauswerter::liesEin()
 {
     QFile text (PFAD);
 
@@ -59,9 +59,39 @@ int Textauswerter::leseEin()
     return erfolgreich;
 }
 
-bool Textauswerter::werteAus()
+/**
+* Diese Funktion sucht im Member-Array der Klassen nach der gewünschten Klasse und ermittelt den Index der Klasse mit der höchsten Wahrscheinlichkeit.
+* Dann werden die Koordinaten dieser Klasse zurückgegeben.
+*
+* @version 0.1
+* @param wk [in] die gewünschte/gesuchte Klasse
+* @return die Koordinaten der gewünschten/gesuchten Klasse
+*/
+RBox Textauswerter::werteAus(int wk)
 {
+    int m[ANZSUCHE];    // Index-Array der Klassen
+    int ki;     // Zähler-Variable für das Klassen-Array
+    int mi=0;   // enthält die Anzahl der vorhandenen Klassen
+    int ziel;   // Der Index mit der größten Möglichkeit
 
+    // Die Indexe der gesuchten Klasse aussuchen und in m[] einschreiben
+    for (ki=0 ; ki<ANZELEMENT ; ki++ )
+    {
+        if (ergK[ki] == wk && mi<ANZSUCHE-1)
+        {
+            m[mi] = ki;
+            QMessageBox::information(this,"werteAus","m[" + QString::number(mi) + "] = " + QString::number(ki));
+            mi++;
+        }
+    }
+
+    // Den Index mit der höchstmöglichen Wahrscheinlichkeit ermitteln
+    for (int i=0 ; i<mi ; i++ )
+    {
+
+    }
+
+    // Die Koordinaten der am besten passenden Klasse zurückgeben
 }
 
 /**

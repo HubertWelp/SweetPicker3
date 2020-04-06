@@ -5,7 +5,7 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     Textauswerter w;
-    int erg = w.leseEin();
+    int erg = w.liesEin();
 
     // Ergebnis der Auswertung ausgeben
     if(erg == 1)
@@ -28,6 +28,8 @@ int main(int argc, char *argv[])
     {
         QMessageBox::warning(&w,"Anwendung","Es wurden wiederholte Ergebnisse ausgewertet");
     }
+
+    w.werteAus(2);
 
     return erg;
 }
