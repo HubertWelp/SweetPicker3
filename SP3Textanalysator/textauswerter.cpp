@@ -36,17 +36,17 @@ int Textauswerter::liesEin()
 
         if (string.contains(DCLASS,Qt::CaseInsensitive))
         {
-            QMessageBox::information(this,"detection_classes","Klassen werden ausgewertet");
+            QMessageBox::information(this,"detection_classes","Klassen werden eingelesen");
             if (detection_classes(anzGlsnZeilen)) erfolgreich++;
         }
         else if (string.contains(DSCORE,Qt::CaseInsensitive))
         {
-            QMessageBox::information(this,"detection_scores","Erkennungsraten werden ausgewertet");
+            QMessageBox::information(this,"detection_scores","Erkennungsraten werden eingelesen");
             if (detection_scores(anzGlsnZeilen)) erfolgreich++;
         }
         else if (string.contains(DBOX,Qt::CaseInsensitive))
         {
-            QMessageBox::information(this,"detection_boxes","Boxen werden ausgewertet");
+            QMessageBox::information(this,"detection_boxes","Boxen werden eingelesen");
             if (detection_boxes(anzGlsnZeilen)) erfolgreich++;
         }
     }
@@ -63,7 +63,7 @@ int Textauswerter::liesEin()
 * Diese Funktion sucht im Member-Array der Klassen nach der gewünschten Klasse und ermittelt den Index der Klasse mit der höchsten Wahrscheinlichkeit.
 * Dann werden die Koordinaten dieser Klasse zurückgegeben.
 *
-* @version 0.1
+* @version 0.2
 * @param wk [in] die gewünschte/gesuchte Klasse
 * @return die Koordinaten der gewünschten/gesuchten Klasse
 */
@@ -86,10 +86,15 @@ RBox Textauswerter::werteAus(int wk)
     }
 
     // Den Index mit der höchstmöglichen Wahrscheinlichkeit ermitteln
-    for (int i=0 ; i<mi ; i++ )
+    ziel = m[0];
+    for (int i=1 ; i<mi ; i++ )
     {
-
+        if(ergW[m[i]] > ergW[ziel])
+        {
+            ziel = m[i];
+        }
     }
+    QMessageBox::information(this,"werteAus","Index " + QString::number(ziel) + " hat die größte Wahrscheinlichkeit: " + QString::number(ergW[ziel]));
 
     // Die Koordinaten der am besten passenden Klasse zurückgeben
 }
