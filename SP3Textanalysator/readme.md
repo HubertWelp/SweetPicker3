@@ -14,6 +14,7 @@ Daher wird eine Klasse zur Textauswertung erstellt und später in SP3Bildanalysat
 - Eine globale Member-Variable anzulegen und sie während des Auswertungsprozesses entsprechend zu belegen hat nicht funktioniert. Deswegen wird diese Member-Variable als Parameter an die jeweilige Funktion übergeben.
 - Die Anwendung kann die gesuchten Daten in Arrays abspeichern. Nun müssen die sortiert und ausgewertet werden
 - Die Anwendung ermittelt die Box der Klasse mit der höchsten Wahrscheinlichkeit und muss nun dies in Koordinaten umrechnen.
+- [Erklärung detection_boxes] (https://stackoverflow.com/questions/48915003/get-the-bounding-box-coordinates-in-the-tensorflow-object-detection-api-tutorial)
 
 ## Stand
 06.04.2020
