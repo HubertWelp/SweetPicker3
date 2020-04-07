@@ -30,7 +30,7 @@ int main(int argc, char *argv[])
         QMessageBox::warning(&w,"Einlesen","Es wurden wiederholte Ergebnisse eingelesen");
     }
 
-    ergKoordinaten = w.werteAus(4);
+    ergKoordinaten = w.werteAus(1);
     QMessageBox::information(&w,"Auswerten","Die gewünschten Koordinaten sind:\nx: " + QString::number(ergKoordinaten.x) + "\ny: " + QString::number(ergKoordinaten.y));
 
     return erg;
