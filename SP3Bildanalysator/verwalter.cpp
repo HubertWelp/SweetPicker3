@@ -102,11 +102,11 @@ void Verwalter::messageReceived(std::string msg)
         std::string ergebnis = std::to_string(ergKoordinaten.x) + " " + std::to_string(ergKoordinaten.y) + " " + std::to_string(ergKoordinaten.z) + " p b";
 
         printf("\n%s\n",ergebnis.c_str());
-//        sendmessage(ergebnis);
+        sendmessage(ergebnis);
     }
 
     else if(wahl == 0)
     {
-        // Beenden
+        QApplication::quit();
     }
 }

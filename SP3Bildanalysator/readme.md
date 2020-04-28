@@ -32,3 +32,4 @@ daher muss nur die Struktur der Textdatei gefundeneObjekete klar sein, damit es 
 - [OpenCV Kontrast](https://www.opencv-srf.com/2018/02/change-contrast-of-images-and-videos.html)
 - [OpenCV SW-Bild](https://docs.opencv.org/4.2.0/de/d25/imgproc_color_conversions.html)
 - [OpenCV Bildgröße](https://docs.opencv.org/4.2.0/d6/d50/classcv_1_1Size__.html)
+- [QtAnwendung beenden](https://stackoverflow.com/questions/8026101/correct-way-to-quit-a-qt-program)

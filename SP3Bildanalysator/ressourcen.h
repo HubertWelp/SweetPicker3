@@ -17,6 +17,7 @@
 #define BILDHHE 195     // Echte Bildhöhe in mm
 
 /* Einbindung von Qt Bibliotheken */
+#include <QApplication>
 #include <QFile>
 #include <QTextStream>
 #include <QString>
