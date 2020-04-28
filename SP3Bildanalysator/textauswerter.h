@@ -1,31 +1,13 @@
 #ifndef TEXTAUSWERTER_H
 #define TEXTAUSWERTER_H
 
-#define PFAD "/home/Student/Downloads/gefundeneObjekte.txt"
-#define DCLASS "detection_classes"
-#define DSCORE "detection_scores"
-#define DBOX "detection_boxes"
-#define MAXLESEN 100    // Anzahl der aus der Textdatei ins Array einzulesenden Elemente
-#define ANZELEMENT 105  // Größe des Arrays (5 Elemente Puffer)
-#define ANZSUCHE 10     // Maximale Anzahl der auszusuchenden Elemente (die Indexe der 10 zuerst auftauchenden Klassen werden ermittelt)
-#define BILDBRT 290     // Echte Bildbreite in mm
-#define BILDHHE 195     // Echte Bildhöhe in mm
+#include "ressourcen.h"
 
-#include <QWidget>
-#include <QFile>
-#include <QTextStream>
-#include <QString>
-#include <QMessageBox>
-
-struct RBox {double a; double b; double c; double d;};
-struct Punkt {int x;int y;};
-
-class Textauswerter : public QWidget
+class Textauswerter
 {
-    Q_OBJECT
 
 public:
-    Textauswerter(QWidget *parent = nullptr);
+    Textauswerter();
     int liesEin();
     Punkt werteAus(int wk);
     bool detection_classes(int aktlZeile);

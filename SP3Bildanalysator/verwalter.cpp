@@ -3,6 +3,7 @@
 Verwalter::Verwalter()
 {
     cam = new Kamera(PWD);
+    textAuswerter = new Textauswerter;
 }
 
 void Verwalter::loescheAlt()
@@ -79,7 +80,7 @@ void Verwalter::messageReceived(std::string msg)
 
     printf("\nHabe %i empfangen\n",wahl);
 
-    if(wahl == 1 || wahl == 2 || wahl == 3 || wahl == 4)
+    if(wahl == Sorten::Maoam || wahl == Sorten::Snickers || wahl == Sorten::Milkyway || wahl == Sorten::Schokoriegel)
     {
         // altes Bild und alte Ergebnisse löschen
         loescheAlt();
@@ -89,22 +90,19 @@ void Verwalter::messageReceived(std::string msg)
         cam->nehmeAuf(BILDABLAGE);
 
         // Ein Python-Skript vom SP3Objekterkenner ausführen (python programmname TEXTABLAGE wahl)
-        fuehreSkriptAus();
+//        fuehreSkriptAus(); // wird auskommentiert, weil die Entwicklungsumgebung anders ist und TensorFlow nicht installiert ist
 
         // warten, bis SP3Objektereknner fertig ist
         warte(2);
 
-        // Erkennungsergebnis auslesen und auswerten
-        antwort = verarbeiteText();
+        // Erkennungsergebnis einlesen und auswerten
+        textAuswerter->liesEin();
+        ergKoordinaten = textAuswerter->werteAus(wahl);
 
-        // Informationen über Verfügbarkeit und Position der ausgewählten Süßigkeit an SP3Koordinator übergeben
-        printf("\nSuche nach \"aktuell\" mit strstr(): %s, die Auswahl war %i\n--------fetig!--------\n",antwort,wahl);
+        std::string ergebnis = std::to_string(ergKoordinaten.x) + " " + std::to_string(ergKoordinaten.y) + " " + std::to_string(ergKoordinaten.z) + " p b";
 
-        std::string s1 = "1 2 3 0 0";
-//        std::string s2 = std::to_string(wahl);
-//        rueckmeldung = s1 + s2;
-
-        sendmessage(s1);
+        printf("\n%s\n",ergebnis.c_str());
+//        sendmessage(ergebnis);
     }
 
     else if(wahl == 0)

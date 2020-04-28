@@ -3,8 +3,7 @@
 /**
 * Konstruktor
 */
-Textauswerter::Textauswerter(QWidget *parent)
-    : QWidget(parent)
+Textauswerter::Textauswerter()
 {
 
 }
@@ -22,7 +21,7 @@ int Textauswerter::liesEin()
 
     if(!text.open(QIODevice::ReadOnly))
     {
-        QMessageBox::warning(this,"Datei öffnen","Datei konnte nicht geöffnet werden !");
+        printf("\nDatei könnte nicht geöffnet werden !");
     }
 
     QTextStream datenstrom(&text);
@@ -36,23 +35,19 @@ int Textauswerter::liesEin()
 
         if (string.contains(DCLASS,Qt::CaseInsensitive))
         {
-            QMessageBox::information(this,"detection_classes","Klassen werden eingelesen");
             if (detection_classes(anzGlsnZeilen)) erfolgreich++;
         }
         else if (string.contains(DSCORE,Qt::CaseInsensitive))
         {
-            QMessageBox::information(this,"detection_scores","Erkennungsraten werden eingelesen");
             if (detection_scores(anzGlsnZeilen)) erfolgreich++;
         }
         else if (string.contains(DBOX,Qt::CaseInsensitive))
         {
-            QMessageBox::information(this,"detection_boxes","Boxen werden eingelesen");
             if (detection_boxes(anzGlsnZeilen)) erfolgreich++;
         }
     }
 
     // Der Cursor steht am Ende der Datei
-    QMessageBox::information(this,"gefundenenObjekteTest.txt","Ich stehe jetzt am Ende der Datei");
     text.close();
 
     // Return-Bedingung
@@ -80,7 +75,6 @@ Punkt Textauswerter::werteAus(int wk)
         if (ergK[ki] == wk && mi<ANZSUCHE)
         {
             m[mi] = ki;
-            QMessageBox::information(this,"werteAus","m[" + QString::number(mi) + "] = " + QString::number(ki));
             mi++;
         }
     }
@@ -94,12 +88,12 @@ Punkt Textauswerter::werteAus(int wk)
             ziel = m[i];
         }
     }
-    QMessageBox::information(this,"werteAus","Index " + QString::number(ziel) + " hat die größte Wahrscheinlichkeit: " + QString::number(ergW[ziel]));
 
     // Die Koordinaten der am besten passenden Klasse zurückgeben
     Punkt erg;
     erg.x = BILDBRT * ( ergB[ziel].b/2 + ergB[ziel].d/2 );
     erg.y = BILDHHE * ( ergB[ziel].a/2 + ergB[ziel].c/2 );
+    erg.z = 0;
     return erg;
 }
 

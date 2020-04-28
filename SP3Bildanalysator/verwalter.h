@@ -24,6 +24,8 @@ public:
 private:
     Kamera* cam;
     std::string rueckmeldung;
+    Textauswerter* textAuswerter;
+    Punkt ergKoordinaten;
 };
 
 #endif // VERWALTER_H
