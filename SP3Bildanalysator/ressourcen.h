@@ -13,8 +13,8 @@
 #define MAXLESEN 100    // Anzahl der aus der Textdatei ins Array einzulesenden Elemente
 #define ANZELEMENT 105  // Größe des Arrays (5 Elemente Puffer)
 #define ANZSUCHE 10     // Maximale Anzahl der auszusuchenden Elemente (die Indexe der 10 zuerst auftauchenden Klassen werden ermittelt)
-#define BILDBRT 290     // Echte Bildbreite in mm
-#define BILDHHE 195     // Echte Bildhöhe in mm
+#define BILDBRT 354     // Echte Bildbreite in mm
+#define BILDHHE 274     // Echte Bildhöhe in mm
 
 /* Einbindung von Qt Bibliotheken */
 #include <QApplication>
