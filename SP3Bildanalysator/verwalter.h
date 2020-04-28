@@ -4,6 +4,7 @@
 #include "ressourcen.h"
 #include "udpnode.hpp"
 #include "kamera.h"
+#include "textauswerter.h"
 
 class Verwalter : public UDPNode
 {

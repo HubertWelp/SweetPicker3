@@ -11,13 +11,15 @@ SOURCES += \
         main.cpp \
     kamera.cpp \
     verwalter.cpp \
-    udpnode.cpp
+    udpnode.cpp \
+    textauswerter.cpp
 
 HEADERS += \
     kamera.h \
     verwalter.h \
     ressourcen.h \
-    udpnode.hpp
+    udpnode.hpp \
+    textauswerter.h
 
 INCLUDEPATH += /usr/local/opencv/include/opencv4
 
