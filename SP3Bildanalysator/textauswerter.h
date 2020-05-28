@@ -8,11 +8,11 @@ class Textauswerter
 
 public:
     Textauswerter();
-    int liesEin();
+    int liesEin(QString datei);
     Punkt werteAus(int wk);
-    bool detection_classes(int aktlZeile);
-    bool detection_scores(int aktlZeile);
-    bool detection_boxes(int aktlZeile);
+    bool detection_classes(QString datei, int aktlZeile);
+    bool detection_scores(QString datei, int aktlZeile);
+    bool detection_boxes(QString datei, int aktlZeile);
     ~Textauswerter();
 
 private:

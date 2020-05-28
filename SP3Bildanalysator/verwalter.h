@@ -13,7 +13,7 @@ public:
 
     void loescheAlt(void);
     void fuehreSkriptAus(void);
-    void warte(int anzahl);
+    void warte(QString prozess, int anzahl);
     const char* verarbeiteText(void);
 
     void messageReceived(std::string msg) override;

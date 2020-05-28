@@ -46,12 +46,12 @@ void Verwalter::fuehreSkriptAus()
     std::this_thread::sleep_for(std::chrono::milliseconds(10));
 }
 
-void Verwalter::warte(int anzahl)
+void Verwalter::warte(QString prozess, int anzahl)
 {
     for(int n=1 ; n<=anzahl ; n++)
     {
         // Abfrage, ob SP3Objekterkenner fertig ist
-        printf("\n%i. Sekunde",n);
+        printf("\n%s: %i. Sekunde",prozess.toLatin1().data(),n);
 
         // wenn keine Textdatei voranden ist, führt es diese Wartefunktion aus
         std::this_thread::sleep_for(std::chrono::milliseconds(1000));
@@ -84,7 +84,7 @@ void Verwalter::messageReceived(std::string msg)
     {
         // altes Bild und alte Ergebnisse löschen
         loescheAlt();
-        warte(2);
+        warte("Alte Dateien Loeschen", 2);
 
         // aktuelles Bild aufnehmen und im folgenden relativen Verzeichnis ablegen
         cam->nehmeAuf(BILDABLAGE);
@@ -93,10 +93,10 @@ void Verwalter::messageReceived(std::string msg)
 //        fuehreSkriptAus(); // wird auskommentiert, weil die Entwicklungsumgebung anders ist und TensorFlow nicht installiert ist
 
         // warten, bis SP3Objektereknner fertig ist
-        warte(2);
+        warte("Warten auf SP3Objekterkenner", 5);
 
         // Erkennungsergebnis einlesen und auswerten
-        textAuswerter->liesEin();
+        textAuswerter->liesEin(QString(PWD)+QString(TEXTABLAGE));
         ergKoordinaten = textAuswerter->werteAus(wahl);
 
         std::string ergebnis = std::to_string(ergKoordinaten.x) + " " + std::to_string(ergKoordinaten.y) + " " + std::to_string(ergKoordinaten.z) + " p b";
@@ -108,5 +108,6 @@ void Verwalter::messageReceived(std::string msg)
     else if(wahl == 0)
     {
         QApplication::quit();
+        system("exit");
     }
 }

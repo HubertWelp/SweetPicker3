@@ -15,9 +15,9 @@ Textauswerter::Textauswerter()
 * @version 1.0
 * @return die Anzahl der erfolgreich o.g. aufgrufenen Funktionen
 */
-int Textauswerter::liesEin()
+int Textauswerter::liesEin(QString datei)
 {
-    QFile text (PFAD);
+    QFile text (datei);
 
     if(!text.open(QIODevice::ReadOnly))
     {
@@ -35,15 +35,15 @@ int Textauswerter::liesEin()
 
         if (string.contains(DCLASS,Qt::CaseInsensitive))
         {
-            if (detection_classes(anzGlsnZeilen)) erfolgreich++;
+            if (detection_classes(datei,anzGlsnZeilen)) erfolgreich++;
         }
         else if (string.contains(DSCORE,Qt::CaseInsensitive))
         {
-            if (detection_scores(anzGlsnZeilen)) erfolgreich++;
+            if (detection_scores(datei,anzGlsnZeilen)) erfolgreich++;
         }
         else if (string.contains(DBOX,Qt::CaseInsensitive))
         {
-            if (detection_boxes(anzGlsnZeilen)) erfolgreich++;
+            if (detection_boxes(datei,anzGlsnZeilen)) erfolgreich++;
         }
     }
 
@@ -105,10 +105,10 @@ Punkt Textauswerter::werteAus(int wk)
 * @param [in] aktlZeile hat die Zeilennummer, an der der Cursor in der Schleife in {@link werteAus} steht, so dass diese Funktion ab da weiter einliest.
 * @return true, falls der Ablauf der Funktion reibungslos lief
 */
-bool Textauswerter::detection_classes(int aktlZeile)
+bool Textauswerter::detection_classes(QString datei, int aktlZeile)
 {
     // Die Text-Datei erneuert öffnen
-    QFile text (PFAD);
+    QFile text (datei);
     text.open(QIODevice::ReadOnly);
     QTextStream datenstrom(&text);
     QString linie;
@@ -155,10 +155,10 @@ bool Textauswerter::detection_classes(int aktlZeile)
 * @param [in] aktlZeile hat die Zeilennummer, an der der Cursor in der Schleife in {@link werteAus} steht, so dass diese Funktion ab da weiter einliest.
 * @return true, falls der Ablauf der Funktion reibungslos lief
 */
-bool Textauswerter::detection_scores(int aktlZeile)
+bool Textauswerter::detection_scores(QString datei, int aktlZeile)
 {
     // Die Text-Datei erneuert öffnen
-    QFile text (PFAD);
+    QFile text (datei);
     text.open(QIODevice::ReadOnly);
     QTextStream datenstrom(&text);
     QString linie;
@@ -207,10 +207,10 @@ bool Textauswerter::detection_scores(int aktlZeile)
 * @param [in] aktlZeile hat die Zeilennummer, an der der Cursor in der Schleife in {@link werteAus} steht, so dass diese Funktion ab da weiter einliest.
 * @return true, falls der Ablauf der Funktion reibungslos lief
 */
-bool Textauswerter::detection_boxes(int aktlZeile)
+bool Textauswerter::detection_boxes(QString datei, int aktlZeile)
 {
     // Die Text-Datei erneuert öffnen
-    QFile text (PFAD);
+    QFile text (datei);
     text.open(QIODevice::ReadOnly);
     QTextStream datenstrom(&text);
     QString linie;
