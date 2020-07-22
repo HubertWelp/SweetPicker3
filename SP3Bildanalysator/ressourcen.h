@@ -3,7 +3,8 @@
 
 /* Definition von Konstanten */
 #define PWD "/home/Student/git/SP3/SweetPicker3/SP3Bildanalysator"
-#define BILDABLAGE "/SP3Bilderkennung/aktuelleSzene.png"
+#define BILD "aktuelleSzene.jpg"
+#define BILDABLAGE "/SP3Bilderkennung/"
 #define TEXTABLAGE "/SP3Bilderkennung/gefundeneObjekte.txt"
 #define PROGNAME "/home/Student/git/SP3/SweetPicker3/SP3Objekterkenner/SP3Objekterkenner.py"
 #define PFAD "/home/Student/Downloads/gefundeneObjekte.txt"
@@ -25,6 +26,7 @@
 /* Einbindung von c Bibliotheken */
 #include <stdio.h>
 #include <string.h>
+#include <unistd.h>
 
 /* Einbindung von c++ Bibliotheken */
 #include <chrono>

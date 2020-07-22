@@ -9,3 +9,7 @@ Die Ordnerstrukur aus dem Tutorial (https://tensorflow-object-detection-api-tuto
 Die im Jupyter Notebook auszuführende Datei ist "object_detection_tutorial-SP3". Dazu braucht man das Model aus dem Ordner "trained-inference-graphs" und die Label Map aus dem Ordner "annotations".
 
 Außerdem befinden sich im Ornder "images" die Bilder, mit denen das Model traininert wurde.
+
+#Hinweis
+
+Man muss den Pfad zum SP3Objekterkenner im Quellcode händisch ändern, wenn sich die Umgebung ändert

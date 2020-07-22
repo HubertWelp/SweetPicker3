@@ -12,7 +12,7 @@ void Verwalter::loescheAlt()
     char* pfad_dateien = (char *) malloc(100);
 
     // Das alte Bild löschen
-    strcpy(pfad_dateien,PWD);    strcat(pfad_dateien,BILDABLAGE);     remove(pfad_dateien);
+    strcpy(pfad_dateien,PWD);    strcat(pfad_dateien,BILDABLAGE);   strcat(pfad_dateien,BILD);     remove(pfad_dateien);
 
     // Die alten Ergebnisse löschen
     strcpy(pfad_dateien,PWD);    strcat(pfad_dateien,TEXTABLAGE);     remove(pfad_dateien);
@@ -24,7 +24,6 @@ void Verwalter::loescheAlt()
 void Verwalter::fuehreSkriptAus()
 {
     char* skript = (char *) malloc(300);
-
     strcpy(skript,"python");
     strcat(skript," ");
     strcat(skript,PROGNAME);
@@ -32,18 +31,20 @@ void Verwalter::fuehreSkriptAus()
     strcat(skript,PWD);
     strcat(skript,BILDABLAGE);
     strcat(skript," ");
-    strcat(skript,PWD);
-    strcat(skript,"/SP3Bilderkennung");
-
+    strcat(skript,BILD);
 
     // Ausgabe
-    printf("\nIhr Skript sehe so aus: %s\n",skript);
+    printf("\nIhr Skript sehe so aus: %s",skript);
+
+    // Umgebung aktivieren
+    char* befehl = (char *) malloc(500);
+    strcpy(befehl,"gnome-terminal --command=");
+    strcat(befehl,"\"");
+    strcat(befehl,skript);
+    strcat(befehl,"\"");
 
     // Befehl absetzen
-    system(skript);
-
-    // Wartezeit
-    std::this_thread::sleep_for(std::chrono::milliseconds(10));
+    system(befehl);
 }
 
 void Verwalter::warte(QString prozess, int anzahl)
@@ -78,22 +79,25 @@ void Verwalter::messageReceived(std::string msg)
 {
     wahl = atoi(msg.c_str());
 
-    printf("\nHabe %i empfangen\n",wahl);
+//    printf("\nHabe %i empfangen\n",wahl);
 
     if(wahl == Sorten::Maoam || wahl == Sorten::Snickers || wahl == Sorten::Milkyway || wahl == Sorten::Schokoriegel)
     {
         // altes Bild und alte Ergebnisse löschen
         loescheAlt();
-        warte("Alte Dateien Loeschen", 2);
+//        warte("Alte Dateien Loeschen", 2);
 
         // aktuelles Bild aufnehmen und im folgenden relativen Verzeichnis ablegen
-        cam->nehmeAuf(BILDABLAGE);
+        char* pfad = (char *) malloc(200);
+        strcpy(pfad,BILDABLAGE);
+        strcat(pfad,BILD);
+        cam->nehmeAuf(pfad);
 
         // Ein Python-Skript vom SP3Objekterkenner ausführen (python programmname TEXTABLAGE wahl)
-//        fuehreSkriptAus(); // wird auskommentiert, weil die Entwicklungsumgebung anders ist und TensorFlow nicht installiert ist
+        fuehreSkriptAus();
 
         // warten, bis SP3Objektereknner fertig ist
-        warte("Warten auf SP3Objekterkenner", 5);
+        warte("Warten auf SP3Objekterkenner", 3);
 
         // Erkennungsergebnis einlesen und auswerten
         textAuswerter->liesEin(QString(PWD)+QString(TEXTABLAGE));
@@ -108,6 +112,5 @@ void Verwalter::messageReceived(std::string msg)
     else if(wahl == 0)
     {
         QApplication::quit();
-        system("exit");
     }
 }

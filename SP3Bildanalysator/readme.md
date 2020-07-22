@@ -1,4 +1,5 @@
 # SP3Bildanalysator
+Stand 22.07.2020
 
 ## Aufgaben:
 - [x] Warten auf ein Zeichen vom SP3Koordinator über den UDP-Node
@@ -10,14 +11,16 @@
 - [x] wiederholte Abfrage in Intervallen, ob Objekterkenner fertig ist und die Textdatei gefundeneObjekte zur Verfügung steht
 - [x] die Textdatei auswerten und die wichtigen Informationen zusammenfassen
 - [x] die wichtigen Informationen an SP3Koordinator schicken
+- [ ] das Skript vom SP3Bildanalysator im Terminal ausführen
 
 ## Status:
 lauffähig (muss in der passenden Entwicklungsumgebung getestet werden)
 
 ## Probleme:
-- Die Textverarbeitung erfolgt mit Hilfe von Qt-Bibliotheken und nicht mit Standard c-Bibliotheken
+- SP3Bildanalysator baut den Befehl zur Ausführung des Skripts richtig zusammen und wenn man das Skript getrennt im Terminal ausführt, kommen die gewünschten Ergebnisse raus.
 
 ## Hinweise:
+- Die Textverarbeitung erfolgt mit Hilfe von Qt-Bibliotheken und nicht mit Standard c-Bibliotheken
 - 1,2,3,4 stellen die Auswahl dar. 0 beendet das Programm. negative Zahlen stellen Fehlerfälle dar.
 - Es wird 2 Sekunden gewartet, nachdem die alten Dateien gelöscht werden und nachdem das Skript ausgeführt wird
 - SP3Bildanalysator öffnet die Textdatei der Ergebnisse und sucht nach dem Wort "aktuell" mit strstr()
@@ -29,6 +32,7 @@ daher muss nur die Struktur der Textdatei gefundeneObjekete klar sein, damit es 
 - Eine globale Member-Variable anzulegen und sie während des Auswertungsprozesses entsprechend zu belegen hat nicht funktioniert. Deswegen wird diese Member-Variable als Parameter an die jeweilige Funktion übergeben.
 - Eine Anpassung der Auswertung ist einfach und zentral in der Header-Datei der Klasse Textauswerter durchzuführen.
 - Es spielt keine Rolle, wo und in welcher Reihenfolge die gesuchten Sätze in der Text-Datei stehen. Die Suche ist adaptiv.
+- Das Model ist für Objekterkennung mit CPU sowie GPU trainiert worden (also es muss nicht für Bearbeitung mit der GPU neu trainiert werden)
 
 ## Quellen:
 - [Kamera](https://www.opencv-srf.com/2010/09/object-detection-using-color-seperation.html)

@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 """
 Created on Thu Feb 27 11:50:49 2020
+Modified on Wed Jul 22 15:10:48 2020
 
 @author: Welp
+@editor: Alkhooli
 """
 
 import numpy as np
@@ -14,6 +16,7 @@ import tensorflow as tf
 from distutils.version import StrictVersion
 from PIL import Image
 import time
+import utils
 
 
 # This is needed since the notebook is stored in the object_detection folder.
@@ -30,22 +33,23 @@ print(tf.__version__)
 #plt.show()
 
 
-from utils import label_map_util
+from object_detection.utils import label_map_util
 
-from utils import visualization_utils as vis_util
+from object_detection.utils import visualization_utils as vis_util
 
 
 
 # What model to download.
 #MODEL_NAME = 'ssd_mobilenet_v1_coco_2017_11_17'
+WORKING_PATH = '/home/Student/git/SP3/SweetPicker3/SP3Objekterkenner/'
 MODEL_NAME = 'trained-inference-graphs'
 
 
 # Path to frozen detection graph. This is the actual model that is used for the object detection.
-PATH_TO_FROZEN_GRAPH = MODEL_NAME + '/frozen_inference_graph_SP3.pb'
+PATH_TO_FROZEN_GRAPH = WORKING_PATH + MODEL_NAME + '/frozen_inference_graph_SP3.pb'
 
 # List of the strings that is used to add correct label for each box.
-PATH_TO_LABELS = os.path.join('data', 'label_map_SP3.pbtxt')
+PATH_TO_LABELS = WORKING_PATH + 'data' + '/label_map_SP3.pbtxt'
 
 detection_graph = tf.Graph()
 with detection_graph.as_default():

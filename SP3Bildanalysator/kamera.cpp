@@ -15,13 +15,13 @@ void Kamera::nehmeAuf(const char* pfad)
     videostream.read(bild);
 
     // Das bunte Bild in ein Schwarz-Weiß-Bild umwandeln
-    cv::cvtColor(bild,bild,cv::COLOR_BGR2GRAY);
+//    cv::cvtColor(bild,bild,cv::COLOR_BGR2GRAY);
 
     // Den Kontrast des Bildes auf 1.3 erhöhen
-    bild.convertTo(bild,-1,1.3,0);
+//    bild.convertTo(bild,-1,1.3,0);
 
     // Das Bild runterskalieren
-    cv::resize(bild,bild,cv::Size(320,240));
+//    cv::resize(bild,bild,cv::Size(320,240));
 
     // Das Bild im angegebenen Pfad Speichern
     if( !cv::imwrite(ziel,bild) )

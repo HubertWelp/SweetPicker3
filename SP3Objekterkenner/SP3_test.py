@@ -13,7 +13,6 @@ from object_detection.utils import visualization_utils as vis_util
 import tensorflow as tf
 import numpy as np
 from PIL import Image
-from git import Repo
 import matplotlib.cm as cm
 import matplotlib.pyplot as plt
 import matplotlib.cbook as cbook
