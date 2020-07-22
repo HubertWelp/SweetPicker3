@@ -10,6 +10,7 @@ Die im Jupyter Notebook auszuführende Datei ist "object_detection_tutorial-SP3"
 
 Außerdem befinden sich im Ornder "images" die Bilder, mit denen das Model traininert wurde.
 
-#Hinweis
+# Hinweis
 
-Man muss den Pfad zum SP3Objekterkenner im Quellcode händisch ändern, wenn sich die Umgebung ändert
+- Man muss den Pfad zum SP3Objekterkenner im Quellcode händisch ändern, wenn sich die Umgebung ändert
+- Die Schnittstelle zwischen SP3Objekterkenner und SP3Bildanalysator funktioniert so nicht -> ich werde einen UDP-Node im SP3Objekterkenner implementieren
