@@ -17,8 +17,8 @@ int main(int argc, char *argv[])
         return 0;
     }else if(argc!=4)
     {
-        std::cout << "Standardinitalisierung: 127.0.0.1 5842 5850" << std::endl;
-        w=new Dialog("127.0.0.1",5842,5850);
+        std::cout << "Standardinitalisierung: 127.0.0.1 5842 5843" << std::endl;
+        w=new Dialog("127.0.0.1",5842,5843);
 
     }else
     {

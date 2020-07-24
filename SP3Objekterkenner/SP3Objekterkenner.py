@@ -1,49 +1,48 @@
 # -*- coding: utf-8 -*-
 """
 Created on Thu Feb 27 11:50:49 2020
-Modified on Wed Jul 22 15:10:48 2020
+Modified on Fri Jul 24 17:27:15 2020
 
 @author: Welp
 @editor: Alkhooli
 """
 
+# importing libraries
 import numpy as np
+import tensorflow as tf
 import os
 import sys
-import tensorflow as tf
-
-
-from distutils.version import StrictVersion
-from PIL import Image
+import socket
 import time
 import utils
+from PIL import Image
+from distutils.version import StrictVersion
+from object_detection.utils import label_map_util
+from object_detection.utils import ops as utils_ops
+from object_detection.utils import visualization_utils as vis_util
 
+#--------------------------------------------------------------------------------------------------------#
+#                                               Initialisierung                                          #
+#--------------------------------------------------------------------------------------------------------#
 
 # This is needed since the notebook is stored in the object_detection folder.
 sys.path.append("..")
-from object_detection.utils import ops as utils_ops
 
+# checking up the version of tensorflow
 if StrictVersion(tf.__version__) < StrictVersion('1.12.0'):
   raise ImportError('Please upgrade your TensorFlow installation to v1.12.*.')
 
-print(tf.__version__)
-# This is needed to display the images.
-#%matplotlib inline
-#plt.plot([0,0],[1,1],linewidth=4,label='random diagonal')
-#plt.show()
+# IP Address and Port number
+UDP_IP_ADDRESS = '127.0.0.1'
+UDP_PORT_NO = 5850
 
-
-from object_detection.utils import label_map_util
-
-from object_detection.utils import visualization_utils as vis_util
-
-
+# creating a socket
+clientSock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+clientSock.bind((UDP_IP_ADDRESS, UDP_PORT_NO))
 
 # What model to download.
-#MODEL_NAME = 'ssd_mobilenet_v1_coco_2017_11_17'
 WORKING_PATH = '/home/Student/git/SP3/SweetPicker3/SP3Objekterkenner/'
 MODEL_NAME = 'trained-inference-graphs'
-
 
 # Path to frozen detection graph. This is the actual model that is used for the object detection.
 PATH_TO_FROZEN_GRAPH = WORKING_PATH + MODEL_NAME + '/frozen_inference_graph_SP3.pb'
@@ -122,44 +121,63 @@ def run_inference_for_single_image(image, graph):
         output_dict['detection_masks'] = output_dict['detection_masks'][0]
   return output_dict
 
+#--------------------------------------------------------------------------------------------------------#
+#                                          Das eigentliche Programm                                      #
+#--------------------------------------------------------------------------------------------------------#
 
-if(os.path.isfile(image_path)):
-    print('gefunden')
-    image=Image.open(image_path)
-    image_np = load_image_into_numpy_array(image)
-    # detect objects in image
-    # Expand dimensions since the model expects images to have shape: [1, None, None, 3]
-    image_np_expanded = np.expand_dims(image_np, axis=0)
-    # Actual detection.
-    output_dict = run_inference_for_single_image(image_np_expanded, detection_graph)
-    print(output_dict['detection_classes'])
-    print(output_dict['detection_scores'])
-    print(output_dict['detection_boxes'])
-    # Visualization of the results of a detection.
-    vis_util.visualize_boxes_and_labels_on_image_array(
-        image_np,
-        output_dict['detection_boxes'],
-        output_dict['detection_classes'],
-        output_dict['detection_scores'],
-        category_index,
-        instance_masks=output_dict.get('detection_masks'),
-        use_normalized_coordinates=True,
-        line_thickness=8)
-    # save gefundeneObjekte.jpg
-    im = Image.fromarray(image_np)
-    im.save(image_path_detected)
-    # save gefundeneObjekte.txt
-    file = open(text_path_detected,"w")
-    file.write("detection_classes\n")
-    file.write(str(output_dict['detection_classes']))
-    file.write(" \ndetection_scores\n")
-    file.write(str(output_dict['detection_scores']))
-    file.write("\ndetection_boxes\n")
-    file.write(str(output_dict['detection_boxes']))
-    file.close()
-    # remove aktuelleSzene.jpg
-    # os.remove(image_path)
-else:
-    print('nicht gefunden')
-    # warte 1 Sekunde
-    time.sleep(1)    
+while True:
+    print('---------------------------------------------------\n  Der SP3Objekterkenner wartet auf eine Anfrage..  \n---------------------------------------------------')
+    data,addr= clientSock.recvfrom(1024)
+    if data=='0':
+        break
+    else:
+	if(os.path.isfile(image_path)):
+	    #print('Bild gefunden')
+
+	    image=Image.open(image_path)
+	    image_np = load_image_into_numpy_array(image)
+
+	    # detect objects in image
+	    # Expand dimensions since the model expects images to have shape: [1, None, None, 3]
+	    image_np_expanded = np.expand_dims(image_np, axis=0)
+
+	    # Actual detection.
+	    output_dict = run_inference_for_single_image(image_np_expanded, detection_graph)
+	    #print(output_dict['detection_classes'])
+	    #print(output_dict['detection_scores'])
+	    #print(output_dict['detection_boxes'])
+
+	    # Visualization of the results of a detection.
+	    vis_util.visualize_boxes_and_labels_on_image_array(
+		image_np,
+		output_dict['detection_boxes'],
+		output_dict['detection_classes'],
+		output_dict['detection_scores'],
+		category_index,
+		instance_masks=output_dict.get('detection_masks'),
+		use_normalized_coordinates=True,
+		line_thickness=8)
+
+	    # save gefundeneObjekte.jpg
+	    im = Image.fromarray(image_np)
+	    im.save(image_path_detected)
+
+	    # save gefundeneObjekte.txt
+	    file = open(text_path_detected,"w")
+	    file.write("detection_classes\n")
+	    file.write(str(output_dict['detection_classes']))
+	    file.write(" \ndetection_scores\n")
+	    file.write(str(output_dict['detection_scores']))
+	    file.write("\ndetection_boxes\n")
+	    file.write(str(output_dict['detection_boxes']))
+	    file.close()
+
+	    print('---------------------------------------------------\nDie Objekterkennung wurde erfolgreich durchgefuehrt\n---------------------------------------------------')
+
+	else:
+	    #print('Bild nicht gefunden')
+
+	    # warte 1 Sekunde
+	    time.sleep(1)
+
+print('---------------------------------------------------\n    Das Programm SP3Objekterkenner wurde beendet   \n---------------------------------------------------')

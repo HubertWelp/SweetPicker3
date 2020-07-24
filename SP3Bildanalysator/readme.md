@@ -8,13 +8,13 @@ Stand 24.07.2020
 - [x] das Bild im gewünschten Verzeichnis ablegen
 - [x] ein Python-Skript bereitstellen (Name des Programms und Parameter einfügen)
 - [x] das Python-Skript ausführen
-- [x] wiederholte Abfrage in Intervallen, ob Objekterkenner fertig ist und die Textdatei gefundeneObjekte zur Verfügung steht
+- [x] wiederholte Abfrage jede Sekunde für insgesamt 20 Sekunden, ob Objekterkenner fertig ist und die Textdatei gefundeneObjekte zur Verfügung steht
 - [x] die Textdatei auswerten und die wichtigen Informationen zusammenfassen
 - [x] die wichtigen Informationen an SP3Koordinator schicken
 - [x] das Skript vom SP3Objekterkenner im Terminal ausführen
 
 ## Status:
-lauffähig (muss in der passenden Entwicklungsumgebung getestet werden)
+lauffähig
 
 ## Probleme:
 
@@ -32,6 +32,8 @@ daher muss nur die Struktur der Textdatei gefundeneObjekete klar sein, damit es 
 - Eine Anpassung der Auswertung ist einfach und zentral in der Header-Datei der Klasse Textauswerter durchzuführen.
 - Es spielt keine Rolle, wo und in welcher Reihenfolge die gesuchten Sätze in der Text-Datei stehen. Die Suche ist adaptiv.
 - Das Model ist für Objekterkennung mit CPU sowie GPU trainiert worden (also es muss nicht für Bearbeitung mit der GPU neu trainiert werden)
+- Wenn SP3Objekterkenner noch nicht gestartet hat, verwirft SP3Bildanalysator die Anfrage und wartet auf eine neue.
+- Der SP3Bildanalysator gibt die Koordinaten der gesuchten Süßigkeit zurück. Dabei ist der Bezugspunkt (Nullpunkt) der Punkt in der oberen linken Ecke im aufgenommenen Foto.
 
 ## Quellen:
 - [Kamera](https://www.opencv-srf.com/2010/09/object-detection-using-color-seperation.html)
