@@ -4,6 +4,7 @@ Verwalter::Verwalter()
 {
     cam = new Kamera(PWD);
     textAuswerter = new Textauswerter;
+    node = new UDPNode(5840);
 }
 
 void Verwalter::loescheAlt()
@@ -18,33 +19,34 @@ void Verwalter::loescheAlt()
     strcpy(pfad_dateien,PWD);    strcat(pfad_dateien,TEXTABLAGE);     remove(pfad_dateien);
 
     // Wartezeit
-    std::this_thread::sleep_for(std::chrono::milliseconds(10));
+    std::this_thread::sleep_for(std::chrono::milliseconds(2000));
 }
 
 void Verwalter::fuehreSkriptAus()
 {
-    char* skript = (char *) malloc(300);
-    strcpy(skript,"python");
-    strcat(skript," ");
-    strcat(skript,PROGNAME);
-    strcat(skript," ");
-    strcat(skript,PWD);
-    strcat(skript,BILDABLAGE);
-    strcat(skript," ");
-    strcat(skript,BILD);
+//    char* skript = (char *) malloc(300);
+//    strcpy(skript,"python");
+//    strcat(skript," ");
+//    strcat(skript,PROGNAME);
+//    strcat(skript," ");
+//    strcat(skript,PWD);
+//    strcat(skript,BILDABLAGE);
+//    strcat(skript," ");
+//    strcat(skript,BILD);
 
     // Ausgabe
-    printf("\nIhr Skript sehe so aus: %s",skript);
+//    printf("\nIhr Skript sehe so aus: %s",skript);
 
     // Umgebung aktivieren
-    char* befehl = (char *) malloc(500);
-    strcpy(befehl,"gnome-terminal --command=");
-    strcat(befehl,"\"");
-    strcat(befehl,skript);
-    strcat(befehl,"\"");
+//    char* befehl = (char *) malloc(500);
+//    strcpy(befehl,"gnome-terminal --command=");
+//    strcat(befehl,"\"");
+//    strcat(befehl,skript);
+//    strcat(befehl,"\"");
 
     // Befehl absetzen
-    system(befehl);
+//    system(befehl);
+    node->sendmessage("run","127.0.0.1",5850);
 }
 
 void Verwalter::warte(QString prozess, int anzahl)
@@ -97,7 +99,7 @@ void Verwalter::messageReceived(std::string msg)
         fuehreSkriptAus();
 
         // warten, bis SP3Objektereknner fertig ist
-        warte("Warten auf SP3Objekterkenner", 3);
+        warte("Warten auf SP3Objekterkenner", 4);
 
         // Erkennungsergebnis einlesen und auswerten
         textAuswerter->liesEin(QString(PWD)+QString(TEXTABLAGE));

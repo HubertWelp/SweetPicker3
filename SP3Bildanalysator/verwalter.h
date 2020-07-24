@@ -26,6 +26,7 @@ private:
     std::string rueckmeldung;
     Textauswerter* textAuswerter;
     Punkt ergKoordinaten;
+    UDPNode* node;
 };
 
 #endif // VERWALTER_H

@@ -1,5 +1,5 @@
 # SP3Bildanalysator
-Stand 22.07.2020
+Stand 24.07.2020
 
 ## Aufgaben:
 - [x] Warten auf ein Zeichen vom SP3Koordinator über den UDP-Node
@@ -11,13 +11,12 @@ Stand 22.07.2020
 - [x] wiederholte Abfrage in Intervallen, ob Objekterkenner fertig ist und die Textdatei gefundeneObjekte zur Verfügung steht
 - [x] die Textdatei auswerten und die wichtigen Informationen zusammenfassen
 - [x] die wichtigen Informationen an SP3Koordinator schicken
-- [ ] das Skript vom SP3Bildanalysator im Terminal ausführen
+- [x] das Skript vom SP3Objekterkenner im Terminal ausführen
 
 ## Status:
 lauffähig (muss in der passenden Entwicklungsumgebung getestet werden)
 
 ## Probleme:
-- SP3Bildanalysator baut den Befehl zur Ausführung des Skripts richtig zusammen und wenn man das Skript getrennt im Terminal ausführt, kommen die gewünschten Ergebnisse raus.
 
 ## Hinweise:
 - Die Textverarbeitung erfolgt mit Hilfe von Qt-Bibliotheken und nicht mit Standard c-Bibliotheken
