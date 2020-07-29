@@ -1,39 +1,35 @@
 # SP3Bildanalysator
-Stand 24.07.2020
+Stand 29.07.2020
 
 ## Aufgaben:
 - [x] Warten auf ein Zeichen vom SP3Koordinator über den UDP-Node
-- [x] altes Bild und alte Ergebnisse löschen
+- [x] altes Erkennungsbild, alte Bildaufnahme und alte Text-Ergebnisse löschen
 - [x] neues Bild aufnehmen
 - [x] das Bild im gewünschten Verzeichnis ablegen
-- [x] ein Python-Skript bereitstellen (Name des Programms und Parameter einfügen)
-- [x] das Python-Skript ausführen
+- [x] Eine Nachricht über einen UDP-Node an den SP3Objekterkenner senden, um mit der Objekterkennung zu starten
 - [x] wiederholte Abfrage jede Sekunde für insgesamt 20 Sekunden, ob Objekterkenner fertig ist und die Textdatei gefundeneObjekte zur Verfügung steht
 - [x] die Textdatei auswerten und die wichtigen Informationen zusammenfassen
 - [x] die wichtigen Informationen an SP3Koordinator schicken
-- [x] das Skript vom SP3Objekterkenner im Terminal ausführen
+- [x] Nachricht an den SP3Objekterkenner senden
 
 ## Status:
 lauffähig
 
 ## Probleme:
 
+- Manchmal wird kein neues Foto aufgenommen sondern das alte übernommen
+- Manchmal gibt der SP3Objekterkenner falsche Ergebnisse zurück (Koordinate 2.593521e-7)
+
 ## Hinweise:
-- Die Textverarbeitung erfolgt mit Hilfe von Qt-Bibliotheken und nicht mit Standard c-Bibliotheken
-- 1,2,3,4 stellen die Auswahl dar. 0 beendet das Programm. negative Zahlen stellen Fehlerfälle dar.
-- Es wird 2 Sekunden gewartet, nachdem die alten Dateien gelöscht werden und nachdem das Skript ausgeführt wird
-- SP3Bildanalysator öffnet die Textdatei der Ergebnisse und sucht nach dem Wort "aktuell" mit strstr()
-daher muss nur die Struktur der Textdatei gefundeneObjekete klar sein, damit es richtig analysiert wird
-- Als Ergebnis der Analyse stellt er ein char-Array zur Verfügung, das über den UDP-Node geschickt werden kann
-- noch ist zu tun, die Eingaben über die Tastatur und Ausgaben auf dem Terminal durch die Kommunikation mit UDP zu ersetzen.
-- in der zum Testzweck hinzugefügten Textdatei testAusgabe.txt stehen 3 Schlagwörter (detection_classes, detection_scores, detection_boxes)
+- Die Textverarbeitung erfolgt mit Hilfe von Qt-Bibliotheken und nicht mit Standard c-Bibliotheken.
+- 1,2,3,4 stellen die Auswahl dar. 0 beendet sowohl SP3Bildanalysator als auch SP3Objekterkenner. Alle andere Zahlen bzw. Zeichen werden ignoriert.
+- Es wird 2 Sekunden gewartet, nachdem die alten Dateien gelöscht werden und nachdem das Skript ausgeführt wird.
+- Als Ergebnis der Analyse stellt er ein char-Array zur Verfügung, das über den UDP-Node geschickt werden kann.
 - Die Anwendung ermittelt die Box der Klasse mit der höchsten Wahrscheinlichkeit und muss nun dies in Koordinaten umrechnen.
-- Eine globale Member-Variable anzulegen und sie während des Auswertungsprozesses entsprechend zu belegen hat nicht funktioniert. Deswegen wird diese Member-Variable als Parameter an die jeweilige Funktion übergeben.
-- Eine Anpassung der Auswertung ist einfach und zentral in der Header-Datei der Klasse Textauswerter durchzuführen.
-- Es spielt keine Rolle, wo und in welcher Reihenfolge die gesuchten Sätze in der Text-Datei stehen. Die Suche ist adaptiv.
-- Das Model ist für Objekterkennung mit CPU sowie GPU trainiert worden (also es muss nicht für Bearbeitung mit der GPU neu trainiert werden)
-- Wenn SP3Objekterkenner noch nicht gestartet hat, verwirft SP3Bildanalysator die Anfrage und wartet auf eine neue.
 - Der SP3Bildanalysator gibt die Koordinaten der gesuchten Süßigkeit zurück. Dabei ist der Bezugspunkt (Nullpunkt) der Punkt in der oberen linken Ecke im aufgenommenen Foto.
+- Es spielt keine Rolle, wo und in welcher Reihenfolge die gesuchten Sätze in der Text-Datei stehen. Die Suche ist adaptiv.
+- Das Model ist für Objekterkennung mit CPU sowie GPU trainiert worden (also es muss nicht für Bearbeitung mit der GPU neu trainiert werden).
+- Wenn SP3Objekterkenner noch nicht gestartet hat bzw. nicht antwortet, verwirft SP3Bildanalysator die Anfrage und wartet auf eine neue.
 
 ## Quellen:
 - [Kamera](https://www.opencv-srf.com/2010/09/object-detection-using-color-seperation.html)

@@ -12,8 +12,11 @@ void Verwalter::loescheAlt()
     // Char-Array anlegen, um den Gesamtpfad zusammenzustellen
     char* pfad_dateien = (char *) malloc(100);
 
-    // Das alte Bild löschen
+    // Die alte Fotoaufnahme löschen
     strcpy(pfad_dateien,PWD);    strcat(pfad_dateien,BILDABLAGE);   strcat(pfad_dateien,BILD);     remove(pfad_dateien);
+
+    // Das alte Erkennungsbild löschen
+    strcpy(pfad_dateien,PWD);    strcat(pfad_dateien,BILDABLAGE);   strcat(pfad_dateien,ERKNT);     remove(pfad_dateien);
 
     // Die alten Ergebnisse löschen
     strcpy(pfad_dateien,PWD);    strcat(pfad_dateien,TEXTABLAGE);     remove(pfad_dateien);
@@ -72,15 +75,18 @@ void Verwalter::messageReceived(std::string msg)
     {
         // altes Bild und alte Ergebnisse löschen
         loescheAlt();
+        std::this_thread::sleep_for(std::chrono::milliseconds(200));
 
         // aktuelles Bild aufnehmen und im folgenden relativen Verzeichnis ablegen
         char* pfad = (char *) malloc(200);
         strcpy(pfad,BILDABLAGE);
         strcat(pfad,BILD);
         cam->nehmeAuf(pfad);
+        std::this_thread::sleep_for(std::chrono::milliseconds(200));
 
         // Ein Python-Skript vom SP3Objekterkenner ausführen (python programmname TEXTABLAGE wahl)
         fuehreSkriptAus();
+        std::this_thread::sleep_for(std::chrono::milliseconds(200));
 
         // warten, bis SP3Objektereknner fertig ist
         if(warte())
@@ -100,6 +106,10 @@ void Verwalter::messageReceived(std::string msg)
 
     else if(wahl == 0)
     {
+        loescheAlt();
+        node->sendmessage("stop","127.0.0.1",5850);
         QApplication::quit();
     }
+
+    else {}
 }

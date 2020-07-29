@@ -69,8 +69,8 @@ def load_image_into_numpy_array(image):
 # Size, in inches, of the output images.
 IMAGE_SIZE = (12, 8)
 # Determine filepaths for scene image and output files
-file_path = os.path.abspath(sys.argv[1])
-image_path = os.path.join(file_path, sys.argv[2])
+file_path = "/home/Student/git/SP3/SweetPicker3/SP3Bildanalysator/SP3Bilderkennung/"
+image_path = os.path.join(file_path, "aktuelleSzene.jpg")
 image_path_detected = os.path.join(file_path, "gefundeneObjekte.jpg")
 text_path_detected = os.path.join(file_path, "gefundeneObjekte.txt")
 
@@ -84,8 +84,7 @@ def run_inference_for_single_image(image, graph):
       tensor_dict = {}
       for key in [
           'num_detections', 'detection_boxes', 'detection_scores',
-          'detection_classes', 'detection_masks'
-      ]:
+          'detection_classes', 'detection_masks' ]:
         tensor_name = key + ':0'
         if tensor_name in all_tensor_names:
           tensor_dict[key] = tf.compat.v1.get_default_graph().get_tensor_by_name(
@@ -128,8 +127,9 @@ def run_inference_for_single_image(image, graph):
 while True:
     print('---------------------------------------------------\n  Der SP3Objekterkenner wartet auf eine Anfrage..  \n---------------------------------------------------')
     data,addr= clientSock.recvfrom(1024)
-    if data=='0':
+    if len(data)>10:
         break
+
     else:
 	if(os.path.isfile(image_path)):
 	    #print('Bild gefunden')

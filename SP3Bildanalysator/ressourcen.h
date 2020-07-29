@@ -4,6 +4,7 @@
 /* Definition von Konstanten */
 #define PWD "/home/Student/git/SP3/SweetPicker3/SP3Bildanalysator"
 #define BILD "aktuelleSzene.jpg"
+#define ERKNT "gefundeneObjekte.jpg"
 #define BILDABLAGE "/SP3Bilderkennung/"
 #define TEXTABLAGE "/SP3Bilderkennung/gefundeneObjekte.txt"
 #define PROGNAME "/home/Student/git/SP3/SweetPicker3/SP3Objekterkenner/SP3Objekterkenner.py"
