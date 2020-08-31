@@ -16,6 +16,7 @@ Außerdem befinden sich im Ornder "images" die Bilder, mit denen das Model train
 - Man muss den Pfad zum SP3Objekterkenner im Quellcode händisch ändern, wenn sich die Umgebung ändert
 - Man muss SP3Bildanalysator und SP3Objekterkenner einzeln ausführen
 - Die Schnittstelle zwischen SP3Objekterkenner und SP3Bildanalysator ist eine UDP-Verbindung<br>dabei hat SP3Objekterkenner die Port-Nummer 5850
+- Tabulatoren führen in Python-Skripten zu Problemen und sollten deswegen vermieden werden.
 
 # Probleme
 
