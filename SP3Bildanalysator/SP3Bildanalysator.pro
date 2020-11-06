@@ -15,6 +15,7 @@ SOURCES += \
     textauswerter.cpp
 
 HEADERS += \
+    dummy.h \
     kamera.h \
     verwalter.h \
     ressourcen.h \
