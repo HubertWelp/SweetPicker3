@@ -34,5 +34,5 @@ void Kamera::nehmeAuf(const char* pfad)
     }
 
     // Wartezeit, bis das Foto vollständig gespeichert ist
-   // std::this_thread::sleep_for(std::chrono::milliseconds(100)); // ist das eig nötig? wenn imwrite "true" zurückgibt sollte das bild erfolgreich gespeichert sein
+    //std::this_thread::sleep_for(std::chrono::milliseconds(100)); // ist das eig nötig? wenn imwrite "true" zurückgibt sollte das bild erfolgreich gespeichert sein
 }
