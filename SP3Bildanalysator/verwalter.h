@@ -5,6 +5,7 @@
 #include "udpnode.hpp"
 #include "kamera.h"
 #include "textauswerter.h"
+#include "orientierungsermittler.h"
 
 class Verwalter : public UDPNode
 {
@@ -15,7 +16,6 @@ public:
     void fuehreSkriptAus(void);
     bool warte();
     const char* verarbeiteText(void);
-
     void messageReceived(std::string msg) override;
 
     int wahl;
@@ -25,8 +25,10 @@ private:
     Kamera* cam;
     std::string rueckmeldung;
     Textauswerter* textAuswerter;
-    Punkt ergKoordinaten;
+    OrientierungsErmittler* orientierungsErmittler;
     UDPNode* node;
+    double yMin, xMin, yMax, xMax, xMittelpunkt, yMittelpunkt, winkel, breite;
+    int erfolg;
 };
 
 #endif // VERWALTER_H

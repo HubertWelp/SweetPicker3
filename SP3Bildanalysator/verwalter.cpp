@@ -5,21 +5,34 @@ Verwalter::Verwalter()
     cam = new Kamera(PWD);
     textAuswerter = new Textauswerter;
     node = new UDPNode(5840);
+    orientierungsErmittler = new OrientierungsErmittler;
 }
 
 void Verwalter::loescheAlt()
 {
-    // Char-Array anlegen, um den Gesamtpfad zusammenzustellen
-    char* pfad_dateien = (char *) malloc(100);
+    //Setze Ordnerpfad
+    char* pfad = new char [256];
+    strcpy(pfad,PWD);
+    strcat(pfad,BILDABLAGE);
 
-    // Die alte Fotoaufnahme löschen
-    strcpy(pfad_dateien,PWD);    strcat(pfad_dateien,BILDABLAGE);   strcat(pfad_dateien,BILD);     remove(pfad_dateien);
-
-    // Das alte Erkennungsbild löschen
-    strcpy(pfad_dateien,PWD);    strcat(pfad_dateien,BILDABLAGE);   strcat(pfad_dateien,ERKNT);     remove(pfad_dateien);
-
-    // Die alten Ergebnisse löschen
-    strcpy(pfad_dateien,PWD);    strcat(pfad_dateien,TEXTABLAGE);     remove(pfad_dateien);
+    //Öffne Ordner
+    DIR *dir;
+    struct dirent *ent;
+    if((dir = opendir(pfad)) != nullptr)
+    {
+        while((ent = readdir(dir)) != nullptr)
+        {
+            //Lese Dateien im Ordner & Lösche
+            char* datei = new char [256];
+            strcpy(datei,pfad);
+            strcat(datei,ent->d_name);
+            remove(datei);
+            //std::cout << datei << std::endl;
+            delete [] datei;
+        }
+        closedir(dir);
+    }
+    delete [] pfad;
 }
 
 void Verwalter::fuehreSkriptAus()
@@ -32,22 +45,23 @@ bool Verwalter::warte()
     int i;
     QString pfad = QString(PWD);
     pfad.append(QString(TEXTABLAGE));
+    QFile datei(pfad);
 
-    QFile datei (pfad);
-
-    for(i=0 ; (i<19)&&(datei.open(QIODevice::ReadOnly)==false) ; i++)
+    /*20 Prüfe für 20 Sekunden ob die Datei vorhanden ist */
+    for(i = 0; !(QFileInfo::exists(pfad) && QFileInfo(pfad).isFile() && (i < 19)); i++)
     {
-        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
     }
+    /*Datei vorhanden oder 20 Sekunden vergangen*/
 
-    if ((i==19)&&(datei.open(QIODevice::ReadOnly)==false))
+    if(i<19)
     {
-        return false;
+       datei.close();
+       return true;
     }
     else
     {
-        datei.close();
-        return true;
+        return false;
     }
 }
 
@@ -55,17 +69,20 @@ const char* Verwalter::verarbeiteText(void)
 {
     FILE* datei;
     char inhalt[500];
-    char* pfad = (char *) malloc(100);
+    char* pfad = new char [256];
 
     strcpy(pfad,PWD);
     strcat(pfad,TEXTABLAGE);
 
     datei = fopen(pfad,"r");
     if (!datei) printf("\n---------------\nFehler beim Öffnen der Textdatei\n---------------\n");
-
     fgets(inhalt,90,datei);
+
+    delete []  pfad;
+
     return  strstr(inhalt,"aktuell");
 }
+
 
 void Verwalter::messageReceived(std::string msg)
 {
@@ -75,18 +92,20 @@ void Verwalter::messageReceived(std::string msg)
     {
         // altes Bild und alte Ergebnisse löschen
         loescheAlt();
-        std::this_thread::sleep_for(std::chrono::milliseconds(200));
+        //std::this_thread::sleep_for(std::chrono::milliseconds(200));
 
         // aktuelles Bild aufnehmen und im folgenden relativen Verzeichnis ablegen
-        char* pfad = (char *) malloc(200);
+        char* pfad = new char [256];
         strcpy(pfad,BILDABLAGE);
         strcat(pfad,BILD);
-        cam->nehmeAuf(pfad);
-        std::this_thread::sleep_for(std::chrono::milliseconds(200));
+        cam->nehmeAufTest(pfad);
+        delete [] pfad;
+        //std::this_thread::sleep_for(std::chrono::milliseconds(200));
 
         // Ein Python-Skript vom SP3Objekterkenner ausführen (python programmname TEXTABLAGE wahl)
         fuehreSkriptAus();
-        std::this_thread::sleep_for(std::chrono::milliseconds(200));
+
+        //std::this_thread::sleep_for(std::chrono::milliseconds(200));
 
         // warten, bis SP3Objektereknner fertig ist
         if(warte())
@@ -94,22 +113,35 @@ void Verwalter::messageReceived(std::string msg)
             // Erkennungsergebnis einlesen und auswerten
             if(textAuswerter->liesEin(QString(PWD)+QString(TEXTABLAGE))==3)
             {
-                ergKoordinaten = textAuswerter->werteAus(wahl);
+                //Rahmen und Mittelpunkt auswerten
+                std::tie(yMin,xMin,yMax,xMax,xMittelpunkt,yMittelpunkt) = textAuswerter->werteAus3(wahl);
+                orientierungsErmittler->setzeKoordinaten(yMin,xMin,yMax,xMax);
 
-                std::string ergebnis = std::to_string(ergKoordinaten.x) + " " + std::to_string(ergKoordinaten.y) + " " + std::to_string(ergKoordinaten.z) + " p b";
+                //Ermittle Orientierung
+                std::tie(erfolg,winkel,breite) = orientierungsErmittler->ermittleOrientierung();
+                if(erfolg == -1)
+                {
+                    std::cout << "fehlermeldung" << std::endl;//fehlermeldung
+                }
 
+                //Erzeuge AusschnittErgebnis.csv für Admin Komponente
+                std::ofstream ausschnittErgebnis;
+                ausschnittErgebnis.open(std::string(PWD).append(BILDABLAGE).append("AusschnittErgebnis.csv"));
+                ausschnittErgebnis << msg << ";" << winkel << ";" << breite << ";" << xMittelpunkt << ";" << yMittelpunkt; //ausgewählte Süßigkeit muss übersetzt werden
+                std::cout << "AusschnittErgebnis.csv: " << std::fixed << std::setprecision(1) << msg << ";" << winkel << ";" << breite << ";" << xMittelpunkt << ";" << yMittelpunkt << std::endl;
+                ausschnittErgebnis.close();
+
+                //Erzeuge Nachrichtenstring für den Roboter
+                std::string ergebnis = std::to_string(xMittelpunkt) + " " + std::to_string(yMittelpunkt) + " " + std::to_string(0) + " " + std::to_string(winkel) + " " + std::to_string(breite);
                 printf("\n%s\n",ergebnis.c_str());
                 sendmessage(ergebnis,"127.0.0.1",5843);
             }
         }
     }
-
     else if(wahl == 0)
     {
         loescheAlt();
         node->sendmessage("stop","127.0.0.1",5850);
         QApplication::quit();
     }
-
-    else {}
 }

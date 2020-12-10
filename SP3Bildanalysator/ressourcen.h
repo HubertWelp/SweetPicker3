@@ -6,6 +6,8 @@
 #define BILD "aktuelleSzene.jpg"
 #define ERKNT "gefundeneObjekte.jpg"
 #define BILDABLAGE "/SP3Bilderkennung/"
+#define AUSSCHNITT "Ausschnitt.jpg"
+#define AUSSCHNITTSW "AusschnittSW.jpg"
 #define TEXTABLAGE "/SP3Bilderkennung/gefundeneObjekte.txt"
 #define PROGNAME "/home/Student/git/SP3/SweetPicker3/SP3Objekterkenner/SP3Objekterkenner.py"
 #define PFAD "/home/Student/Downloads/gefundeneObjekte.txt"
@@ -23,15 +25,22 @@
 #include <QFile>
 #include <QTextStream>
 #include <QString>
+#include <QFileInfo>
 
 /* Einbindung von c Bibliotheken */
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
 
+/* */
+#include <dirent.h>
+
 /* Einbindung von c++ Bibliotheken */
 #include <chrono>
 #include <thread>
+#include <iostream>
+#include <iomanip>
+#include <fstream>
 
 /* Einbindung der opencv Bibliotheken */
 #include <opencv2/imgcodecs/imgcodecs.hpp>
@@ -42,6 +51,7 @@
 /* Selbstdefinierte Strukturen und Enums */
 struct RBox {double a; double b; double c; double d;};
 struct Punkt {int x;int y;int z;};
+struct Punkte {double ymin; double xmin; double ymax; double xmax;};
 enum Sorten {Maoam=1,Snickers,Milkyway,Schokoriegel};
 
 #endif // RESSOURCEN_H
