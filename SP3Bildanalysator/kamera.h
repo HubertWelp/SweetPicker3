@@ -8,6 +8,7 @@ class Kamera
 public:
     explicit Kamera(const char* pfad);
     void nehmeAuf(const char* pfad);
+    void nehmeAufTest(const char* pfad);
 
 private:
     cv::VideoCapture videostream;
