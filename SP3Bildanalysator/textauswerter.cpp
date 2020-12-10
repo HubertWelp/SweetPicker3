@@ -26,13 +26,21 @@ int Textauswerter::liesEin(QString datei)
 
     QTextStream datenstrom(&text);
     QString string;
+
+    //ermittle Anzahl der Zeilen in Datei
+    anzMaxZeilen = 0;
+    std::ifstream inFile(datei.toStdString());
+    anzMaxZeilen = std::count(std::istreambuf_iterator<char>(inFile),std::istreambuf_iterator<char>(),'\n');
     anzGlsnZeilen = 0;
     int erfolgreich = 0;
 
     while(datenstrom.readLineInto(&string,MAXLESEN))
     {
         anzGlsnZeilen++;
-
+        if(anzGlsnZeilen > anzMaxZeilen+1)
+        {
+            break;
+        }
         if (string.contains(DCLASS,Qt::CaseInsensitive))
         {
             if (detection_classes(datei,anzGlsnZeilen)) erfolgreich++;
@@ -46,10 +54,8 @@ int Textauswerter::liesEin(QString datei)
             if (detection_boxes(datei,anzGlsnZeilen)) erfolgreich++;
         }
     }
-
     // Der Cursor steht am Ende der Datei
     text.close();
-
     // Return-Bedingung
     return erfolgreich;
 }
@@ -60,7 +66,7 @@ int Textauswerter::liesEin(QString datei)
 *
 * @version 1.0
 * @param wk [in] die gewünschte/gesuchte Klasse
-* @return die Koordinaten der gewünschten/gesuchten Klasse
+* @return die Koordinaten des Mittelpunktes der gewünschten/gesuchten Klasse
 */
 Punkt Textauswerter::werteAus(int wk)
 {
@@ -98,8 +104,95 @@ Punkt Textauswerter::werteAus(int wk)
 }
 
 /**
+* Diese Funktion sucht im Member-Array der Klassen nach der gewünschten Klasse und ermittelt den Index der Klasse mit der höchsten Wahrscheinlichkeit.
+* Dann werden die Koordinaten dieser Klasse zurückgegeben.
+*
+* @version 1.0
+* @param wk [in] die gewünschte/gesuchte Klasse
+* @return die Eck-Koordinaten [ymin,xmin,ymax,xmax] der gewünschten/gesuchten Klasse
+*/
+Punkte Textauswerter::werteAus2(int wk)
+{
+    int m[ANZSUCHE];    // Index-Array der Klassen
+    int ki;     // Zähler-Variable für das Klassen-Array
+    int mi=0;   // enthält die Anzahl der vorhandenen Klassen
+    int ziel;   // Der Index mit der größten Möglichkeit
+
+    // Die Indexe der gesuchten Klasse aussuchen und in m[] einschreiben
+    for (ki=0 ; ki<ANZELEMENT ; ki++ )
+    {
+        if (ergK[ki] == wk && mi<ANZSUCHE)
+        {
+            m[mi] = ki;
+            mi++;
+        }
+    }
+
+    // Den Index mit der höchstmöglichen Wahrscheinlichkeit ermitteln
+    ziel = m[0];
+    for (int i=1 ; i<mi ; i++ )
+    {
+        if(ergW[m[i]] > ergW[ziel])
+        {
+            ziel = m[i];
+        }
+    }
+
+
+    //Die Koordinaten der am besten passenden Klasse zurückgeben [ymin,xmin,ymax,xmax]
+    return {ergB[ziel].a, ergB[ziel].b, ergB[ziel].c, ergB[ziel].d};
+
+}
+
+/**
+* Diese Funktion sucht im Member-Array der Klassen nach der gewünschten Klasse und ermittelt den Index der Klasse mit der höchsten Wahrscheinlichkeit.
+* Dann werden die Koordinaten dieser Klasse zurückgegeben.
+*
+* @version 1.0
+* @param wk [in] die gewünschte/gesuchte Klasse
+* @return [ymin,xmin,ymax,xmax,xMittelpunkt,yMittelpunkt] - die Eck-Koordinaten [ymin,xmin,ymax,xmax]
+* und den Mittelpunkt [xMittelpunkt,yMittelpunkt] der gewünschten/gesuchten Klasse
+*/
+std::tuple<double, double, double, double, double, double> Textauswerter::werteAus3(int wk)
+{
+    int m[ANZSUCHE];    // Index-Array der Klassen
+    int ki;     // Zähler-Variable für das Klassen-Array
+    int mi=0;   // enthält die Anzahl der vorhandenen Klassen
+    int ziel;   // Der Index mit der größten Möglichkeit
+
+    // Die Indexe der gesuchten Klasse aussuchen und in m[] einschreiben
+    for (ki=0 ; ki<ANZELEMENT ; ki++ )
+    {
+        if (ergK[ki] == wk && mi<ANZSUCHE)
+        {
+            m[mi] = ki;
+            mi++;
+        }
+    }
+
+    // Den Index mit der höchstmöglichen Wahrscheinlichkeit ermitteln
+    ziel = m[0];
+    for (int i=1 ; i<mi ; i++ )
+    {
+        if(ergW[m[i]] > ergW[ziel])
+        {
+            ziel = m[i];
+        }
+    }
+
+
+    double ergX = BILDBRT * ( ergB[ziel].b/2 + ergB[ziel].d/2 );
+    double ergY = BILDHHE * ( ergB[ziel].a/2 + ergB[ziel].c/2 );
+
+    //Die Koordinaten der am besten passenden Klasse zurückgeben [ymin,xmin,ymax,xmax,xMittelpunkt,yMittelpunkt]
+    return std::make_tuple(ergB[ziel].a, ergB[ziel].b, ergB[ziel].c, ergB[ziel].d, ergX, ergY);
+
+}
+
+
+/**
 * Diese Funktion sucht nach dem Schlüsselwort "detection_classes" in der Text-Datei und liest die Zahlen danach ein.
-* Diese Zahlen stellen die Klassen der Erennungsergebnisse dar und werden in Arrays gespeichert dann entsprechend später bearbeitet.
+* Diese Zahlen stellen die Klassen der Erkennungsergebnisse dar und werden in Arrays gespeichert dann entsprechend später bearbeitet.
 *
 * @version 1.0
 * @param [in] aktlZeile hat die Zeilennummer, an der der Cursor in der Schleife in {@link werteAus} steht, so dass diese Funktion ab da weiter einliest.
@@ -163,17 +256,19 @@ bool Textauswerter::detection_scores(QString datei, int aktlZeile)
     QTextStream datenstrom(&text);
     QString linie;
     int cursor=0,laenge=10,anzZeichen,anzZeilen=0;
-
     // Den Cursor auf die aktuelle Zeile bringen
-    for (int n=0 ; n<aktlZeile ; n++) {datenstrom.readLineInto(&linie,MAXLESEN);}
-
+    for (int n = 0 ; n < aktlZeile ; n++) {datenstrom.readLineInto(&linie,MAXLESEN);}
     // Hier die gewünschten Daten einlesen
     do
     {
         // Weitere Zeile einlesen
         datenstrom.readLineInto(&linie,MAXLESEN);
         aktlZeile++;
-
+        if(aktlZeile > anzMaxZeilen+1)
+        {
+            text.close();
+            return false;
+        }
         // Ausgabe des Inhalts der aktuellen Zeile
 
         // Die Anzahl der Vorhandenen Elemente im String ermitteln (Anzahl der Punkte)
@@ -191,7 +286,6 @@ bool Textauswerter::detection_scores(QString datei, int aktlZeile)
         anzZeilen = anzZeilen + anzZeichen;
     }
     while(!linie.contains("]"));
-
     // Die Text-Datei schließen
     text.close();
 
@@ -218,14 +312,17 @@ bool Textauswerter::detection_boxes(QString datei, int aktlZeile)
 
     // Den Cursor auf die aktuelle Zeile bringen
     for (int n=0 ; n<aktlZeile ; n++) {datenstrom.readLineInto(&linie,MAXLESEN);}
-
     // Hier die gewünschten Daten einlesen
     do
     {
         // Weitere Zeile einlesen
         datenstrom.readLineInto(&linie,MAXLESEN);
         aktlZeile++;
-
+        if(aktlZeile > anzMaxZeilen+1)
+        {
+            text.close();
+            return false;
+        }
         // Ausgabe des Inhalts der aktuellen Zeile
 
         // Die Zahlen (Koordinaten) in das Array ergB[] einschreiben
@@ -255,7 +352,6 @@ bool Textauswerter::detection_boxes(QString datei, int aktlZeile)
         anzZeilen++;
     }
     while(!linie.contains("]]"));
-
     // Die Text-Datei schließen
     text.close();
 

@@ -2,6 +2,7 @@
 #define TEXTAUSWERTER_H
 
 #include "ressourcen.h"
+#include <tuple>
 
 class Textauswerter
 {
@@ -10,6 +11,8 @@ public:
     Textauswerter();
     int liesEin(QString datei);
     Punkt werteAus(int wk);
+    Punkte werteAus2(int wk);
+    std::tuple<double, double, double, double, double, double> werteAus3(int wk);
     bool detection_classes(QString datei, int aktlZeile);
     bool detection_scores(QString datei, int aktlZeile);
     bool detection_boxes(QString datei, int aktlZeile);
@@ -19,7 +22,7 @@ private:
     int ergK[ANZELEMENT];
     double ergW[ANZELEMENT];
     RBox ergB[ANZELEMENT];
-    int anzGlsnZeilen;
+    int anzGlsnZeilen, anzMaxZeilen;
 };
 
 #endif // TEXTAUSWERTER_H
