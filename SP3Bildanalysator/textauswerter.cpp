@@ -1,5 +1,6 @@
 #include "textauswerter.h"
-
+using std::cout;
+using std::endl;
 /**
 * Konstruktor
 */
@@ -39,23 +40,31 @@ int Textauswerter::liesEin(QString datei)
         anzGlsnZeilen++;
         if(anzGlsnZeilen > anzMaxZeilen+1)
         {
-            break;
+            text.close();
+            return erfolgreich;
         }
         if (string.contains(DCLASS,Qt::CaseInsensitive))
         {
+            //cout << "bin bei detection classes " << endl;
             if (detection_classes(datei,anzGlsnZeilen)) erfolgreich++;
+            //cout << erfolgreich << endl;
         }
         else if (string.contains(DSCORE,Qt::CaseInsensitive))
         {
+            //cout << "bin bei detection scores" << endl;
             if (detection_scores(datei,anzGlsnZeilen)) erfolgreich++;
+            //cout << erfolgreich << endl;
         }
         else if (string.contains(DBOX,Qt::CaseInsensitive))
         {
-            if (detection_boxes(datei,anzGlsnZeilen)) erfolgreich++;
+            //cout << "bin bei detection boxes" << endl;
+            if (detection_boxes(datei,anzGlsnZeilen)){ erfolgreich++;}
+            //cout << endl << erfolgreich << endl;
         }
     }
     // Der Cursor steht am Ende der Datei
     text.close();
+    //cout << "Ende loop" << endl;
     // Return-Bedingung
     return erfolgreich;
 }
@@ -155,6 +164,7 @@ Punkte Textauswerter::werteAus2(int wk)
 */
 std::tuple<double, double, double, double, double, double> Textauswerter::werteAus3(int wk)
 {
+    //cout << "werte aus 3" << endl;
     int m[ANZSUCHE];    // Index-Array der Klassen
     int ki;     // Zähler-Variable für das Klassen-Array
     int mi=0;   // enthält die Anzahl der vorhandenen Klassen
@@ -198,7 +208,7 @@ std::tuple<double, double, double, double, double, double> Textauswerter::werteA
 * @param [in] aktlZeile hat die Zeilennummer, an der der Cursor in der Schleife in {@link werteAus} steht, so dass diese Funktion ab da weiter einliest.
 * @return true, falls der Ablauf der Funktion reibungslos lief
 */
-bool Textauswerter::detection_classes(QString datei, int aktlZeile)
+int Textauswerter::detection_classes(QString datei, int aktlZeile)
 {
     // Die Text-Datei erneuert öffnen
     QFile text (datei);
@@ -216,6 +226,13 @@ bool Textauswerter::detection_classes(QString datei, int aktlZeile)
         // Weitere Zeile einlesen
         datenstrom.readLineInto(&linie,MAXLESEN);
         aktlZeile++;
+        //cout << "detection classes Aktuelle Zeile " << aktlZeile << "/" << anzMaxZeilen << endl;
+        if(aktlZeile > anzMaxZeilen+1)
+        {
+            //cout << "detection classes Fehler" << endl;
+            text.close();
+            return 0;
+        }
 
         // Die Anzahl der Vorhandenen Elemente im String sowie die String-Länge ermitteln (Anzahl der Leerzeichen + 1)
         anzZeichen = linie.count(QChar(' ')) + 1 ;
@@ -248,7 +265,7 @@ bool Textauswerter::detection_classes(QString datei, int aktlZeile)
 * @param [in] aktlZeile hat die Zeilennummer, an der der Cursor in der Schleife in {@link werteAus} steht, so dass diese Funktion ab da weiter einliest.
 * @return true, falls der Ablauf der Funktion reibungslos lief
 */
-bool Textauswerter::detection_scores(QString datei, int aktlZeile)
+int Textauswerter::detection_scores(QString datei, int aktlZeile)
 {
     // Die Text-Datei erneuert öffnen
     QFile text (datei);
@@ -264,10 +281,12 @@ bool Textauswerter::detection_scores(QString datei, int aktlZeile)
         // Weitere Zeile einlesen
         datenstrom.readLineInto(&linie,MAXLESEN);
         aktlZeile++;
+        //cout << "detection scores Aktuelle Zeile " << aktlZeile << "/" << anzMaxZeilen << endl;
         if(aktlZeile > anzMaxZeilen+1)
         {
+            //cout << "detection scores Fehler" << endl;
             text.close();
-            return false;
+            return 0;
         }
         // Ausgabe des Inhalts der aktuellen Zeile
 
@@ -301,7 +320,7 @@ bool Textauswerter::detection_scores(QString datei, int aktlZeile)
 * @param [in] aktlZeile hat die Zeilennummer, an der der Cursor in der Schleife in {@link werteAus} steht, so dass diese Funktion ab da weiter einliest.
 * @return true, falls der Ablauf der Funktion reibungslos lief
 */
-bool Textauswerter::detection_boxes(QString datei, int aktlZeile)
+int Textauswerter::detection_boxes(QString datei, int aktlZeile)
 {
     // Die Text-Datei erneuert öffnen
     QFile text (datei);
@@ -318,10 +337,12 @@ bool Textauswerter::detection_boxes(QString datei, int aktlZeile)
         // Weitere Zeile einlesen
         datenstrom.readLineInto(&linie,MAXLESEN);
         aktlZeile++;
+        //cout << "detection boxes Aktuelle Zeile " << aktlZeile << "/" << anzMaxZeilen << endl;
         if(aktlZeile > anzMaxZeilen+1)
         {
+            //cout << "detection boxes Fehler" << endl;
             text.close();
-            return false;
+            return 0;
         }
         // Ausgabe des Inhalts der aktuellen Zeile
 
@@ -354,7 +375,6 @@ bool Textauswerter::detection_boxes(QString datei, int aktlZeile)
     while(!linie.contains("]]"));
     // Die Text-Datei schließen
     text.close();
-
     // Rückgabe
     return true;
 }

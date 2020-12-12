@@ -111,30 +111,39 @@ void Verwalter::messageReceived(std::string msg)
         if(warte())
         {
             // Erkennungsergebnis einlesen und auswerten
-            if(textAuswerter->liesEin(QString(PWD)+QString(TEXTABLAGE))==3)
+            int erg = textAuswerter->liesEin(QString(PWD)+QString(TEXTABLAGE));
+            //std::cout << erg << std::endl;
+            if(erg == 3)
             {
+                //std::cout << "tie" << std::endl;
                 //Rahmen und Mittelpunkt auswerten
                 std::tie(yMin,xMin,yMax,xMax,xMittelpunkt,yMittelpunkt) = textAuswerter->werteAus3(wahl);
+                //std::cout << "setze koordinaten" << std::endl;
                 orientierungsErmittler->setzeKoordinaten(yMin,xMin,yMax,xMax);
 
                 //Ermittle Orientierung
+                //std::cout << "ermittle orientierung" << std::endl;
                 std::tie(erfolg,winkel,breite) = orientierungsErmittler->ermittleOrientierung();
                 if(erfolg == -1)
                 {
-                    std::cout << "fehlermeldung" << std::endl;//fehlermeldung
+                    std::cout << "fehlermeldung - orientierungsermittler" << std::endl;//fehlermeldung
                 }
 
                 //Erzeuge AusschnittErgebnis.csv für Admin Komponente
                 std::ofstream ausschnittErgebnis;
                 ausschnittErgebnis.open(std::string(PWD).append(BILDABLAGE).append("AusschnittErgebnis.csv"));
                 ausschnittErgebnis << msg << ";" << winkel << ";" << breite << ";" << xMittelpunkt << ";" << yMittelpunkt; //ausgewählte Süßigkeit muss übersetzt werden
-                std::cout << "AusschnittErgebnis.csv: " << std::fixed << std::setprecision(1) << msg << ";" << winkel << ";" << breite << ";" << xMittelpunkt << ";" << yMittelpunkt << std::endl;
+                //std::cout << "AusschnittErgebnis.csv: " << std::fixed << std::setprecision(1) << msg << ";" << winkel << ";" << breite << ";" << xMittelpunkt << ";" << yMittelpunkt << std::endl;
                 ausschnittErgebnis.close();
 
                 //Erzeuge Nachrichtenstring für den Roboter
                 std::string ergebnis = std::to_string(xMittelpunkt) + " " + std::to_string(yMittelpunkt) + " " + std::to_string(0) + " " + std::to_string(winkel) + " " + std::to_string(breite);
                 printf("\n%s\n",ergebnis.c_str());
                 sendmessage(ergebnis,"127.0.0.1",5843);
+            }
+            else
+            {
+                std::cout << "fehlermeldung - textauswerter - " << erg << std::endl;
             }
         }
     }
