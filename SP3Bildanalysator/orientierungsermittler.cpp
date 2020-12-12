@@ -3,8 +3,12 @@
 
 OrientierungsErmittler::OrientierungsErmittler(unsigned short morphOpenSize)
 {
+
     this->morphOpenSize = cv::Size(morphOpenSize,morphOpenSize);
-    this->bildPfad.append(PWD).append(BILDABLAGE).append(BILD); //Standardpfad
+    /*Standardwerte*/
+    this->bildPfad.append(PWD).append(BILDABLAGE).append(BILD);
+    this->rahmenFarbe = qColor2CVScalar(QColor(3,128,148));
+    this->rahmenDicke = 16;
 }
 
 int OrientierungsErmittler::setzeKoordinaten(double yMin, double xMin, double yMax, double xMax)
@@ -52,7 +56,7 @@ int OrientierungsErmittler::ladeBild()
 std::tuple<int, double, double> OrientierungsErmittler::ermittleOrientierung()
 {
 
-    double breite = 0;
+    double breite = 0; //TODO aus konfig nehmen
 
     //ladeParameter
 
@@ -160,7 +164,7 @@ std::tuple<int, double, double> OrientierungsErmittler::ermittleOrientierung()
 
     bildAktuelleSzeneRahmen = cv::imread(pfadErgebnis);
 
-    cv::rectangle(bildAktuelleSzeneRahmen,bildInputROI, cv::Scalar(80,126,255),16,cv::LINE_AA); //TODO PARAM: Farbe, Dicke
+    cv::rectangle(bildAktuelleSzeneRahmen, bildInputROI, rahmenFarbe, rahmenDicke, cv::LINE_AA); //TODO PARAM: Farbe, Dicke
 
     cv::imwrite(std::string(PWD).append(BILDABLAGE).append("AktuelleSzeneRahmen.jpg"),bildAktuelleSzeneRahmen); //der weiße Hintergrund wird rausgeschnitten da dieser nur notwendig war um die Kontur richtig einzuzeichnen
     if(!cv::haveImageReader(std::string(PWD).append(BILDABLAGE).append("AktuelleSzeneRahmen.jpg")))
@@ -266,8 +270,9 @@ void OrientierungsErmittler::drawAxis(cv::Mat &img, cv::Point p, cv::Point q, cv
 
 cv::Scalar OrientierungsErmittler::qColor2CVScalar(QColor color)
 {
-    double r,g,b;
-    color.getRgbF(&r, &g, &b);
+    int r,g,b;
+    color.getRgb(&r, &g, &b);
+    std::cout << r << " " << g << " " << b << std::endl;
     return cv::Scalar(b,g,r); // swap RGB-->BGR
 }
 

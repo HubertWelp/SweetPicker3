@@ -98,7 +98,7 @@ private:
     //cv::Mat bildAusschnittBreit, bildAusschnittSchwarzWeissBreit, bildAusschnittSchwarzWeissBearbeitetBreit;
     cv::Point center;
     cv::Rect bildInputROI;
-    QColor *rahmenFarbe;
+    cv::Scalar rahmenFarbe;
     int rahmenDicke;
 
 };
