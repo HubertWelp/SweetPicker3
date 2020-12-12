@@ -32,7 +32,7 @@ void Kamera::nehmeAuf(const char* pfad)
     videostream.release();
 }
 /**
- * @brief Kamera::nehmeAufTest überspringt die kamera und füttert direkt ein bild aus den trainingsdaten
+ * @brief Kamera::nehmeAufTest überspringt die Kamera und übergibt direkt ein Bild aus den Trainingsdaten. nur für Testzwecke.
  * @param pfad
  */
 void Kamera::nehmeAufTest(const char *pfad)
