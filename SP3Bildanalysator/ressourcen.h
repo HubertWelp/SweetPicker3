@@ -19,6 +19,7 @@
 #define ANZSUCHE 10     // Maximale Anzahl der auszusuchenden Elemente (die Indexe der 10 zuerst auftauchenden Klassen werden ermittelt)
 #define BILDBRT 354     // Echte Bildbreite in mm
 #define BILDHHE 274     // Echte Bildhöhe in mm
+#define MAOMBREITE 50
 
 /* Einbindung von Qt Bibliotheken */
 #include <QApplication>
@@ -26,6 +27,7 @@
 #include <QTextStream>
 #include <QString>
 #include <QFileInfo>
+#include <QColor>
 
 /* Einbindung von c Bibliotheken */
 #include <stdio.h>
