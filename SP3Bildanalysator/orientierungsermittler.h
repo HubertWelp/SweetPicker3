@@ -23,12 +23,11 @@ public:
     int setzeKoordinaten(double yMin, double xMin, double yMax, double xMax);
 
     /**
-     * @brief ladeBild eine optionale Methode zum Angeben eines alternativen Pfades für das Bild, welches zur Orientierungsermittlung verwendet werden soll
-     * @param pfad
-     * @return 0 = Methode erfolgreich ausgeführt, -1 = Methode unerfolgreich ausgeführt
+     * @brief setzeBildPfad Methode zum ändern des zu verwendenen Bildpfades, falls es nicht am Standardort liegt.
+     * @param pfad - Pfad für das Bild, welches zur Orientierungsermittlung verwendet werden soll (Absoluter Pfad inklusive Dateiname). Wenn ein Leerer String ("") übergeben wird, wird der Standardpfad wiederhergestellt
+     * @return 0 = wenn ein Bild am angegebenen Pfad gelesen werden kann, -1 = wenn kein Bild am angegebenen Pfad gelesen werden kann
      */
-    inline int ladeBild(const std::string &pfad);
-
+    inline int setzeBildPfad(const std::string &pfad = "");
 
     inline int ladeParameter();
 
@@ -50,15 +49,24 @@ public:
 
 private:
     /**
+     * @brief ladeBild eine optionale Methode zum Angeben eines alternativen
+     * @param pfad
+     * @return 0 = Methode erfolgreich ausgeführt, -1 = Methode unerfolgreich ausgeführt
+     */
+    inline int ladeBild();
+
+    /**
      * @brief ausschnittPOI erzeugt einen Ausschnitt
      * @return
      */
     int ausschnittROI();
+
     /**
      * @brief bearbeiteBild
      * @return
      */
     int bearbeiteBild();
+
     /**
      * @brief drawAxis
      * @param img
@@ -68,12 +76,30 @@ private:
      * @param scale
      */
     void drawAxis(cv::Mat& img, cv::Point p, cv::Point q, cv::Scalar colour, const float scale = 0.2);
+
+    /**
+     * @brief qColor2CVScalar wandelt QColor in cv::Scalar um
+     * @param color QColor was umgewandelt werden soll
+     * @return cv::Scalar Format
+     */
+    cv::Scalar qColor2CVScalar(QColor color);
+
+    /**
+     * @brief cvScalar2QColor wandelt cv::Scalar in QColor um
+     * @param color cv::Scalar was umgewandelt werden soll
+     * @return QColor Format
+     */
+    QColor cvScalar2QColor(cv::Scalar color);
+
     cv::Size morphOpenSize;
     double xMin, xMax, yMin, yMax;
     std::string bildPfad;
-    cv::Mat bildInput, bildAusschnitt, bildAusschnittSchwarzWeiss, bildAusschnittSchwarzWeissBearbeitet;
-    //cv::Mat bildAusschnitGraustufe;
+    cv::Mat bildInput, bildAusschnitt, bildAusschnitGraustufe, bildAusschnittSchwarzWeiss, bildAusschnittSchwarzWeissBearbeitet,bildAktuelleSzeneRahmen;
+    //cv::Mat bildAusschnittBreit, bildAusschnittSchwarzWeissBreit, bildAusschnittSchwarzWeissBearbeitetBreit;
     cv::Point center;
+    cv::Rect bildInputROI;
+    QColor *rahmenFarbe;
+    int rahmenDicke;
 
 };
 

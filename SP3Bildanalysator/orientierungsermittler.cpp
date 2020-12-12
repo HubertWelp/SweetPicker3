@@ -4,6 +4,7 @@
 OrientierungsErmittler::OrientierungsErmittler(unsigned short morphOpenSize)
 {
     this->morphOpenSize = cv::Size(morphOpenSize,morphOpenSize);
+    this->bildPfad.append(PWD).append(BILDABLAGE).append(BILD); //Standardpfad
 }
 
 int OrientierungsErmittler::setzeKoordinaten(double yMin, double xMin, double yMax, double xMax)
@@ -16,21 +17,30 @@ int OrientierungsErmittler::setzeKoordinaten(double yMin, double xMin, double yM
     return 0;
 }
 
-int OrientierungsErmittler::ladeBild(const std::string &pfad = "")
+int OrientierungsErmittler::setzeBildPfad(const std::string &pfad)
 {
 
+    /*Prüfen ob der Pfad zurückgesetzt werden soll*/
     if(pfad.empty())
     {
-        bildPfad.clear();
-        bildPfad.append(PWD).append(BILDABLAGE).append(BILD); //Standardpfad
+        this->bildPfad.append(PWD).append(BILDABLAGE).append(BILD); //Standardpfad
+        return 0;
+    }
 
+    /*Prüfen ob der angegebene Pfad gültig ist, also ein Bild enthält*/
+    if(!cv::haveImageReader(pfad))
+    {
+        return 1; //Bild kann von opencv nicht dekodiert werden (korrupt oder nicht vorhanden)
     }else
     {
-        bildPfad.clear();
-        bildPfad.append(pfad); //Manueller Pfad
+        bildPfad = pfad;
+        return 0;
     }
-    //std::cout << "bildpfad: " << bildPfad << std::endl;
-    bildInput = imread(bildPfad , cv::IMREAD_COLOR);
+}
+
+int OrientierungsErmittler::ladeBild()
+{
+    bildInput = imread(bildPfad, cv::IMREAD_COLOR);
     if(bildInput.empty())
     {
         std::cout << "error bildInput" << std::endl;
@@ -42,6 +52,7 @@ int OrientierungsErmittler::ladeBild(const std::string &pfad = "")
 std::tuple<int, double, double> OrientierungsErmittler::ermittleOrientierung()
 {
 
+    double breite = 0;
 
     //ladeParameter
 
@@ -51,17 +62,16 @@ std::tuple<int, double, double> OrientierungsErmittler::ermittleOrientierung()
     }
     if(this->ausschnittROI() != 0)
     {
-        return std::make_tuple(-1,0,0);
+        return std::make_tuple(-2,0,0);
     }
     if(this->bearbeiteBild() != 0)
     {
-        return std::make_tuple(-1,0,0);
+        return std::make_tuple(-3,0,0);
     }
 
     std::vector<std::vector<cv::Point>> contours;
     cv::Mat contourOutput = bildAusschnittSchwarzWeissBearbeitet.clone();
     cv::findContours(contourOutput, contours, cv::RETR_LIST, cv::CHAIN_APPROX_NONE);
-    cv::Mat contourImage(bildAusschnittSchwarzWeissBearbeitet.size(), CV_8UC3, cv::Scalar(255,255,255));
 
     //Findet die zweitgrößte Fläche und seinen Index im Kontur Feld. Die größte Fläche entspricht der Bildfläche, die zweitgrößte Fläche entspricht mit sehr hoher Wahrscheinlichkeit der gesuchten Fläche
 
@@ -80,9 +90,6 @@ std::tuple<int, double, double> OrientierungsErmittler::ermittleOrientierung()
             largestAreaIDX = i;
         }
     }
-
-    //std::cout << "largest area: " << cv::contourArea(contours[secondlargestAreaIDX]) << std::endl;
-    cv::drawContours(contourImage, contours, secondlargestAreaIDX, cv::Scalar(0,0,255),4);
 
     //Da die Schwarzweiß Bilder einen vergrößerten Hintergrundbekommen haben muss dies beim Zeichnen der Kontur berücksichtigt werden.
     cv::Mat bildAusschnittBreit = cv::Mat::zeros(bildAusschnitt.size().height + 100 , bildAusschnitt.size().width + 100, CV_8UC3);
@@ -139,10 +146,27 @@ std::tuple<int, double, double> OrientierungsErmittler::ermittleOrientierung()
 
     if(!cv::haveImageReader(std::string(PWD).append(BILDABLAGE).append("AusschnittErgebnis.jpg")))
     {
-        return std::make_tuple(-1,0,0); //gespeicherte Bilder können von opencv nicht dekodiert werden (korrupt)
+        return std::make_tuple(-4,angle,breite); //gespeichertes Bild kann von opencv nicht dekodiert werden (korrupt)
     }
 
-    double breite = 0;
+
+    std::string pfadErgebnis = std::string(PWD).append(BILDABLAGE).append("gefundeneObjekte.jpg");
+
+    /*Prüfen ob der Pfad ein Bild enthält*/
+    if(!cv::haveImageReader(pfadErgebnis))
+    {
+        return std::make_tuple(-5,angle,breite);
+    }
+
+    bildAktuelleSzeneRahmen = cv::imread(pfadErgebnis);
+
+    cv::rectangle(bildAktuelleSzeneRahmen,bildInputROI, cv::Scalar(80,126,255),16,cv::LINE_AA); //TODO PARAM: Farbe, Dicke
+
+    cv::imwrite(std::string(PWD).append(BILDABLAGE).append("AktuelleSzeneRahmen.jpg"),bildAktuelleSzeneRahmen); //der weiße Hintergrund wird rausgeschnitten da dieser nur notwendig war um die Kontur richtig einzuzeichnen
+    if(!cv::haveImageReader(std::string(PWD).append(BILDABLAGE).append("AktuelleSzeneRahmen.jpg")))
+    {
+        return std::make_tuple(-6,angle,breite); //gespeichertes Bild kann von opencv nicht dekodiert werden (korrupt)
+    }
 
     //std::cout << "grad: " << angle<< std::endl;
     return std::make_tuple(0,angle,breite);
@@ -150,43 +174,40 @@ std::tuple<int, double, double> OrientierungsErmittler::ermittleOrientierung()
 
 int OrientierungsErmittler::ausschnittROI()
 {
-    cv::Rect ROI;
-
     if(xMin < 1 && xMax < 1 && yMin < 1 && yMax < 1)
     {
         //Umrechnung und Rundung von normalisierten Koordinaten auf absoulte Koordinaten bezogen auf bildInput
-        ROI.x = static_cast<int>((bildInput.size().width * xMin) + 0.5);
-        ROI.y = static_cast<int>((bildInput.size().height * yMin) + 0.5);
-        ROI.width = static_cast<int>((bildInput.size().width * (xMax-xMin) + 0.5));
-        ROI.height = static_cast<int>((bildInput.size().height * (yMax-yMin) + 0.5));
+        bildInputROI.x = static_cast<int>((bildInput.size().width * xMin) + 0.5);
+        bildInputROI.y = static_cast<int>((bildInput.size().height * yMin) + 0.5);
+        bildInputROI.width = static_cast<int>((bildInput.size().width * (xMax-xMin) + 0.5));
+        bildInputROI.height = static_cast<int>((bildInput.size().height * (yMax-yMin) + 0.5));
     }
     else
     {
         //Falls Koordinaten nicht normalisiert angegeben werden und somit nicht umgerechnet werden müssen
-        ROI.x = static_cast<int>(xMin);
-        ROI.y = static_cast<int>(yMin);
-        ROI.width = static_cast<int>(xMax-xMin);
-        ROI.height = static_cast<int>(yMax-yMin);
+        bildInputROI.x = static_cast<int>(xMin);
+        bildInputROI.y = static_cast<int>(yMin);
+        bildInputROI.width = static_cast<int>(xMax-xMin);
+        bildInputROI.height = static_cast<int>(yMax-yMin);
     }
 
-    if(ROI.x == ROI.width || ROI.y == ROI.height) return -1; //Ungültiger Rahmen (Koordinaten liegen auf einer 0px breiten/hohen Linie oder auf einem Punkt
+    if(bildInputROI.x == bildInputROI.width || bildInputROI.y == bildInputROI.height) return -1; //Ungültiger Rahmen (Koordinaten liegen auf einer 0px breiten/hohen Linie oder auf einem Punkt
 
 
     //std::cout << "ROI.x = " << ROI.x << " ROI.y = " << ROI.y << " ROI.width = " << ROI.width << " ROI.height = " << ROI.height << " BildBreite = " << bildInput.size().width << " Bildhöhe = " << bildInput.size().height << std::endl;
 
-    bildAusschnitt = bildInput(ROI);
+    bildAusschnitt = bildInput(bildInputROI);
     if(bildAusschnitt.empty())
     {
         return -2;
     }
 
     //cv::imwrite(std::string(PWD).append(BILDABLAGE).append("Ausschnitt2.jpg"),cv::imread("/home/Student/git/SP3/SweetPicker3/SP3Bildanalysator/SP3Bilderkennung/gefundeneObjekte.jpg",cv::IMREAD_COLOR)(ROI));
-    cv::Mat bildAusschnitGraustufe;
 
     cv::imwrite(std::string(PWD).append(BILDABLAGE).append("Ausschnitt.jpg"),bildAusschnitt);
     cvtColor(bildAusschnitt,bildAusschnitGraustufe,cv::COLOR_BGR2GRAY);
 
-    threshold(bildAusschnitGraustufe,bildAusschnittSchwarzWeiss,164,255,cv::THRESH_BINARY);
+    threshold(bildAusschnitGraustufe,bildAusschnittSchwarzWeiss,164,255,cv::THRESH_BINARY);//TODO PARAM
 
     cv::Mat bildAusschnittBreit = cv::Mat::zeros(bildAusschnitt.size().height + 100 , bildAusschnitt.size().width + 100, CV_8UC1);
     bildAusschnittBreit.setTo(cv::Scalar(255,255,255));
@@ -208,13 +229,7 @@ int OrientierungsErmittler::ausschnittROI()
 
 int OrientierungsErmittler::bearbeiteBild()
 {
-    //cv::Mat bildAusschnittSchwarzWeissBearbeitet;
-    //cv::erode(bildAusschnittSchwarzWeiss,bildAusschnittSchwarzWeissBearbeitet,cv::getStructuringElement(cv::MORPH_ELLIPSE,erodeSize));
-
-
     cv::morphologyEx(bildAusschnittSchwarzWeiss,bildAusschnittSchwarzWeissBearbeitet,cv::MORPH_OPEN, cv::getStructuringElement(cv::MORPH_ELLIPSE,morphOpenSize)); //remove noise
-    //cv::dilate(bildAusschnittSchwarzWeissBearbeitet,bildAusschnittSchwarzWeissBearbeitet,cv::getStructuringElement(cv::MORPH_ELLIPSE,morphOpenSize));
-
     cv::imwrite(std::string(PWD).append(BILDABLAGE).append("AusschnittSWprocessed.jpg"),bildAusschnittSchwarzWeissBearbeitet(cv::Rect(50,50,bildAusschnitt.cols, bildAusschnitt.rows)));
 
     if(!cv::haveImageReader(std::string(PWD).append(BILDABLAGE).append("AusschnittSWprocessed.jpg")))
@@ -229,22 +244,34 @@ int OrientierungsErmittler::bearbeiteBild()
 
 void OrientierungsErmittler::drawAxis(cv::Mat &img, cv::Point p, cv::Point q, cv::Scalar colour, const float scale)
 {
-        //! [visualization1]
-        double angle = atan2(static_cast<double>(p.y - q.y), static_cast<int>(p.x - q.x)); // angle in radians
-        double hypotenuse = sqrt(static_cast<double>(p.y - q.y) * (p.y - q.y) + (p.x - q.x) * (p.x - q.x));
+    //! [visualization]
+    double angle = atan2(static_cast<double>(p.y - q.y), static_cast<int>(p.x - q.x)); // angle in radians
+    double hypotenuse = sqrt(static_cast<double>(p.y - q.y) * (p.y - q.y) + (p.x - q.x) * (p.x - q.x));
 
-        // Here we lengthen the arrow by a factor of scale
-        q.x = static_cast<int>(p.x - scale * hypotenuse * cos(angle));
-        q.y = static_cast<int>(p.y - scale * hypotenuse * sin(angle));
-        line(img, p, q, colour, 3, cv::LINE_AA);
+    // Here we lengthen the arrow by a factor of scale
+    q.x = static_cast<int>(p.x - scale * hypotenuse * cos(angle));
+    q.y = static_cast<int>(p.y - scale * hypotenuse * sin(angle));
+    line(img, p, q, colour, 3, cv::LINE_AA);
 
-        // create the arrow hooks
-        p.x = static_cast<int>(q.x + 9 * cos(angle + CV_PI / 4));
-        p.y = static_cast<int>(q.y + 9 * sin(angle + CV_PI / 4));
-        line(img, p, q, colour, 3, cv::LINE_AA);
+    // create the arrow hooks
+    p.x = static_cast<int>(q.x + 9 * cos(angle + CV_PI / 4));
+    p.y = static_cast<int>(q.y + 9 * sin(angle + CV_PI / 4));
+    line(img, p, q, colour, 3, cv::LINE_AA);
 
-        p.x = static_cast<int>(q.x + 9 * cos(angle - CV_PI / 4));
-        p.y = static_cast<int>(q.y + 9 * sin(angle - CV_PI / 4));
-        line(img, p, q, colour, 3, cv::LINE_AA);
-        //! [visualization1]
+    p.x = static_cast<int>(q.x + 9 * cos(angle - CV_PI / 4));
+    p.y = static_cast<int>(q.y + 9 * sin(angle - CV_PI / 4));
+    line(img, p, q, colour, 3, cv::LINE_AA);
+    //! [visualization]
+}
+
+cv::Scalar OrientierungsErmittler::qColor2CVScalar(QColor color)
+{
+    double r,g,b;
+    color.getRgbF(&r, &g, &b);
+    return cv::Scalar(b,g,r); // swap RGB-->BGR
+}
+
+QColor OrientierungsErmittler::cvScalar2QColor(cv::Scalar color)
+{
+    return QColor(color[2],color[1],color[0]); // swap RGB-->BGR
 }
