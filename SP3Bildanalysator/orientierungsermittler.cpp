@@ -176,6 +176,53 @@ std::tuple<int, double, double> OrientierungsErmittler::ermittleOrientierung()
     return std::make_tuple(0,angle,breite);
 }
 
+int OrientierungsErmittler::setzeRahmen(QColor farbe, unsigned int dicke)
+{
+    this->rahmenFarbe = qColor2CVScalar(farbe);
+    this->rahmenDicke = dicke;
+    return 0;
+}
+
+int OrientierungsErmittler::setzeRahmen(cv::Scalar farbe, unsigned int dicke)
+{
+    this->rahmenFarbe = farbe;
+    this->rahmenDicke = dicke;
+    return 0;
+}
+
+int OrientierungsErmittler::setzeRahmenFarbe(QColor farbe)
+{
+    this->rahmenFarbe = qColor2CVScalar(farbe);
+    return 0;
+}
+
+int OrientierungsErmittler::setzeRahmenFarbe(cv::Scalar farbe)
+{
+    this->rahmenFarbe = farbe;
+    return 0;
+}
+
+int OrientierungsErmittler::setzeRahmenDicke(unsigned int dicke)
+{
+    this->rahmenDicke = dicke;
+    return 0;
+}
+
+QColor OrientierungsErmittler::getRahmenFarbeQColor()
+{
+    return cvScalar2QColor(rahmenFarbe);
+}
+
+cv::Scalar OrientierungsErmittler::getRahmenFarbeCVScalar()
+{
+    return rahmenFarbe;
+}
+
+unsigned int OrientierungsErmittler::getRahmenDicke()
+{
+    return rahmenDicke;
+}
+
 int OrientierungsErmittler::ausschnittROI()
 {
     if(xMin < 1 && xMax < 1 && yMin < 1 && yMax < 1)
@@ -272,7 +319,7 @@ cv::Scalar OrientierungsErmittler::qColor2CVScalar(QColor color)
 {
     int r,g,b;
     color.getRgb(&r, &g, &b);
-    std::cout << r << " " << g << " " << b << std::endl;
+    //std::cout << r << " " << g << " " << b << std::endl;
     return cv::Scalar(b,g,r); // swap RGB-->BGR
 }
 

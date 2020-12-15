@@ -45,6 +45,61 @@ public:
      */
     std::tuple<int, double, double> ermittleOrientierung();
 
+    /**
+     * @brief setzeRahmen beeinflusst die Farbe und Dicke des Rahmens in AktuelleSzeneRahmen.jpg
+     * @param farbe im QColor Format
+     * @param dicke
+     * @return 0 = Methode erfolgreich ausgeführt, -1 = Methode unerfolgreich ausgeführt
+     */
+    int setzeRahmen(QColor farbe, unsigned int dicke);
+
+    /**
+     * @brief setzeRahmen beeinflusst die Farbe und Dicke des Rahmens in AktuelleSzeneRahmen.jpg
+     * @param farbe im cv::Scalar Format
+     * @param dicke
+     * @return 0 = Methode erfolgreich ausgeführt, -1 = Methode unerfolgreich ausgeführt
+     */
+    int setzeRahmen(cv::Scalar farbe, unsigned int dicke);
+
+    /**
+     * @brief setzeRahmenFarbe beeinflusst die Farbe des Rahmens in AktuelleSzeneRahmen.jpg
+     * @param farbe im QColor Format
+     * @return 0 = Methode erfolgreich ausgeführt, -1 = Methode unerfolgreich ausgeführt
+     */
+    int setzeRahmenFarbe(QColor farbe);
+
+    /**
+     * @brief setzeRahmenFarbe beeinflusst die Farbe des Rahmens in AktuelleSzeneRahmen.jpg
+     * @param farbe cv::Scalar Format
+     * @return 0 = Methode erfolgreich ausgeführt, -1 = Methode unerfolgreich ausgeführt
+     */
+    int setzeRahmenFarbe(cv::Scalar farbe);
+
+    /**
+     * @brief setzeRahmenDicke beeinflusst die Dicke des Rahmens in AktuelleSzeneRahmen.jpg
+     * @param dicke
+     * @return 0 = Methode erfolgreich ausgeführt, -1 = Methode unerfolgreich ausgeführt
+     */
+    int setzeRahmenDicke(unsigned int dicke);
+
+    /**
+     * @brief getRahmenFarbeQColor
+     * @return die Farbe des Rahmens in AktuelleSzeneRahmen.jpg im QColor Format
+     */
+    QColor getRahmenFarbeQColor();
+
+    /**
+     * @brief getRahmenFarbeCVScalar
+     * @return die Farbe des Rahmens in AktuelleSzeneRahmen.jpg im CVScalar Format
+     */
+    cv::Scalar getRahmenFarbeCVScalar();
+
+    /**
+     * @brief getRahmenDicke
+     * @return die Dicke des Rahmens in AktuelleSzeneRahmen.jpg
+     */
+    unsigned int getRahmenDicke();
+
     ~OrientierungsErmittler();
 
 private:
@@ -99,7 +154,7 @@ private:
     cv::Point center;
     cv::Rect bildInputROI;
     cv::Scalar rahmenFarbe;
-    int rahmenDicke;
+    unsigned int rahmenDicke;
 
 };
 
