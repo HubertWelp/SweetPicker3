@@ -98,6 +98,7 @@ void Verwalter::messageReceived(std::string msg)
         char* pfad = new char [256];
         strcpy(pfad,BILDABLAGE);
         strcat(pfad,BILD);
+        cam->setzeKameraID(1);
         cam->nehmeAufTest(pfad);
         delete [] pfad;
         //std::this_thread::sleep_for(std::chrono::milliseconds(200));
@@ -131,7 +132,7 @@ void Verwalter::messageReceived(std::string msg)
 
                 //Erzeuge AusschnittErgebnis.csv für Admin Komponente
                 std::ofstream ausschnittErgebnis;
-                ausschnittErgebnis.open(std::string(PWD).append(BILDABLAGE).append("AusschnittErgebnis.csv"));
+                ausschnittErgebnis.open(std::string(PWD).append(BILDABLAGE).append("ausschnittErgebnis.csv"));
                 ausschnittErgebnis << msg << ";" << winkel << ";" << breite << ";" << xMittelpunkt << ";" << yMittelpunkt; //ausgewählte Süßigkeit muss übersetzt werden
                 //std::cout << "AusschnittErgebnis.csv: " << std::fixed << std::setprecision(1) << msg << ";" << winkel << ";" << breite << ";" << xMittelpunkt << ";" << yMittelpunkt << std::endl;
                 ausschnittErgebnis.close();
