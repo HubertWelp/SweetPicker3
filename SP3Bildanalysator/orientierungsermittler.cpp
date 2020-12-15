@@ -146,9 +146,9 @@ std::tuple<int, double, double> OrientierungsErmittler::ermittleOrientierung()
     drawAxis(bildAusschnittBreit, center, p2, cv::Scalar(255, 255, 0), 2);
 
 
-    cv::imwrite(std::string(PWD).append(BILDABLAGE).append("AusschnittErgebnis.jpg"),bildAusschnittBreit(ROI)); //der weiße Hintergrund wird rausgeschnitten da dieser nur notwendig war um die Kontur richtig einzuzeichnen
+    cv::imwrite(std::string(PWD).append(BILDABLAGE).append("ausschnittErgebnis.jpg"),bildAusschnittBreit(ROI)); //der weiße Hintergrund wird rausgeschnitten da dieser nur notwendig war um die Kontur richtig einzuzeichnen
 
-    if(!cv::haveImageReader(std::string(PWD).append(BILDABLAGE).append("AusschnittErgebnis.jpg")))
+    if(!cv::haveImageReader(std::string(PWD).append(BILDABLAGE).append("ausschnittErgebnis.jpg")))
     {
         return std::make_tuple(-4,angle,breite); //gespeichertes Bild kann von opencv nicht dekodiert werden (korrupt)
     }
@@ -166,8 +166,8 @@ std::tuple<int, double, double> OrientierungsErmittler::ermittleOrientierung()
 
     cv::rectangle(bildAktuelleSzeneRahmen, bildInputROI, rahmenFarbe, rahmenDicke, cv::LINE_AA); //TODO PARAM: Farbe, Dicke
 
-    cv::imwrite(std::string(PWD).append(BILDABLAGE).append("AktuelleSzeneRahmen.jpg"),bildAktuelleSzeneRahmen); //der weiße Hintergrund wird rausgeschnitten da dieser nur notwendig war um die Kontur richtig einzuzeichnen
-    if(!cv::haveImageReader(std::string(PWD).append(BILDABLAGE).append("AktuelleSzeneRahmen.jpg")))
+    cv::imwrite(std::string(PWD).append(BILDABLAGE).append("aktuelleSzeneRahmen.jpg"),bildAktuelleSzeneRahmen); //der weiße Hintergrund wird rausgeschnitten da dieser nur notwendig war um die Kontur richtig einzuzeichnen
+    if(!cv::haveImageReader(std::string(PWD).append(BILDABLAGE).append("aktuelleSzeneRahmen.jpg")))
     {
         return std::make_tuple(-6,angle,breite); //gespeichertes Bild kann von opencv nicht dekodiert werden (korrupt)
     }
@@ -253,9 +253,9 @@ int OrientierungsErmittler::ausschnittROI()
         return -2;
     }
 
-    //cv::imwrite(std::string(PWD).append(BILDABLAGE).append("Ausschnitt2.jpg"),cv::imread("/home/Student/git/SP3/SweetPicker3/SP3Bildanalysator/SP3Bilderkennung/gefundeneObjekte.jpg",cv::IMREAD_COLOR)(ROI));
+    //cv::imwrite(std::string(PWD).append(BILDABLAGE).append("ausschnitt2.jpg"),cv::imread("/home/Student/git/SP3/SweetPicker3/SP3Bildanalysator/SP3Bilderkennung/gefundeneObjekte.jpg",cv::IMREAD_COLOR)(ROI));
 
-    cv::imwrite(std::string(PWD).append(BILDABLAGE).append("Ausschnitt.jpg"),bildAusschnitt);
+    cv::imwrite(std::string(PWD).append(BILDABLAGE).append("ausschnitt.jpg"),bildAusschnitt);
     cvtColor(bildAusschnitt,bildAusschnitGraustufe,cv::COLOR_BGR2GRAY);
 
     threshold(bildAusschnitGraustufe,bildAusschnittSchwarzWeiss,164,255,cv::THRESH_BINARY);//TODO PARAM
@@ -265,9 +265,9 @@ int OrientierungsErmittler::ausschnittROI()
     bildAusschnittSchwarzWeiss.copyTo(bildAusschnittBreit(cv::Rect(50,50,bildAusschnittSchwarzWeiss.cols, bildAusschnittSchwarzWeiss.rows)));
 
     bildAusschnittBreit.copyTo(bildAusschnittSchwarzWeiss);
-    cv::imwrite(std::string(PWD).append(BILDABLAGE).append("AusschnittSW.jpg"),bildAusschnittSchwarzWeiss(cv::Rect(50,50,bildAusschnitt.cols, bildAusschnitt.rows)));
+    cv::imwrite(std::string(PWD).append(BILDABLAGE).append("ausschnittSW.jpg"),bildAusschnittSchwarzWeiss(cv::Rect(50,50,bildAusschnitt.cols, bildAusschnitt.rows)));
 
-    if(!cv::haveImageReader(std::string(PWD).append(BILDABLAGE).append("Ausschnitt.jpg")) || !cv::haveImageReader(std::string(PWD).append(BILDABLAGE).append("AusschnittSW.jpg")))
+    if(!cv::haveImageReader(std::string(PWD).append(BILDABLAGE).append("ausschnitt.jpg")) || !cv::haveImageReader(std::string(PWD).append(BILDABLAGE).append("ausschnittSW.jpg")))
     {
         return -3; //gespeicherte Bilder können von opencv nicht dekodiert werden (korrupt)
     }
@@ -281,9 +281,9 @@ int OrientierungsErmittler::ausschnittROI()
 int OrientierungsErmittler::bearbeiteBild()
 {
     cv::morphologyEx(bildAusschnittSchwarzWeiss,bildAusschnittSchwarzWeissBearbeitet,cv::MORPH_OPEN, cv::getStructuringElement(cv::MORPH_ELLIPSE,morphOpenSize)); //remove noise
-    cv::imwrite(std::string(PWD).append(BILDABLAGE).append("AusschnittSWprocessed.jpg"),bildAusschnittSchwarzWeissBearbeitet(cv::Rect(50,50,bildAusschnitt.cols, bildAusschnitt.rows)));
+    cv::imwrite(std::string(PWD).append(BILDABLAGE).append("ausschnittSWprocessed.jpg"),bildAusschnittSchwarzWeissBearbeitet(cv::Rect(50,50,bildAusschnitt.cols, bildAusschnitt.rows)));
 
-    if(!cv::haveImageReader(std::string(PWD).append(BILDABLAGE).append("AusschnittSWprocessed.jpg")))
+    if(!cv::haveImageReader(std::string(PWD).append(BILDABLAGE).append("ausschnittSWprocessed.jpg")))
     {
         return -1; //gespeichertes Bild kann von opencv nicht dekodiert werden (korrupt)
     }
