@@ -129,17 +129,10 @@ std::tuple<int, double, double> OrientierungsErmittler::ermittleOrientierung()
         eigenVals[i] = pcaAnalysis.eigenvalues.at<double>(i);
     }
 
+    /*Winkelberechnung*/
     double angle = atan2(eigenVecs[0].y, eigenVecs[0].x) * (180/CV_PI);
-    if(angle > 90)
-    {
-        angle = 450 - angle;
-    }
-    else
-    {
-        angle = 90 - angle;
-    }
 
-    //blau entspricht winkel
+    //Winkel entspricht der Richtung vom blauen Pfeil, Orientierung ist manchmal gedreht.
     cv::Point p1 = center + 0.02 * cv::Point(static_cast<int>(eigenVecs[0].x * eigenVals[0]), static_cast<int>(eigenVecs[0].y * eigenVals[0]));
     cv::Point p2 = center - 0.02 * cv::Point(static_cast<int>(eigenVecs[1].x * eigenVals[1]), static_cast<int>(eigenVecs[1].y * eigenVals[1]));
     drawAxis(bildAusschnittBreit, center, p1, cv::Scalar(0, 255, 0), 1);
