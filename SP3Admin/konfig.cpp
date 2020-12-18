@@ -1,18 +1,12 @@
 #include "konfig.h"
 
+#include <iostream>
+#include <QTextStream>
+
 Konfig::Konfig(QString pfad)
 {
     dateipfad=pfad;
-
 }
-
-
-//QSettings settings("/home/Student/LJE/SP3AdminTest/konfig.ini",QSettings::IniFormat);
-//settings.beginGroup("Parameter");
-//QColor c = settings.value("boxfarbe").value<QColor>();
-//settings.endGroup();
-
-
 
 QString Konfig::getObjektname(int nr)
 {
@@ -64,7 +58,7 @@ QColor Konfig::getRahmenfarbe()
     QSettings settings(dateipfad,QSettings::IniFormat);
     QColor c;
     settings.beginGroup("Parameter");
-    if(settings.contains("rahmenfarbe") && settings.status()==0)
+    if(settings.contains("rahmenfarbe"))
     {
         c = settings.value("rahmenfarbe").value<QColor>();
     }
@@ -112,44 +106,44 @@ QString KonfigAdmin::getPasswort()
 
 int KonfigAdmin::setRahmenfarbe(QColor farbe)
 {
-//    QSettings settings(dateipfad,QSettings::IniFormat);
-//    settings.beginGroup("Parameter");
-//    settings.setValue("rahmenfarbe",farbe);
-//    settings.endGroup();
-//    if(settings.status()==0) return 0;
-//    else return -1;
-    return 0;
+    QTextStream out(stdout);
+    out << dateipfad << endl;
+
+    QSettings settings(dateipfad,QSettings::IniFormat);
+    settings.beginGroup("Parameter");
+    settings.setValue("rahmenfarbe",farbe.name());
+    settings.endGroup();
+    settings.sync();
+    if(settings.status()==0) return 0;
+    else return -1;
 }
 
 int KonfigAdmin::setErode(int input)
 {
-//    QSettings settings(dateipfad,QSettings::IniFormat);
-//    settings.beginGroup("Parameter");
-//    settings.setValue("erode",input);
-//    settings.endGroup();
-//    if(settings.status()==0) return 0;
-//    else return -1;
-    return 0;
+    QSettings settings(dateipfad,QSettings::IniFormat);
+    settings.beginGroup("Parameter");
+    settings.setValue("erode",input);
+    settings.endGroup();
+    if(settings.status()==0) return 0;
+    else return -1;
 }
 
 int KonfigAdmin::setDillate(int input)
 {
-//    QSettings settings(dateipfad,QSettings::IniFormat);
-//    settings.beginGroup("Parameter");
-//    settings.setValue("dillate",input);
-//    settings.endGroup();
-//    if(settings.status()==0) return 0;
-//    else return -1;
-    return 0;
+    QSettings settings(dateipfad,QSettings::IniFormat);
+    settings.beginGroup("Parameter");
+    settings.setValue("dillate",input);
+    settings.endGroup();
+    if(settings.status()==0) return 0;
+    else return -1;
 }
 
 int KonfigAdmin::setKameraID(int input)
 {
-//    QSettings settings(dateipfad,QSettings::IniFormat);
-//    settings.beginGroup("Kamera");
-//    settings.setValue("id",input);
-//    settings.endGroup();
-//    if(settings.status()==0) return 0;
-//    else return -1;
-    return 0;
+    QSettings settings(dateipfad,QSettings::IniFormat);
+    settings.beginGroup("Kamera");
+    settings.setValue("id",input);
+    settings.endGroup();
+    if(settings.status()==0) return 0;
+    else return -1;
 }

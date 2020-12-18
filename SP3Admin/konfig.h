@@ -3,9 +3,7 @@
 
 #include <QSettings>              // Für das Speichern und Laden der konfig.ini Datei
 #include <QColor>                 //RGB string (such as "#112233")
-
-//#define format "QSettings::IniFormat"
-//#define pfad "/home/Student/LJE/SP3AdminTest/konfig.ini"
+#include <QStandardPaths>
 
 
 /** @class Konfig
@@ -18,10 +16,12 @@
 class Konfig
 {
 public:
-    /*Konstruktor Methode*/
-    Konfig(QString pfad = ":/konfig.ini");
-
-    /*Getter- und Setter-Methoden*/
+    /** @brief construktor
+    *
+    * Erstellt ein Objekt der Klasse.
+    *
+    */
+    Konfig(QString pfad = QStandardPaths::writableLocation(QStandardPaths::ConfigLocation)+"/"+"konfig.ini");
 
     /** @brief Gibt Name eines Objekts aus
     *
@@ -87,7 +87,12 @@ private:
 class KonfigAdmin: public Konfig
 {
 public:
-    KonfigAdmin(QString pfad = ":/konfig.ini");
+    /** @brief construktor
+    *
+    * Erstellt ein Objekt der Klasse.
+    *
+    */
+    KonfigAdmin(QString pfad = QStandardPaths::writableLocation(QStandardPaths::ConfigLocation)+"/"+"konfig.ini");
 
     /** @brief Stellt das gespeicherte Passwort zur Verfügung
     *
