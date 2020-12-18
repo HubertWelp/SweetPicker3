@@ -129,26 +129,19 @@ std::tuple<int, double, double> OrientierungsErmittler::ermittleOrientierung()
         eigenVals[i] = pcaAnalysis.eigenvalues.at<double>(i);
     }
 
+    /*Winkelberechnung*/
     double angle = atan2(eigenVecs[0].y, eigenVecs[0].x) * (180/CV_PI);
-    if(angle > 90)
-    {
-        angle = 450 - angle;
-    }
-    else
-    {
-        angle = 90 - angle;
-    }
 
-    //blau entspricht winkel
+    //Winkel entspricht der Richtung vom blauen Pfeil, Orientierung ist manchmal gedreht.
     cv::Point p1 = center + 0.02 * cv::Point(static_cast<int>(eigenVecs[0].x * eigenVals[0]), static_cast<int>(eigenVecs[0].y * eigenVals[0]));
     cv::Point p2 = center - 0.02 * cv::Point(static_cast<int>(eigenVecs[1].x * eigenVals[1]), static_cast<int>(eigenVecs[1].y * eigenVals[1]));
     drawAxis(bildAusschnittBreit, center, p1, cv::Scalar(0, 255, 0), 1);
     drawAxis(bildAusschnittBreit, center, p2, cv::Scalar(255, 255, 0), 2);
 
 
-    cv::imwrite(std::string(PWD).append(BILDABLAGE).append("AusschnittErgebnis.jpg"),bildAusschnittBreit(ROI)); //der weiße Hintergrund wird rausgeschnitten da dieser nur notwendig war um die Kontur richtig einzuzeichnen
+    cv::imwrite(std::string(PWD).append(BILDABLAGE).append("ausschnittErgebnis.jpg"),bildAusschnittBreit(ROI)); //der weiße Hintergrund wird rausgeschnitten da dieser nur notwendig war um die Kontur richtig einzuzeichnen
 
-    if(!cv::haveImageReader(std::string(PWD).append(BILDABLAGE).append("AusschnittErgebnis.jpg")))
+    if(!cv::haveImageReader(std::string(PWD).append(BILDABLAGE).append("ausschnittErgebnis.jpg")))
     {
         return std::make_tuple(-4,angle,breite); //gespeichertes Bild kann von opencv nicht dekodiert werden (korrupt)
     }
@@ -166,14 +159,61 @@ std::tuple<int, double, double> OrientierungsErmittler::ermittleOrientierung()
 
     cv::rectangle(bildAktuelleSzeneRahmen, bildInputROI, rahmenFarbe, rahmenDicke, cv::LINE_AA); //TODO PARAM: Farbe, Dicke
 
-    cv::imwrite(std::string(PWD).append(BILDABLAGE).append("AktuelleSzeneRahmen.jpg"),bildAktuelleSzeneRahmen); //der weiße Hintergrund wird rausgeschnitten da dieser nur notwendig war um die Kontur richtig einzuzeichnen
-    if(!cv::haveImageReader(std::string(PWD).append(BILDABLAGE).append("AktuelleSzeneRahmen.jpg")))
+    cv::imwrite(std::string(PWD).append(BILDABLAGE).append("aktuelleSzeneRahmen.jpg"),bildAktuelleSzeneRahmen); //der weiße Hintergrund wird rausgeschnitten da dieser nur notwendig war um die Kontur richtig einzuzeichnen
+    if(!cv::haveImageReader(std::string(PWD).append(BILDABLAGE).append("aktuelleSzeneRahmen.jpg")))
     {
         return std::make_tuple(-6,angle,breite); //gespeichertes Bild kann von opencv nicht dekodiert werden (korrupt)
     }
 
     //std::cout << "grad: " << angle<< std::endl;
     return std::make_tuple(0,angle,breite);
+}
+
+int OrientierungsErmittler::setzeRahmen(QColor farbe, unsigned int dicke)
+{
+    this->rahmenFarbe = qColor2CVScalar(farbe);
+    this->rahmenDicke = dicke;
+    return 0;
+}
+
+int OrientierungsErmittler::setzeRahmen(cv::Scalar farbe, unsigned int dicke)
+{
+    this->rahmenFarbe = farbe;
+    this->rahmenDicke = dicke;
+    return 0;
+}
+
+int OrientierungsErmittler::setzeRahmenFarbe(QColor farbe)
+{
+    this->rahmenFarbe = qColor2CVScalar(farbe);
+    return 0;
+}
+
+int OrientierungsErmittler::setzeRahmenFarbe(cv::Scalar farbe)
+{
+    this->rahmenFarbe = farbe;
+    return 0;
+}
+
+int OrientierungsErmittler::setzeRahmenDicke(unsigned int dicke)
+{
+    this->rahmenDicke = dicke;
+    return 0;
+}
+
+QColor OrientierungsErmittler::getRahmenFarbeQColor()
+{
+    return cvScalar2QColor(rahmenFarbe);
+}
+
+cv::Scalar OrientierungsErmittler::getRahmenFarbeCVScalar()
+{
+    return rahmenFarbe;
+}
+
+unsigned int OrientierungsErmittler::getRahmenDicke()
+{
+    return rahmenDicke;
 }
 
 int OrientierungsErmittler::ausschnittROI()
@@ -206,9 +246,9 @@ int OrientierungsErmittler::ausschnittROI()
         return -2;
     }
 
-    //cv::imwrite(std::string(PWD).append(BILDABLAGE).append("Ausschnitt2.jpg"),cv::imread("/home/Student/git/SP3/SweetPicker3/SP3Bildanalysator/SP3Bilderkennung/gefundeneObjekte.jpg",cv::IMREAD_COLOR)(ROI));
+    //cv::imwrite(std::string(PWD).append(BILDABLAGE).append("ausschnitt2.jpg"),cv::imread("/home/Student/git/SP3/SweetPicker3/SP3Bildanalysator/SP3Bilderkennung/gefundeneObjekte.jpg",cv::IMREAD_COLOR)(ROI));
 
-    cv::imwrite(std::string(PWD).append(BILDABLAGE).append("Ausschnitt.jpg"),bildAusschnitt);
+    cv::imwrite(std::string(PWD).append(BILDABLAGE).append("ausschnitt.jpg"),bildAusschnitt);
     cvtColor(bildAusschnitt,bildAusschnitGraustufe,cv::COLOR_BGR2GRAY);
 
     threshold(bildAusschnitGraustufe,bildAusschnittSchwarzWeiss,164,255,cv::THRESH_BINARY);//TODO PARAM
@@ -218,9 +258,9 @@ int OrientierungsErmittler::ausschnittROI()
     bildAusschnittSchwarzWeiss.copyTo(bildAusschnittBreit(cv::Rect(50,50,bildAusschnittSchwarzWeiss.cols, bildAusschnittSchwarzWeiss.rows)));
 
     bildAusschnittBreit.copyTo(bildAusschnittSchwarzWeiss);
-    cv::imwrite(std::string(PWD).append(BILDABLAGE).append("AusschnittSW.jpg"),bildAusschnittSchwarzWeiss(cv::Rect(50,50,bildAusschnitt.cols, bildAusschnitt.rows)));
+    cv::imwrite(std::string(PWD).append(BILDABLAGE).append("ausschnittSW.jpg"),bildAusschnittSchwarzWeiss(cv::Rect(50,50,bildAusschnitt.cols, bildAusschnitt.rows)));
 
-    if(!cv::haveImageReader(std::string(PWD).append(BILDABLAGE).append("Ausschnitt.jpg")) || !cv::haveImageReader(std::string(PWD).append(BILDABLAGE).append("AusschnittSW.jpg")))
+    if(!cv::haveImageReader(std::string(PWD).append(BILDABLAGE).append("ausschnitt.jpg")) || !cv::haveImageReader(std::string(PWD).append(BILDABLAGE).append("ausschnittSW.jpg")))
     {
         return -3; //gespeicherte Bilder können von opencv nicht dekodiert werden (korrupt)
     }
@@ -234,9 +274,9 @@ int OrientierungsErmittler::ausschnittROI()
 int OrientierungsErmittler::bearbeiteBild()
 {
     cv::morphologyEx(bildAusschnittSchwarzWeiss,bildAusschnittSchwarzWeissBearbeitet,cv::MORPH_OPEN, cv::getStructuringElement(cv::MORPH_ELLIPSE,morphOpenSize)); //remove noise
-    cv::imwrite(std::string(PWD).append(BILDABLAGE).append("AusschnittSWprocessed.jpg"),bildAusschnittSchwarzWeissBearbeitet(cv::Rect(50,50,bildAusschnitt.cols, bildAusschnitt.rows)));
+    cv::imwrite(std::string(PWD).append(BILDABLAGE).append("ausschnittSWprocessed.jpg"),bildAusschnittSchwarzWeissBearbeitet(cv::Rect(50,50,bildAusschnitt.cols, bildAusschnitt.rows)));
 
-    if(!cv::haveImageReader(std::string(PWD).append(BILDABLAGE).append("AusschnittSWprocessed.jpg")))
+    if(!cv::haveImageReader(std::string(PWD).append(BILDABLAGE).append("ausschnittSWprocessed.jpg")))
     {
         return -1; //gespeichertes Bild kann von opencv nicht dekodiert werden (korrupt)
     }
@@ -272,7 +312,7 @@ cv::Scalar OrientierungsErmittler::qColor2CVScalar(QColor color)
 {
     int r,g,b;
     color.getRgb(&r, &g, &b);
-    std::cout << r << " " << g << " " << b << std::endl;
+    //std::cout << r << " " << g << " " << b << std::endl;
     return cv::Scalar(b,g,r); // swap RGB-->BGR
 }
 
