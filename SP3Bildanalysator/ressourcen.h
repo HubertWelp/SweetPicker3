@@ -37,6 +37,9 @@
 /* */
 #include <dirent.h>
 
+/*SP3Admin*/
+#include "../SP3Admin/konfig.h"
+
 /* Einbindung von c++ Bibliotheken */
 #include <chrono>
 #include <thread>
