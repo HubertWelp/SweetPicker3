@@ -1,6 +1,7 @@
 #include "textauswerter.h"
 using std::cout;
 using std::endl;
+
 /**
 * Konstruktor
 */
@@ -106,8 +107,8 @@ Punkt Textauswerter::werteAus(int wk)
 
     // Die Koordinaten der am besten passenden Klasse zurückgeben
     Punkt erg;
-    erg.x = BILDBRT * ( ergB[ziel].b/2 + ergB[ziel].d/2 );
-    erg.y = BILDHHE * ( ergB[ziel].a/2 + ergB[ziel].c/2 );
+    erg.x = ressourcen::BILDBRT * (ergB[ziel].b/2 + ergB[ziel].d/2 );
+    erg.y = ressourcen::BILDHHE* ( ergB[ziel].a/2 + ergB[ziel].c/2 );
     erg.z = 0;
     return erg;
 }
@@ -191,8 +192,8 @@ std::tuple<double, double, double, double, double, double> Textauswerter::werteA
     }
 
 
-    double ergX = BILDBRT * ( ergB[ziel].b/2 + ergB[ziel].d/2 );
-    double ergY = BILDHHE * ( ergB[ziel].a/2 + ergB[ziel].c/2 );
+    double ergX = ressourcen::BILDBRT * ( ergB[ziel].b/2 + ergB[ziel].d/2 );
+    double ergY = ressourcen::BILDHHE * ( ergB[ziel].a/2 + ergB[ziel].c/2 );
 
     //Die Koordinaten der am besten passenden Klasse zurückgeben [ymin,xmin,ymax,xmax,xMittelpunkt,yMittelpunkt]
     return std::make_tuple(ergB[ziel].a, ergB[ziel].b, ergB[ziel].c, ergB[ziel].d, ergX, ergY);
