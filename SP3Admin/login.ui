@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>LOGIN</class>
- <widget class="QMainWindow" name="LOGIN">
+ <class>Login</class>
+ <widget class="QMainWindow" name="Login">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -154,7 +154,7 @@
   <connection>
    <sender>buttonBeenden</sender>
    <signal>clicked()</signal>
-   <receiver>LOGIN</receiver>
+   <receiver>Login</receiver>
    <slot>close()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -170,7 +170,7 @@
   <connection>
    <sender>buttonAnmelden</sender>
    <signal>clicked()</signal>
-   <receiver>LOGIN</receiver>
+   <receiver>Login</receiver>
    <slot>anmeldeAnfrage()</slot>
    <hints>
     <hint type="sourcelabel">

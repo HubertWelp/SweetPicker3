@@ -1,21 +1,21 @@
 #include "login.h"
 #include "ui_login.h"
 
-LOGIN::LOGIN(QWidget *parent)
+Login::Login(QWidget *parent)
     : QMainWindow(parent)
-    , ui(new Ui::LOGIN)
+    , ui(new Ui::Login)
 {
     ui->setupUi(this);
-    MONITOR m;
+    Monitor m;
     KonfigAdmin k;
 }
 
-LOGIN::~LOGIN()
+Login::~Login()
 {
     delete ui;
 }
 
-void LOGIN::anmeldeAnfrage()
+void Login::anmeldeAnfrage()
 {
     if (ui->lineeditPasswort->text() == k.getPasswort())
     {
@@ -32,7 +32,7 @@ void LOGIN::anmeldeAnfrage()
 }
 
 
-void LOGIN::keyPressEvent(QKeyEvent *pe)
+void Login::keyPressEvent(QKeyEvent *pe)
 {
     if (pe->key() == Qt::Key_Return) anmeldeAnfrage();
     if (pe->key() == Qt::Key_Escape) close() ;

@@ -23,14 +23,14 @@ QString Konfig::getObjektname(int nr)
     return c;
 }
 
-int Konfig::getErode()
+float Konfig::getObjektbreite(int nr)
 {
     QSettings settings(dateipfad,QSettings::IniFormat);
-    int c;
-    settings.beginGroup("Parameter");
-    if(settings.contains("erode") && settings.status()==0)
+    float c;
+    settings.beginGroup("Objektbreiten");
+    if(settings.contains("Objekt"+QString::number(nr)) && settings.status()==0)
     {
-        c = settings.value("erode").toInt();
+        c = settings.value("Objekt"+QString::number(nr)).toFloat();
     }
     else c = -1;
     settings.endGroup();
@@ -38,14 +38,44 @@ int Konfig::getErode()
     return c;
 }
 
-int Konfig::getDillate()
+int Konfig::getBildbreite()
+{
+    QSettings settings(dateipfad,QSettings::IniFormat);
+    int c;
+    settings.beginGroup("Kamera");
+    if(settings.contains("Bildbreite") && settings.status()==0)
+    {
+        c = settings.value("Bildbreite").toInt();
+    }
+    else c = -1;
+    settings.endGroup();
+
+    return c;
+}
+
+int Konfig::getBildhoehe()
+{
+    QSettings settings(dateipfad,QSettings::IniFormat);
+    int c;
+    settings.beginGroup("Kamera");
+    if(settings.contains("Bildhoehe") && settings.status()==0)
+    {
+        c = settings.value("Bildhoehe").toInt();
+    }
+    else c = -1;
+    settings.endGroup();
+
+    return c;
+}
+
+int Konfig::getRahmendicke()
 {
     QSettings settings(dateipfad,QSettings::IniFormat);
     int c;
     settings.beginGroup("Parameter");
-    if(settings.contains("dillate") && settings.status()==0)
+    if(settings.contains("Rahmendicke") && settings.status()==0)
     {
-        c = settings.value("dillate").toInt();
+        c = settings.value("Rahmendicke").toInt();
     }
     else c = -1;
     settings.endGroup();
@@ -58,9 +88,9 @@ QColor Konfig::getRahmenfarbe()
     QSettings settings(dateipfad,QSettings::IniFormat);
     QColor c;
     settings.beginGroup("Parameter");
-    if(settings.contains("rahmenfarbe"))
+    if(settings.contains("Rahmenfarbe"))
     {
-        c = settings.value("rahmenfarbe").value<QColor>();
+        c = settings.value("Rahmenfarbe").value<QColor>();
     }
     else c = QColor::fromRgb(255,255,255);
     settings.endGroup();
@@ -104,6 +134,16 @@ QString KonfigAdmin::getPasswort()
     return c;
 }
 
+int KonfigAdmin::setRahmendicke(int input)
+{
+    QSettings settings(dateipfad,QSettings::IniFormat);
+    settings.beginGroup("Parameter");
+    settings.setValue("Rahmendicke",input);
+    settings.endGroup();
+    if(settings.status()==0) return 0;
+    else return -1;
+}
+
 int KonfigAdmin::setRahmenfarbe(QColor farbe)
 {
     QTextStream out(stdout);
@@ -111,28 +151,28 @@ int KonfigAdmin::setRahmenfarbe(QColor farbe)
 
     QSettings settings(dateipfad,QSettings::IniFormat);
     settings.beginGroup("Parameter");
-    settings.setValue("rahmenfarbe",farbe.name());
+    settings.setValue("Rahmenfarbe",farbe.name());
     settings.endGroup();
     settings.sync();
     if(settings.status()==0) return 0;
     else return -1;
 }
 
-int KonfigAdmin::setErode(int input)
+int KonfigAdmin::setBildbreite(int input)
 {
     QSettings settings(dateipfad,QSettings::IniFormat);
-    settings.beginGroup("Parameter");
-    settings.setValue("erode",input);
+    settings.beginGroup("Kamera");
+    settings.setValue("Bildbreite",input);
     settings.endGroup();
     if(settings.status()==0) return 0;
     else return -1;
 }
 
-int KonfigAdmin::setDillate(int input)
+int KonfigAdmin::setBildhoehe(int input)
 {
     QSettings settings(dateipfad,QSettings::IniFormat);
-    settings.beginGroup("Parameter");
-    settings.setValue("dillate",input);
+    settings.beginGroup("Kamera");
+    settings.setValue("Bildbreite",input);
     settings.endGroup();
     if(settings.status()==0) return 0;
     else return -1;

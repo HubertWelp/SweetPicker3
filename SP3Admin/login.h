@@ -8,16 +8,16 @@
 #include "konfig.h"
 
 QT_BEGIN_NAMESPACE
-namespace Ui { class LOGIN; }
+namespace Ui { class Login; }
 QT_END_NAMESPACE
 
-class LOGIN : public QMainWindow
+class Login : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    LOGIN(QWidget *parent = nullptr);
-    ~LOGIN() override;
+    Login(QWidget *parent = nullptr);
+    ~Login() override;
 
 public slots:
     void anmeldeAnfrage();
@@ -25,8 +25,8 @@ public slots:
     void keyPressEvent(QKeyEvent* pe) override;
 
 private:
-    Ui::LOGIN *ui;
-    MONITOR m;
+    Ui::Login *ui;
+    Monitor m;
     KonfigAdmin k;
 };
 #endif // LOGIN_H

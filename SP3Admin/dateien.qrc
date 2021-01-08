@@ -2,14 +2,6 @@
     <qresource prefix="/">
         <file>thga_logo.jpg</file>
         <file>exit.png</file>
-        <file>../SP3Bildanalysator/SP3Bilderkennung/aktuelleSzene.jpg</file>
-        <file>../SP3Bildanalysator/SP3Bilderkennung/aktuelleSzeneRahmen.jpg</file>
-        <file>../SP3Bildanalysator/SP3Bilderkennung/Ausschnitt.jpg</file>
-        <file>../SP3Bildanalysator/SP3Bilderkennung/AusschnittErgebnis.jpg</file>
-        <file>../SP3Bildanalysator/SP3Bilderkennung/AusschnittSW.jpg</file>
-        <file>../SP3Bildanalysator/SP3Bilderkennung/AusschnittSWprocessed.jpg</file>
-        <file>../SP3Bildanalysator/SP3Bilderkennung/gefundeneObjekte.jpg</file>
-        <file>../SP3Bildanalysator/SP3Bilderkennung/gefundeneObjekte.txt</file>
-        <file>konfig.ini</file>
+        <file>standardbild.jpg</file>
     </qresource>
 </RCC>

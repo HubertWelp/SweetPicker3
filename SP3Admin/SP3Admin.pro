@@ -25,21 +25,21 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
-    bilderverwalter.cpp \
     clicklabel.cpp \
     konfig.cpp \
     login.cpp \
     main.cpp \
     monitor.cpp \
+    objektinformation.cpp \
     sortenorter.cpp \
     udpnode.cpp
 
 HEADERS += \
-    bilderverwalter.h \
     clicklabel.h \
     konfig.h \
     login.h \
     monitor.h \
+    objektinformation.h \
     sortenorter.h \
     udpnode.hpp
 

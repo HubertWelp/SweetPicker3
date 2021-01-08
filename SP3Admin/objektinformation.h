@@ -1,17 +1,28 @@
-#ifndef BILDERVERWALTER_H
-#define BILDERVERWALTER_H
+#ifndef OBJEKTINFORMATION_H
+#define OBJEKTINFORMATION_H
+
+#define BILDABLAGE "/home/Student/git/SP3/SweetPicker3/SP3Bildanalysator/SP3Bilderkennung/"
 
 #include <QImage>
 #include <QPixmap>
+#include <QImageReader>
+#include <QMessageBox>
+#include <QFile>
+#include <QTextStream>
+#include <QString>
+#include "konfig.h"
+//#include <QStringList>
 
-/** @class Bilderverwalter
+
+
+/** @class Objektinformation
  * @brief
  *
  *
  * @author Lars Jepkens
  *
  */
-class Bilderverwalter
+class Objektinformation
 {
 public:
     /** @brief construktor
@@ -19,7 +30,7 @@ public:
     * Erstellt ein Objekt der Klasse und lädt die Bilder in den Speicher.
     *
     */
-    Bilderverwalter(QString pfad="");
+    Objektinformation(QString pfad=":/SP3Bilderkennung/");
 
     /** @brief Aktualisiert die geladenen Bilder des Objekts
     *
@@ -63,7 +74,38 @@ public:
     */
     QImage getAusschnittErgebnis();
 
+    /** @brief Stellt die momentan geladene angeforderte Objektnummer zur Verfügung
+    *
+    * @return  Gibt die Objektnummer des angeforderten Objekts aus
+    */
+    QString getAngefordertesObjekt();
+
+    /** @brief Stellt den momentan geladene Richtung des Objekts in Grad zur Verfügung
+    *
+    * @return  Gibt einen Winkel in  Grad aus
+    */
+    float getWinkel();
+
+    /** @brief Stellt den momentan geladene Breite des Objekts Meter zur Verfügung
+    *
+    * @return  Gibt eine Breite in Meter aus
+    */
+    float getBreite();
+
+    /** @brief Stellt den momentan geladene x-Position des Objekts in Meter zur Verfügung
+    *
+    * @return  Gibt eine Länge der x-Position in Meter aus
+    */
+    float getXPosi();
+
+    /** @brief Stellt den momentan geladene y-Position des Objekts in Meter zur Verfügung
+    *
+    * @return  Gibt eine Länge der y-Position in Meter aus
+    */
+    float getYPosi();
+
 private:
+    Konfig k;
     QString dateipfad;
     QImage AktuelleSzene;
     QImage AktuelleSzeneRahmen;
@@ -71,7 +113,11 @@ private:
     QImage AusschnittSW;
     QImage AusschnittSWprocessed;
     QImage AusschnittErgebnis;
-
+    QString name;
+    float winkel;
+    float breite;
+    float xposi;
+    float yposi;
 };
 
-#endif // BILDERVERWALTER_H
+#endif // OBJEKTINFORMATION_H

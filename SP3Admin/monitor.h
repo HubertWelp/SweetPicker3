@@ -2,25 +2,49 @@
 #define MONITOR_H
 
 #include <QMainWindow>
+#include <QKeyEvent>
+#include <QMessageBox>
+#include <QColor>
+#include <QColorDialog>
+#include "konfig.h"
+#include "objektinformation.h"
 
 namespace Ui {
-class MONITOR;
+class Monitor;
 }
 
-class MONITOR : public QMainWindow
+class Monitor : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    explicit MONITOR(QWidget *parent = nullptr);
-    ~MONITOR();
+    Monitor(QWidget *parent = nullptr);
+    ~Monitor() override;
 
 public slots:
-   // void speichereParameter();
-
+    void parameterSpeichern();
+    void erodeZuruecksetzen();
+    void dillateZuruecksetzen();
+    void kameraIDZuruecksetzen();
+    void rahmendickeZuruecksetzen();
+    void rahmenfarbeZuruecksetzen();
+    void zeigeFarbpalette();
+    void aktualisieren();
+    void keyPressEvent(QKeyEvent* pe) override;
+    void resizeEvent(QResizeEvent*) override;
 
 private:
-    Ui::MONITOR *ui;
+    Ui::Monitor *ui;
+
+    KonfigAdmin k;
+    Objektinformation info;
+    int previousBildbreite;
+    int previousBildhoehe;
+    int previousKameraID;
+    int previousRahmendicke;
+    QColor previousRahmenfarbe;
+    QColor nextRahmenfarbe;
+    void zeichneInfo();
 };
 
 #endif // MONITOR_H

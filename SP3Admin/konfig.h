@@ -1,9 +1,9 @@
 #ifndef KONFIG_H
 #define KONFIG_H
 
-#include <QSettings>              // Für das Speichern und Laden der konfig.ini Datei
-#include <QColor>                 //RGB string (such as "#112233")
-#include <QStandardPaths>
+#include <QSettings>                // Für das Speichern und Laden der konfig.ini Datei
+#include <QColor>                   //RGB string (such as "#112233")
+#include <QStandardPaths>           // Für Standardspeicherpfad von konfig.ini
 
 
 /** @class Konfig
@@ -38,21 +38,39 @@ public:
     */
     QString getObjektname(int nr);
 
-    /** @brief Gibt den Analyseparameter Erode aus
+    /** @brief Gibt die Breite eines Objekts
     *
-    * Diese Methode gibt den momentan gespeicherten Wert "Erode" aus der konfig.ini Datei aus.
+    * Diese Methode erwartet eine Objektnummer als Eingabeparameter und übersetzt diese mit Hilfe der
+    * konfig.ini Datei in eine dazugehörige Objektbreite und gibt diesen als Rückgabewert aus.
+    * Falls die Objektnummer nicht existiert, gibt die Methode die Breite -1 als Rückgabewert aus.
     *
-    * @return  Gibt den Wert Erode aus. Falls das Auslesen nicht erfolgreich ist, wird -1 ausgegeben.
+    * @return  Gibt den Wert Objektbreite aus. Falls das Auslesen nicht erfolgreich ist, wird -1 ausgegeben.
     */
-    int getErode();
+    float getObjektbreite(int nr);
 
-    /** @brief Gibt den Analyseparameter Dillate aus
+    /** @brief Gibt den Kameraparameter Bildbreite aus
     *
-    * Diese Methode gibt den momentan gespeicherten Wert "Dillate" aus der konfig.ini Datei aus.
+    * Diese Methode gibt den momentan gespeicherten Wert "Bildbreite" aus der konfig.ini Datei aus.
     *
-    * @return  Gibt den Wert Dillate aus. Falls das Auslesen nicht erfolgreich ist, wird -1 ausgegeben.
+    * @return  Gibt den Wert Bildbreite aus. Falls das Auslesen nicht erfolgreich ist, wird -1 ausgegeben.
     */
-    int getDillate();
+    int getBildbreite();
+
+    /** @brief Gibt den Analyseparameter Kameraparameter Bildhöhe aus
+    *
+    * Diese Methode gibt den momentan gespeicherten Wert "Bildhoehe" aus der konfig.ini Datei aus.
+    *
+    * @return  Gibt den Wert Bildhoehe aus. Falls das Auslesen nicht erfolgreich ist, wird -1 ausgegeben.
+    */
+    int getBildhoehe();
+
+    /** @brief Gibt die einzustellende Rahendicke aus
+    *
+    * Diese Methode gibt den momentan gespeicherten Wert der Rahmendicke, mit der der Rahmen des erkannten Objekts gezeichnet werden soll, aus der konfig.ini Datei aus.
+    *
+    * @return  Gibt den Wert "Rahmendicke" aus. Falls das Auslesen nicht erfolgreich ist, wird -1 ausgegeben.
+    */
+    int getRahmendicke();
 
     /** @brief Gibt eine Farbe aus
     *
@@ -102,6 +120,18 @@ public:
     */
     QString getPasswort();
 
+    /** @brief Speichert eine übergebene Rahmendicke in die konfig.ini Datei
+    *
+    * Diese Methode speichert die übergebene Rahmendicke in der konfig.ini Datei unter dem Schlüssel "Rahmendicke" ab.
+    *
+    * @param [in] input ganzzahliger positiver Wert
+    *
+    * @return   0, wenn erfolgreich
+    *           -1, wenn nicht erfolgreich
+    *
+    */
+    int setRahmendicke(int input);
+
     /** @brief Speichert eine übergebene Farbe in die konfig.ini Datei
     *
     * Diese Methode speichert die übergebene Farbe in der konfig.ini Datei unter dem Schlüssel "Boxfarbe" ab.
@@ -114,9 +144,9 @@ public:
     */
     int setRahmenfarbe(QColor farbe=QColor::fromRgb(127,255,0));
 
-    /** @brief Speichert den übegebenen Wert Erdoe ab.
+    /** @brief Speichert den übegebenen Wert Bildbreite ab.
     *
-    * Diese Methode speichert den übergebenen Wert in der konfig.ini Datei unter dem Schlüssel "Erode" ab.
+    * Diese Methode speichert den übergebenen Wert in der konfig.ini Datei unter dem Schlüssel "Bildbreite" ab.
     *
     * @param [in] input ganzzahliger positiver Wert
     *
@@ -124,11 +154,11 @@ public:
     *           -1, wenn nicht erfolgreich
     *
     */
-    int setErode(int input);
+    int setBildbreite(int input);
 
-    /** @brief Speichert den übergebenen Wert Dillate ab.
+    /** @brief Speichert den übergebenen Wert Bildhöhe ab.
     *
-    * Diese Methode speichert den übergebenen Wert in der konfig.ini Datei unter dem Schlüsel "Dillate" ab.
+    * Diese Methode speichert den übergebenen Wert in der konfig.ini Datei unter dem Schlüsel "Bildhoehe" ab.
     *
     * @param [in] inout ganzzahliger positiver Wert
     *
@@ -136,7 +166,7 @@ public:
     *           -1, wenn nicht erfolgreich
     *
     */
-    int setDillate(int input);
+    int setBildhoehe(int input);
 
     /** @brief Speichert den übergebenen Wert KarmeraID ab.
     *
