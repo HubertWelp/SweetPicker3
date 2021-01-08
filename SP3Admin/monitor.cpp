@@ -134,12 +134,3 @@ void Monitor::zeichneInfo()
     ui->lineEdit_breite->setText(QString::number(info.getBreite()));
     ui->lineEdit_orientierung->setText(QString::number(info.getWinkel()));
 }
-
-
-
-
-
-
-
-
-
