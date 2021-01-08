@@ -63,6 +63,5 @@ extern unsigned int BILDHHE;
 struct RBox {double a; double b; double c; double d;};
 struct Punkt {int x;int y;int z;};
 struct Punkte {double ymin; double xmin; double ymax; double xmax;};
-enum Sorten {Maoam=1,Snickers,Milkyway,Schokoriegel};
 
 #endif // RESSOURCEN_H

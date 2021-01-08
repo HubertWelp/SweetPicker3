@@ -92,8 +92,11 @@ void Verwalter::messageReceived(std::string msg)
     ressourcen::BILDHHE = konfig->getBildhoehe();
     ressourcen::BILDBRT = konfig->getBildbreite();
 
-    //TODO auf konfig umstellen
-    if(wahl == Sorten::Maoam || wahl == Sorten::Snickers || wahl == Sorten::Milkyway || wahl == Sorten::Schokoriegel)
+    int maxObjekte;
+    for(maxObjekte = 1; konfig->getObjektname(maxObjekte)!="";maxObjekte++);
+    maxObjekte--;
+
+    if(wahl>0 && wahl<= maxObjekte)
     {
         // altes Bild und alte Ergebnisse löschen
         loescheAlt();
