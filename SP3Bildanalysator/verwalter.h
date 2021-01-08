@@ -17,7 +17,6 @@ public:
     bool warte();
     const char* verarbeiteText(void);
     void messageReceived(std::string msg) override;
-
     int wahl;
     const char* antwort;
 
@@ -29,6 +28,7 @@ private:
     UDPNode* node;
     double yMin, xMin, yMax, xMax, xMittelpunkt, yMittelpunkt, winkel, breite;
     int erfolg;
+    Konfig* konfig;
 };
 
 #endif // VERWALTER_H

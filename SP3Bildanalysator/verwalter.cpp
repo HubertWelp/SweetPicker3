@@ -6,6 +6,7 @@ Verwalter::Verwalter()
     textAuswerter = new Textauswerter;
     node = new UDPNode(5840);
     orientierungsErmittler = new OrientierungsErmittler;
+    konfig = new Konfig(); //Standardpfad
 }
 
 void Verwalter::loescheAlt()
@@ -88,26 +89,23 @@ void Verwalter::messageReceived(std::string msg)
 {
     wahl = atoi(msg.c_str());
 
+    ressourcen::BILDHHE = konfig->getBildhoehe();
+    ressourcen::BILDBRT = konfig->getBildbreite();
+
+    //TODO auf konfig umstellen
     if(wahl == Sorten::Maoam || wahl == Sorten::Snickers || wahl == Sorten::Milkyway || wahl == Sorten::Schokoriegel)
     {
         // altes Bild und alte Ergebnisse löschen
         loescheAlt();
-        //std::this_thread::sleep_for(std::chrono::milliseconds(200));
-
         // aktuelles Bild aufnehmen und im folgenden relativen Verzeichnis ablegen
         char* pfad = new char [256];
         strcpy(pfad,BILDABLAGE);
         strcat(pfad,BILD);
-        cam->setzeKameraID(1);
+        cam->setzeKameraID(konfig->getKameraID());
         cam->nehmeAufTest(pfad);
         delete [] pfad;
-        //std::this_thread::sleep_for(std::chrono::milliseconds(200));
-
         // Ein Python-Skript vom SP3Objekterkenner ausführen (python programmname TEXTABLAGE wahl)
         fuehreSkriptAus();
-
-        //std::this_thread::sleep_for(std::chrono::milliseconds(200));
-
         // warten, bis SP3Objektereknner fertig ist
         if(warte())
         {
@@ -116,12 +114,11 @@ void Verwalter::messageReceived(std::string msg)
             //std::cout << erg << std::endl;
             if(erg == 3)
             {
-                //std::cout << "tie" << std::endl;
                 //Rahmen und Mittelpunkt auswerten
                 std::tie(yMin,xMin,yMax,xMax,xMittelpunkt,yMittelpunkt) = textAuswerter->werteAus3(wahl);
                 //std::cout << "setze koordinaten" << std::endl;
                 orientierungsErmittler->setzeKoordinaten(yMin,xMin,yMax,xMax);
-
+                orientierungsErmittler->setzeWahl(wahl);
                 //Ermittle Orientierung
                 //std::cout << "ermittle orientierung" << std::endl;
                 std::tie(erfolg,winkel,breite) = orientierungsErmittler->ermittleOrientierung();
@@ -141,6 +138,7 @@ void Verwalter::messageReceived(std::string msg)
                 std::string ergebnis = std::to_string(xMittelpunkt) + " " + std::to_string(yMittelpunkt) + " " + std::to_string(0) + " " + std::to_string(winkel) + " " + std::to_string(breite);
                 printf("\n%s\n",ergebnis.c_str());
                 sendmessage(ergebnis,"127.0.0.1",5843);
+
             }
             else
             {
@@ -155,3 +153,4 @@ void Verwalter::messageReceived(std::string msg)
         QApplication::quit();
     }
 }
+

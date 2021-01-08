@@ -99,6 +99,7 @@ public:
      * @return die Dicke des Rahmens in AktuelleSzeneRahmen.jpg
      */
     unsigned int getRahmenDicke();
+    void setzeWahl(int wahl);
 
     ~OrientierungsErmittler();
 
@@ -146,8 +147,11 @@ private:
      */
     QColor cvScalar2QColor(cv::Scalar color);
 
+
+
     cv::Size morphOpenSize;
     double xMin, xMax, yMin, yMax;
+    int wahl;
     std::string bildPfad;
     cv::Mat bildInput, bildAusschnitt, bildAusschnitGraustufe, bildAusschnittSchwarzWeiss, bildAusschnittSchwarzWeissBearbeitet,bildAktuelleSzeneRahmen;
     //cv::Mat bildAusschnittBreit, bildAusschnittSchwarzWeissBreit, bildAusschnittSchwarzWeissBearbeitetBreit;
@@ -155,6 +159,7 @@ private:
     cv::Rect bildInputROI;
     cv::Scalar rahmenFarbe;
     unsigned int rahmenDicke;
+    Konfig* konfig;
 
 };
 

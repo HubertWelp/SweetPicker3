@@ -5,9 +5,6 @@ Kamera::Kamera(const char* pfad)
     pwd = pfad;
     id = 0;
     videostream = cv::VideoCapture (id); // 0 = standardkamera
-    //videostream.set(CV_CAP_PROP_BUFFERSIZE, 1):
-
-
 }
 /**
  * @brief Kamera::nehmeAuf

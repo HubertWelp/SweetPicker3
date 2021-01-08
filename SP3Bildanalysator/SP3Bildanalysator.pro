@@ -10,17 +10,20 @@ QT += widgets
 SOURCES += \
         main.cpp \
     kamera.cpp \
+    orientierungsermittler.cpp \
+    ressourcen.cpp \
     verwalter.cpp \
     udpnode.cpp \
     textauswerter.cpp
 
 HEADERS += \
-    dummy.h \
     kamera.h \
+    orientierungsermittler.h \
     verwalter.h \
     ressourcen.h \
     udpnode.hpp \
     textauswerter.h
+
 
 INCLUDEPATH += /usr/local/opencv/include/opencv4
 
@@ -30,4 +33,6 @@ LIBS += -L/usr/local/opencv/lib \
         -lopencv_imgcodecs \
         -lopencv_highgui \
         -lopencv_videoio
+
+LIBS += /home/Student/git/SP3/SweetPicker3/build-SP3Admin-Desktop_Qt_5_12_3_GCC_64bit-Debug/konfig.o
 

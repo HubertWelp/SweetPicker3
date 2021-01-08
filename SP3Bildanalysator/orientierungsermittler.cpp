@@ -3,12 +3,12 @@
 
 OrientierungsErmittler::OrientierungsErmittler(unsigned short morphOpenSize)
 {
-
+    konfig = new Konfig();
     this->morphOpenSize = cv::Size(morphOpenSize,morphOpenSize);
     /*Standardwerte*/
     this->bildPfad.append(PWD).append(BILDABLAGE).append(BILD);
-    this->rahmenFarbe = qColor2CVScalar(QColor(3,128,148));
-    this->rahmenDicke = 16;
+    this->rahmenFarbe = qColor2CVScalar(konfig->getRahmenfarbe());
+    this->rahmenDicke = konfig->getRahmendicke();
 }
 
 int OrientierungsErmittler::setzeKoordinaten(double yMin, double xMin, double yMax, double xMax)
@@ -55,9 +55,11 @@ int OrientierungsErmittler::ladeBild()
 
 std::tuple<int, double, double> OrientierungsErmittler::ermittleOrientierung()
 {
-
-    double breite = 0; //TODO aus konfig nehmen
-
+    /** Parameter für aktuelleSzeneRahmen aktualisieren **/
+    this->rahmenFarbe = qColor2CVScalar(konfig->getRahmenfarbe());
+    this->rahmenDicke = konfig->getRahmendicke();
+    std::cout << "farbe " << rahmenFarbe << " dicke " << rahmenDicke << std::endl;
+    double breite = konfig->getObjektbreite(wahl);
     //ladeParameter
 
     if(this->ladeBild() != 0)
@@ -132,7 +134,7 @@ std::tuple<int, double, double> OrientierungsErmittler::ermittleOrientierung()
     /*Winkelberechnung*/
     double angle = atan2(eigenVecs[0].y, eigenVecs[0].x) * (180/CV_PI);
 
-    //Winkel entspricht der Richtung vom blauen Pfeil, Orientierung ist manchmal gedreht.
+    //Winkel entspricht der Richtung vom grünen Pfeil, Orientierung ist manchmal gedreht. (oben rum -180° unten rum +180°)
     cv::Point p1 = center + 0.02 * cv::Point(static_cast<int>(eigenVecs[0].x * eigenVals[0]), static_cast<int>(eigenVecs[0].y * eigenVals[0]));
     cv::Point p2 = center - 0.02 * cv::Point(static_cast<int>(eigenVecs[1].x * eigenVals[1]), static_cast<int>(eigenVecs[1].y * eigenVals[1]));
     drawAxis(bildAusschnittBreit, center, p1, cv::Scalar(0, 255, 0), 1);
@@ -157,7 +159,7 @@ std::tuple<int, double, double> OrientierungsErmittler::ermittleOrientierung()
 
     bildAktuelleSzeneRahmen = cv::imread(pfadErgebnis);
 
-    cv::rectangle(bildAktuelleSzeneRahmen, bildInputROI, rahmenFarbe, rahmenDicke, cv::LINE_AA); //TODO PARAM: Farbe, Dicke
+    cv::rectangle(bildAktuelleSzeneRahmen, bildInputROI, rahmenFarbe, rahmenDicke, cv::LINE_AA);
 
     cv::imwrite(std::string(PWD).append(BILDABLAGE).append("aktuelleSzeneRahmen.jpg"),bildAktuelleSzeneRahmen); //der weiße Hintergrund wird rausgeschnitten da dieser nur notwendig war um die Kontur richtig einzuzeichnen
     if(!cv::haveImageReader(std::string(PWD).append(BILDABLAGE).append("aktuelleSzeneRahmen.jpg")))
@@ -319,4 +321,9 @@ cv::Scalar OrientierungsErmittler::qColor2CVScalar(QColor color)
 QColor OrientierungsErmittler::cvScalar2QColor(cv::Scalar color)
 {
     return QColor(color[2],color[1],color[0]); // swap RGB-->BGR
+}
+
+void OrientierungsErmittler::setzeWahl(int wahl)
+{
+    this->wahl = wahl;
 }

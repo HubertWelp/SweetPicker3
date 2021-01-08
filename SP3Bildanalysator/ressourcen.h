@@ -20,7 +20,7 @@
 //#define BILDBRT 354     // Echte Bildbreite in mm
 //#define BILDHHE 274     // Echte Bildhöhe in mm
 
-/* Definition von Variablen*/
+/* Definition von Variablen */
 namespace ressourcen
 {
 extern unsigned int BILDBRT;
@@ -40,7 +40,7 @@ extern unsigned int BILDHHE;
 #include <string.h>
 #include <unistd.h>
 
-/* */
+/* Directory */
 #include <dirent.h>
 
 /*SP3Admin*/
