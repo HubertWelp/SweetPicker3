@@ -172,7 +172,7 @@ int KonfigAdmin::setBildhoehe(int input)
 {
     QSettings settings(dateipfad,QSettings::IniFormat);
     settings.beginGroup("Kamera");
-    settings.setValue("Bildbreite",input);
+    settings.setValue("Bildhoehe",input);
     settings.endGroup();
     if(settings.status()==0) return 0;
     else return -1;
