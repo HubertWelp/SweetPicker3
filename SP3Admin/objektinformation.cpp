@@ -30,17 +30,6 @@ int Objektinformation::aktualisieren()
     reader.setFileName(QString("%1%2").arg(BILDABLAGE).arg("ausschnittErgebnis.jpg"));
     AusschnittErgebnis = reader.read();
 
-    if(reader.error()){
-        reader.setFileName(":/standardbild.jpg");
-        AktuelleSzene = reader.read();
-        AktuelleSzeneRahmen = AktuelleSzene;
-        Ausschnitt = AktuelleSzene;
-        AusschnittSW = AktuelleSzene;
-        AusschnittErgebnis = AktuelleSzene;
-        AusschnittSWprocessed = AktuelleSzene;
-    }
-
-
     //3;25.2016;0;275.317;226.553
     //Name Winkel Breite x y
 
@@ -59,6 +48,13 @@ int Objektinformation::aktualisieren()
 
     if(reader.error() || text.error())
     {
+        reader.setFileName(":/standardbild.jpg");
+        AktuelleSzene = reader.read();
+        AktuelleSzeneRahmen = AktuelleSzene;
+        Ausschnitt = AktuelleSzene;
+        AusschnittSW = AktuelleSzene;
+        AusschnittErgebnis = AktuelleSzene;
+        AusschnittSWprocessed = AktuelleSzene;
         return -1;
     }
     else return 0;

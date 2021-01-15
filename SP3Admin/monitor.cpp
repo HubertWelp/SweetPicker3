@@ -95,6 +95,7 @@ void Monitor::aktualisieren()
 {
     if(info.aktualisieren() != 0)
     {
+        zeichneInfo();
         QMessageBox::information(this,"Informationen laden","Dateien nicht lesbar.");
     }
     else
