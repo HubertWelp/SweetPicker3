@@ -55,6 +55,11 @@ int Objektinformation::aktualisieren()
         AusschnittSW = AktuelleSzene;
         AusschnittErgebnis = AktuelleSzene;
         AusschnittSWprocessed = AktuelleSzene;
+        name = "";
+        winkel = 0;
+        breite = 0;
+        xposi = 0;
+        yposi = 0;
         return -1;
     }
     else return 0;
