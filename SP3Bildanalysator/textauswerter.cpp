@@ -105,6 +105,11 @@ Punkt Textauswerter::werteAus(int wk)
         }
     }
 
+    if(ziel<0 || ziel > sizeof(ergB))
+    {
+        return {-1, -1, -1};
+    }
+
     // Die Koordinaten der am besten passenden Klasse zurückgeben
     Punkt erg;
     erg.x = ressourcen::BILDBRT * (ergB[ziel].b/2 + ergB[ziel].d/2 );
@@ -146,6 +151,10 @@ Punkte Textauswerter::werteAus2(int wk)
         {
             ziel = m[i];
         }
+    }
+    if(ziel<0 || ziel > sizeof(ergB))
+    {
+        return {-1, -1, -1, -1};
     }
 
 
@@ -191,7 +200,10 @@ std::tuple<double, double, double, double, double, double> Textauswerter::werteA
         }
     }
 
-
+    if(ziel<0 || ziel > sizeof(ergB))
+    {
+        return std::make_tuple(-1, -1, -1, -1, -1, -1);
+    }
     double ergX = ressourcen::BILDBRT * ( ergB[ziel].b/2 + ergB[ziel].d/2 );
     double ergY = ressourcen::BILDHHE * ( ergB[ziel].a/2 + ergB[ziel].c/2 );
 

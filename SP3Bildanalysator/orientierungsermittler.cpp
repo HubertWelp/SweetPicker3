@@ -13,12 +13,11 @@ OrientierungsErmittler::OrientierungsErmittler(unsigned short morphOpenSize)
 
 int OrientierungsErmittler::setzeKoordinaten(double yMin, double xMin, double yMax, double xMax)
 {
-    this->yMin = yMin;
-    this->xMin = xMin;
-    this->yMax = yMax;
-    this->xMax = xMax;
-
-    return 0;
+        this->yMin = yMin;
+        this->xMin = xMin;
+        this->yMax = yMax;
+        this->xMax = xMax;
+        return 0;
 }
 
 int OrientierungsErmittler::setzeBildPfad(const std::string &pfad)
@@ -56,6 +55,8 @@ int OrientierungsErmittler::ladeBild()
 
 std::tuple<int, double, double> OrientierungsErmittler::ermittleOrientierung()
 {
+
+
     /** Parameter für aktuelleSzeneRahmen aktualisieren **/
     this->rahmenFarbe = qColor2CVScalar(konfig->getRahmenfarbe());
     this->rahmenDicke = konfig->getRahmendicke();
@@ -136,7 +137,7 @@ std::tuple<int, double, double> OrientierungsErmittler::ermittleOrientierung()
 
     //Winkel entspricht der Richtung vom grünen Pfeil, Orientierung ist manchmal gedreht. (oben rum -180° unten rum +180°)
     cv::Point p1 = center + 0.02 * cv::Point(static_cast<int>(eigenVecs[0].x * eigenVals[0]), static_cast<int>(eigenVecs[0].y * eigenVals[0]));
-    cv::Point p2 = center - 0.02 * cv::Point(static_cast<int>(eigenVecs[1].x * eigenVals[1]), static_cast<int>(eigenVecs[1].y * eigenVals[1]));
+    //cv::Point p2 = center - 0.02 * cv::Point(static_cast<int>(eigenVecs[1].x * eigenVals[1]), static_cast<int>(eigenVecs[1].y * eigenVals[1]));
     drawAxis(bildAusschnittBreit, center, p1, cv::Scalar(0, 255, 0), 1);
     drawBreite(bildAusschnittBreit, center, cv::Scalar(255,0,0),contours,secondlargestAreaIDX);
 
@@ -231,9 +232,10 @@ int OrientierungsErmittler::ausschnittROI()
         bildInputROI.width = static_cast<int>(xMax-xMin);
         bildInputROI.height = static_cast<int>(yMax-yMin);
     }
-
-    if(bildInputROI.x == bildInputROI.width || bildInputROI.y == bildInputROI.height) return -1; //Ungültiger Rahmen (Koordinaten liegen auf einer 0px breiten/hohen Linie oder auf einem Punkt
-
+    if(bildInputROI.x == bildInputROI.width || bildInputROI.y == bildInputROI.height || bildInputROI.x <= 0|| bildInputROI.y <= 0|| bildInputROI.width <= 0|| bildInputROI.height <= 0)
+    {
+        return -1; //Ungültiger Rahmen (Koordinaten liegen auf einer 0px breiten/hohen Linie oder auf einem Punkt
+    }
 
     //std::cout << "ROI.x = " << ROI.x << " ROI.y = " << ROI.y << " ROI.width = " << ROI.width << " ROI.height = " << ROI.height << " BildBreite = " << bildInput.size().width << " Bildhöhe = " << bildInput.size().height << std::endl;
 
@@ -353,9 +355,9 @@ void OrientierungsErmittler::drawBreite(cv::Mat &img, cv::Point p, cv::Scalar co
     y1 = pointA.y*ressourcen::BILDHHE/bildInput.rows;
     y2 = pointB.y*ressourcen::BILDHHE/bildInput.rows;
     x = x1-x2;
-    y = x1-y2;
+    y = y1-y2;
     double breiteBerechnetMM = sqrt(x*x + y*y);
-    //std::cout << breiteBerechnet;
+    std::cout << breiteBerechnetMM;
 }
 
 cv::Scalar OrientierungsErmittler::qColor2CVScalar(QColor color)

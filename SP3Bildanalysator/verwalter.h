@@ -19,8 +19,9 @@ public:
     void messageReceived(std::string msg) override;
     int wahl;
     const char* antwort;
-
+    void testTextauswerter();
 private:
+
     Kamera* cam;
     std::string rueckmeldung;
     Textauswerter* textAuswerter;

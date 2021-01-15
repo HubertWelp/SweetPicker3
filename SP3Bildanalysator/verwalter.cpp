@@ -125,9 +125,16 @@ void Verwalter::messageReceived(std::string msg)
                 //Ermittle Orientierung
                 //std::cout << "ermittle orientierung" << std::endl;
                 std::tie(erfolg,winkel,breite) = orientierungsErmittler->ermittleOrientierung();
-                if(erfolg == -1)
+                std::string ergebnis;
+                //Erzeuge Nachrichtenstring für den Roboter
+                if(erfolg <= -1)
                 {
-                    std::cout << "fehlermeldung - orientierungsermittler" << std::endl;//fehlermeldung
+                    ergebnis = "Fehler";
+
+                }
+                else
+                {
+                    ergebnis = std::to_string(xMittelpunkt) + " " + std::to_string(yMittelpunkt) + " " + std::to_string(0) + " " + std::to_string(winkel) + " " + std::to_string(breite);
                 }
 
                 //Erzeuge AusschnittErgebnis.csv für Admin Komponente
@@ -137,9 +144,8 @@ void Verwalter::messageReceived(std::string msg)
                 //std::cout << "AusschnittErgebnis.csv: " << std::fixed << std::setprecision(1) << msg << ";" << winkel << ";" << breite << ";" << xMittelpunkt << ";" << yMittelpunkt << std::endl;
                 ausschnittErgebnis.close();
 
-                //Erzeuge Nachrichtenstring für den Roboter
-                std::string ergebnis = std::to_string(xMittelpunkt) + " " + std::to_string(yMittelpunkt) + " " + std::to_string(0) + " " + std::to_string(winkel) + " " + std::to_string(breite);
-                printf("\n%s\n",ergebnis.c_str());
+                //Sende Nachrichtenstring für den Roboter
+                std::cout << ergebnis << std::endl;
                 sendmessage(ergebnis,"127.0.0.1",5843);
 
             }
@@ -154,6 +160,21 @@ void Verwalter::messageReceived(std::string msg)
         loescheAlt();
         node->sendmessage("stop","127.0.0.1",5850);
         QApplication::quit();
+    }
+}
+
+void Verwalter::testTextauswerter()
+{
+    int i, ii;
+
+    for(i=1;i<5;i++)
+    {
+        for(ii=0;ii<100;ii++)
+        {
+
+            this->messageReceived(std::to_string(i));
+            std::cout << i << " " << ii << std::endl;
+        }
     }
 }
 
