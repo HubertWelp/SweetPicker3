@@ -346,7 +346,7 @@ void OrientierungsErmittler::drawBreite(cv::Mat &img, cv::Point p, cv::Scalar co
     pointTemp2.x += - cos((rotatedRect.angle+90)*CV_PI/180)*breiteBerechnetPixel/6;
     pointTemp2.y += - sin((rotatedRect.angle+90)*CV_PI/180)*breiteBerechnetPixel/6;
     line(img, pointTemp1, pointTemp2, colour, 3, cv::LINE_AA);
-    cv::imshow("a",img);
+    //cv::imshow("a",img);
 
     //Fehlerhaft?
     double x1,x2,y1,y2,x,y;
