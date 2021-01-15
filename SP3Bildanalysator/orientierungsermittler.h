@@ -131,7 +131,17 @@ private:
      * @param colour
      * @param scale
      */
-    void drawAxis(cv::Mat& img, cv::Point p, cv::Point q, cv::Scalar colour, const float scale = 0.2);
+    void drawAxis(cv::Mat &img, cv::Point p, cv::Point q, cv::Scalar colour, const float scale);
+
+    /**
+     * @brief drawBreite
+     * @param img
+     * @param p
+     * @param q
+     * @param colour
+     * @param scale
+     */
+    void drawBreite(cv::Mat &img, cv::Point p, cv::Scalar colour, std::vector<std::vector<cv::Point>> contours, size_t secondlargestAreaIDX);
 
     /**
      * @brief qColor2CVScalar wandelt QColor in cv::Scalar um

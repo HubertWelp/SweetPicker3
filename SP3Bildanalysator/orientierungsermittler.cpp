@@ -4,8 +4,8 @@
 OrientierungsErmittler::OrientierungsErmittler(unsigned short morphOpenSize)
 {
     konfig = new Konfig();
-    this->morphOpenSize = cv::Size(morphOpenSize,morphOpenSize);
     /*Standardwerte*/
+    this->morphOpenSize = cv::Size(morphOpenSize,morphOpenSize);
     this->bildPfad.append(PWD).append(BILDABLAGE).append(BILD);
     this->rahmenFarbe = qColor2CVScalar(konfig->getRahmenfarbe());
     this->rahmenDicke = konfig->getRahmendicke();
@@ -102,8 +102,8 @@ std::tuple<int, double, double> OrientierungsErmittler::ermittleOrientierung()
     bildAusschnittBreit.setTo(cv::Scalar(255,255,255));
     cv::Rect ROI = cv::Rect(50,50,bildAusschnitt.cols, bildAusschnitt.rows);
     bildAusschnitt.copyTo(bildAusschnittBreit(ROI));
-
     cv::drawContours(bildAusschnittBreit, contours, secondlargestAreaIDX, cv::Scalar(0,0,255),4);
+
 
     //Berechne Orientierung
 
@@ -138,11 +138,15 @@ std::tuple<int, double, double> OrientierungsErmittler::ermittleOrientierung()
     cv::Point p1 = center + 0.02 * cv::Point(static_cast<int>(eigenVecs[0].x * eigenVals[0]), static_cast<int>(eigenVecs[0].y * eigenVals[0]));
     cv::Point p2 = center - 0.02 * cv::Point(static_cast<int>(eigenVecs[1].x * eigenVals[1]), static_cast<int>(eigenVecs[1].y * eigenVals[1]));
     drawAxis(bildAusschnittBreit, center, p1, cv::Scalar(0, 255, 0), 1);
-    drawAxis(bildAusschnittBreit, center, p2, cv::Scalar(255, 255, 0), 2);
+    //drawAxis(bildAusschnittBreit, center, p2, cv::Scalar(255, 255, 0), 2);
 
+
+
+
+
+    drawBreite(bildAusschnittBreit, center, cv::Scalar(155,155,123),contours,secondlargestAreaIDX);
 
     cv::imwrite(std::string(PWD).append(BILDABLAGE).append("ausschnittErgebnis.jpg"),bildAusschnittBreit(ROI)); //der weiße Hintergrund wird rausgeschnitten da dieser nur notwendig war um die Kontur richtig einzuzeichnen
-
     if(!cv::haveImageReader(std::string(PWD).append(BILDABLAGE).append("ausschnittErgebnis.jpg")))
     {
         return std::make_tuple(-4,angle,breite); //gespeichertes Bild kann von opencv nicht dekodiert werden (korrupt)
@@ -150,7 +154,6 @@ std::tuple<int, double, double> OrientierungsErmittler::ermittleOrientierung()
 
 
     std::string pfadErgebnis = std::string(PWD).append(BILDABLAGE).append("gefundeneObjekte.jpg");
-
     /*Prüfen ob der Pfad ein Bild enthält*/
     if(!cv::haveImageReader(pfadErgebnis))
     {
@@ -158,9 +161,7 @@ std::tuple<int, double, double> OrientierungsErmittler::ermittleOrientierung()
     }
 
     bildAktuelleSzeneRahmen = cv::imread(pfadErgebnis);
-
     cv::rectangle(bildAktuelleSzeneRahmen, bildInputROI, rahmenFarbe, rahmenDicke, cv::LINE_AA);
-
     cv::imwrite(std::string(PWD).append(BILDABLAGE).append("aktuelleSzeneRahmen.jpg"),bildAktuelleSzeneRahmen); //der weiße Hintergrund wird rausgeschnitten da dieser nur notwendig war um die Kontur richtig einzuzeichnen
     if(!cv::haveImageReader(std::string(PWD).append(BILDABLAGE).append("aktuelleSzeneRahmen.jpg")))
     {
@@ -308,6 +309,42 @@ void OrientierungsErmittler::drawAxis(cv::Mat &img, cv::Point p, cv::Point q, cv
     p.y = static_cast<int>(q.y + 9 * sin(angle - CV_PI / 4));
     line(img, p, q, colour, 3, cv::LINE_AA);
     //! [visualization]
+}
+
+void OrientierungsErmittler::drawBreite(cv::Mat &img, cv::Point p, cv::Scalar colour, std::vector<std::vector<cv::Point>> contours, size_t secondlargestAreaIDX)
+{
+    std::vector<cv::RotatedRect> minRect(contours.size());
+    cv::RotatedRect rotatedRect = cv::minAreaRect(contours[secondlargestAreaIDX]);
+    cv::Point2f pointA;
+    cv::Point2f pointB;
+    pointA = p;
+    pointB = p;
+    float i;
+    /** Läuft vom Mittelpunkt nach außen mit dem gleichen Winkel bis es die Kontur trifft **/
+    for(i = 1; cv::pointPolygonTest(contours[secondlargestAreaIDX],pointA,1)>=0;i=i+0.5)
+    {
+        pointA.x = p.x + cos(rotatedRect.angle*CV_PI/180)*i;
+        pointA.y = p.y + sin(rotatedRect.angle*CV_PI/180)*i;
+    }
+    for(i = 1; cv::pointPolygonTest(contours[secondlargestAreaIDX],pointB,1)>=0;i=i+0.5)
+    {
+        pointB.x = p.x - cos(rotatedRect.angle*CV_PI/180)*i;
+        pointB.y = p.y - sin(rotatedRect.angle*CV_PI/180)*i;
+    }
+    //pointB.x -= cos(rotatedRect.angle*CV_PI/180)*i;
+    //pointB.y -= sin(rotatedRect.angle*CV_PI/180)*i;
+    line(img, pointA, pointB, colour, 3, cv::LINE_AA);
+
+    //Fehlerhaft
+    double x1,x2,y1,y2,x,y;
+    x1 = pointA.x*ressourcen::BILDBRT/bildInput.cols;
+    x2 = pointB.x*ressourcen::BILDBRT/bildInput.cols;
+    y1 = pointA.y*ressourcen::BILDHHE/bildInput.rows;
+    y2 = pointB.y*ressourcen::BILDHHE/bildInput.rows;
+    x = x1-x2;
+    y = x1-y2;
+    double breiteBerechnet = sqrt(x*x + y*y);
+    std::cout << breiteBerechnet;
 }
 
 cv::Scalar OrientierungsErmittler::qColor2CVScalar(QColor color)
