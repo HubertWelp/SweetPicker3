@@ -51,7 +51,7 @@ int Objektinformation::aktualisieren()
     QStringList pieces = string.split(';');
     name = k.getObjektname(pieces.value(0).toInt());
     winkel = pieces.value(1).toFloat();
-    breite = k.getObjektbreite(pieces.value(2).toInt());
+    breite = pieces.value(2).toFloat();
     xposi = pieces.value(3).toFloat();
     yposi = pieces.value(4).toFloat();
 
