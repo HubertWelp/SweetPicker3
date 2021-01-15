@@ -472,13 +472,16 @@
            </size>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>1</number>
           </property>
           <widget class="QWidget" name="tab">
            <attribute name="title">
             <string>Erkannte Objekte</string>
            </attribute>
            <layout class="QGridLayout" name="gridLayout_3">
+            <property name="spacing">
+             <number>0</number>
+            </property>
             <item row="1" column="0">
              <widget class="QLabel" name="label_aktuelleSzeneRahmen">
               <property name="sizePolicy">
@@ -504,6 +507,9 @@
            <layout class="QGridLayout" name="gridLayout_2">
             <item row="0" column="0">
              <layout class="QGridLayout" name="gridLayout">
+              <property name="spacing">
+               <number>0</number>
+              </property>
               <item row="0" column="0">
                <widget class="QLabel" name="label_ausschnitt">
                 <property name="text">

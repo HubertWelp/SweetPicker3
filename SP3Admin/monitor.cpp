@@ -27,6 +27,8 @@ Monitor::Monitor(QWidget *parent) :
     QString qss = QString("background-color: %1").arg(previousRahmenfarbe.name());
     ui->pushButton_farbpalette->setStyleSheet(qss);
 
+    zeichneInfo();
+
 }
 
 Monitor::~Monitor()
@@ -122,16 +124,16 @@ void Monitor::zeichneInfo()
     int h = ui->tab->size().height();
     ui->label_aktuelleSzeneRahmen->setPixmap(QPixmap::fromImage(info.getAktuelleSzeneRahmen()).scaled(w, h, Qt::KeepAspectRatio));
 
-    w = ui->tab_2->size().width();
-    h = ui->tab_2->size().height();
-    ui->label_ausschnitt->setPixmap(QPixmap::fromImage(info.getAusschnitt()).scaled(w/2, h/2, Qt::KeepAspectRatio));
-    ui->label_ausschnittSW->setPixmap(QPixmap::fromImage(info.getAusschnittSW()).scaled(w/2, h/2, Qt::KeepAspectRatio));
-    ui->label_ausschnittSWprocessed->setPixmap(QPixmap::fromImage(info.getAusschnittSWprocessed()).scaled(w/2, h/2, Qt::KeepAspectRatio));
-    ui->label_ausschnittErgebnis->setPixmap(QPixmap::fromImage(info.getAusschnittErgebnis()).scaled(w/2, h/2, Qt::KeepAspectRatio));
+    w = ui->label_ausschnitt->size().width();
+    h = ui->label_ausschnitt->size().height();
+    ui->label_ausschnitt->setPixmap(QPixmap::fromImage(info.getAusschnitt()).scaled(w, h, Qt::KeepAspectRatio));
+    ui->label_ausschnittSW->setPixmap(QPixmap::fromImage(info.getAusschnittSW()).scaled(w, h, Qt::KeepAspectRatio));
+    ui->label_ausschnittSWprocessed->setPixmap(QPixmap::fromImage(info.getAusschnittSWprocessed()).scaled(w, h, Qt::KeepAspectRatio));
+    ui->label_ausschnittErgebnis->setPixmap(QPixmap::fromImage(info.getAusschnittErgebnis()).scaled(w, h, Qt::KeepAspectRatio));
 
-    ui->lineEdit_xPosition->setText(QString::number(info.getXPosi()));
-    ui->lineEdit_yPosition->setText(QString::number(info.getYPosi()));
+    ui->lineEdit_xPosition->setText(QString::number(info.getXPosi())+" mm");
+    ui->lineEdit_yPosition->setText(QString::number(info.getYPosi())+ " mm");
     ui->lineEdit_suessigkeit->setText(info.getAngefordertesObjekt());
-    ui->lineEdit_breite->setText(QString::number(info.getBreite()));
-    ui->lineEdit_orientierung->setText(QString::number(info.getWinkel()));
+    ui->lineEdit_breite->setText(QString::number(info.getBreite())+" mm");
+    ui->lineEdit_orientierung->setText(QString::number(info.getWinkel())+"°");
 }
