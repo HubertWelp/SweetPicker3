@@ -40,8 +40,8 @@ void Monitor::parameterSpeichern()
         k.setBildbreite(ui->spinBox_erode->value()) ||
         k.setBildhoehe(ui->spinBox_dillate->value()) ||
         k.setKameraID(ui->spinBox_kameraID->value()) ||
-        k.setRahmenfarbe(nextRahmenfarbe) == 0 ||
-        k.setRahmendicke(ui->spinBox_rahmendicke->value())
+        k.setRahmenfarbe(nextRahmenfarbe)  ||
+        k.setRahmendicke(ui->spinBox_rahmendicke->value()) == 0
         )
     {
         // Aktuell eingestellte Werte der Eingabe als nächste Ausgangswerte setzen
