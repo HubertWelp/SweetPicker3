@@ -40,7 +40,7 @@ public:
      * @see ladeBild()
      * @see ausschnittROI()
      * @see bearbeiteBild()
-     * @return < 0,x,y> =>  0 = Methode erfolgreich ausgeführt, x = Winkel in °Grad, y = Breite in Meter.
+     * @return < 0,x,y> =>  0 = Methode erfolgreich ausgeführt, x = Winkel in °Grad, y = Breite in Milimeter.
      *         <-1,x,y> => -1 = Methode unerfolgreich ausgeführt.
      */
     std::tuple<int, double, double> ermittleOrientierung();
@@ -113,13 +113,13 @@ private:
 
     /**
      * @brief ausschnittPOI erzeugt einen Ausschnitt
-     * @return
+     * @return 0 = Methode erfolgreich ausgeführt, -1 = Methode unerfolgreich ausgeführt
      */
     int ausschnittROI();
 
     /**
      * @brief bearbeiteBild
-     * @return
+     * @return 0 = Methode erfolgreich ausgeführt, -1 = Methode unerfolgreich ausgeführt
      */
     int bearbeiteBild();
 
