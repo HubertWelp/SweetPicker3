@@ -2,7 +2,7 @@
 
 Verwalter::Verwalter()
 {
-    cam = new Kamera(PWD);
+    cam = new Kamera(ressourcen::PWD.c_str());
     textAuswerter = new Textauswerter;
     node = new UDPNode(5840);
     orientierungsErmittler = new OrientierungsErmittler;
@@ -13,7 +13,7 @@ void Verwalter::loescheAlt()
 {
     //Setze Ordnerpfad
     char* pfad = new char [256];
-    strcpy(pfad,PWD);
+    strcpy(pfad,ressourcen::PWD.c_str());
     strcat(pfad,BILDABLAGE);
 
     //Öffne Ordner
@@ -44,7 +44,7 @@ void Verwalter::fuehreSkriptAus()
 bool Verwalter::warte()
 {
     int i;
-    QString pfad = QString(PWD);
+    QString pfad = QString(QString::fromStdString(ressourcen::PWD));
     pfad.append(QString(TEXTABLAGE));
     QFile datei(pfad);
 
@@ -72,7 +72,7 @@ const char* Verwalter::verarbeiteText(void)
     char inhalt[500];
     char* pfad = new char [256];
 
-    strcpy(pfad,PWD);
+    strcpy(pfad,ressourcen::PWD.c_str());
     strcat(pfad,TEXTABLAGE);
 
     datei = fopen(pfad,"r");
@@ -109,11 +109,11 @@ void Verwalter::messageReceived(std::string msg)
         delete [] pfad;
         // Ein Python-Skript vom SP3Objekterkenner ausführen (python programmname TEXTABLAGE wahl)
         fuehreSkriptAus();
-        // warten, bis SP3Objektereknner fertig ist
+        // warten, bis SP3Objektereknner  fertig ist
         if(warte())
         {
             // Erkennungsergebnis einlesen und auswerten
-            int erg = textAuswerter->liesEin(QString(PWD)+QString(TEXTABLAGE));
+            int erg = textAuswerter->liesEin(QString(QString::fromStdString(ressourcen::PWD))+QString(TEXTABLAGE));
             //std::cout << erg << std::endl;
             if(erg == 3)
             {
@@ -132,7 +132,7 @@ void Verwalter::messageReceived(std::string msg)
 
                 //Erzeuge AusschnittErgebnis.csv für Admin Komponente
                 std::ofstream ausschnittErgebnis;
-                ausschnittErgebnis.open(std::string(PWD).append(BILDABLAGE).append("ausschnittErgebnis.csv"));
+                ausschnittErgebnis.open(std::string(ressourcen::PWD).append(BILDABLAGE).append("ausschnittErgebnis.csv"));
                 ausschnittErgebnis << msg << ";" << winkel << ";" << breite << ";" << xMittelpunkt << ";" << yMittelpunkt; //ausgewählte Süßigkeit muss übersetzt werden
                 //std::cout << "AusschnittErgebnis.csv: " << std::fixed << std::setprecision(1) << msg << ";" << winkel << ";" << breite << ";" << xMittelpunkt << ";" << yMittelpunkt << std::endl;
                 ausschnittErgebnis.close();
