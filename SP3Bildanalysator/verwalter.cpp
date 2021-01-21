@@ -49,7 +49,7 @@ bool Verwalter::warte()
     QFile datei(pfad);
 
     /*20 Prüfe für 20 Sekunden ob die Datei vorhanden ist */
-    for(i = 0; !(QFileInfo::exists(pfad) && QFileInfo(pfad).isFile() && (i < 19)); i++)
+    for(i = 0; !(QFileInfo::exists(pfad)) && !datei.open(QIODevice::ReadOnly) && (i < 19); i++)
     {
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
     }
@@ -62,6 +62,7 @@ bool Verwalter::warte()
     }
     else
     {
+        datei.close();
         return false;
     }
 }
