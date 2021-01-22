@@ -92,7 +92,7 @@ void Verwalter::messageReceived(std::string msg)
 
     ressourcen::BILDHHE = konfig->getBildhoehe();
     ressourcen::BILDBRT = konfig->getBildbreite();
-
+    //ressourcen::PWD = konfig->getAblageort();
     int maxObjekte;
     for(maxObjekte = 1; konfig->getObjektname(maxObjekte)!="";maxObjekte++);
     maxObjekte--;
@@ -106,7 +106,7 @@ void Verwalter::messageReceived(std::string msg)
         strcpy(pfad,BILDABLAGE);
         strcat(pfad,BILD);
         cam->setzeKameraID(konfig->getKameraID());
-        cam->nehmeAufTest(pfad);
+        cam->nehmeAuf(pfad);
         delete [] pfad;
         // Ein Python-Skript vom SP3Objekterkenner ausführen (python programmname TEXTABLAGE wahl)
         fuehreSkriptAus();
@@ -128,23 +128,20 @@ void Verwalter::messageReceived(std::string msg)
                 std::tie(erfolg,winkel,breite) = orientierungsErmittler->ermittleOrientierung();
                 std::string ergebnis;
                 //Erzeuge Nachrichtenstring für den Roboter
+                //Erzeuge AusschnittErgebnis.csv für Admin Komponente
+                std::ofstream ausschnittErgebnis;
+                ausschnittErgebnis.open(std::string(ressourcen::PWD).append(BILDABLAGE).append("ausschnittErgebnis.csv"));
                 if(erfolg <= -1)
                 {
                     ergebnis = "Fehler";
-
+                    ausschnittErgebnis << -1 << ";" << -1 << ";" << -1 << ";" << -1 << ";" << -1;
                 }
                 else
                 {
                     ergebnis = std::to_string(xMittelpunkt) + " " + std::to_string(yMittelpunkt) + " " + std::to_string(0) + " " + std::to_string(winkel) + " " + std::to_string(breite);
+                    ausschnittErgebnis << msg << ";" << winkel << ";" << breite << ";" << xMittelpunkt << ";" << yMittelpunkt;
                 }
-
-                //Erzeuge AusschnittErgebnis.csv für Admin Komponente
-                std::ofstream ausschnittErgebnis;
-                ausschnittErgebnis.open(std::string(ressourcen::PWD).append(BILDABLAGE).append("ausschnittErgebnis.csv"));
-                ausschnittErgebnis << msg << ";" << winkel << ";" << breite << ";" << xMittelpunkt << ";" << yMittelpunkt; //ausgewählte Süßigkeit muss übersetzt werden
-                //std::cout << "AusschnittErgebnis.csv: " << std::fixed << std::setprecision(1) << msg << ";" << winkel << ";" << breite << ";" << xMittelpunkt << ";" << yMittelpunkt << std::endl;
                 ausschnittErgebnis.close();
-
                 //Sende Nachrichtenstring für den Roboter
                 std::cout << ergebnis << std::endl;
                 sendmessage(ergebnis,"127.0.0.1",5843);
@@ -152,6 +149,14 @@ void Verwalter::messageReceived(std::string msg)
             }
             else
             {
+                std::string ergebnis;
+                std::ofstream ausschnittErgebnis;
+                ausschnittErgebnis.open(std::string(ressourcen::PWD).append(BILDABLAGE).append("ausschnittErgebnis.csv"));
+                ergebnis = "Fehler";
+                ausschnittErgebnis << -1 << ";" << -1 << ";" << -1 << ";" << -1 << ";" << -1;
+                ausschnittErgebnis.close();
+                std::cout << ergebnis << std::endl;
+                sendmessage(ergebnis,"127.0.0.1",5843);
                 std::cout << "fehlermeldung - textauswerter - " << erg << std::endl;
             }
         }
