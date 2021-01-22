@@ -25,14 +25,19 @@ public slots:
     * Diese Methode liest den eingegeben Text in der Zeile für das Passwort und überprüft, ob es
     * mit dem Passwort aus der konfig.ini Datei übereinstimmt
     *
-    * @param [in] nr Nummer des Objektes,
-    *
-    * @return  Liefert den Namen des Objektes mit der jeweiligen Objektnummer, falls es einen Objektnamen zu dieser Objektnummer gibt
-    *          Falls es zu der Objektnummer keinen Objektnamen gibt, wird ein Leerstring ("") zurückgegeben.
+    * @return  void
     *
     */
     void anmeldeAnfrage();
-    //void easteregg();
+
+    /** @brief Checkt bei jeder Tastatureingabe, ob Enter oder Escape gedrückt wurde und reagiert entsprechend
+    *
+    * Falls Enter gedrückt wird, wird die Methode anmeldeAnfrage() gestartet
+    * Falls Escape gedrückt wird, wird das Fenster geschlosssen
+    *
+    * @return  void
+    *
+    */
     void keyPressEvent(QKeyEvent* pe) override;
 
 private:
