@@ -1,7 +1,6 @@
 #ifndef OBJEKTINFORMATION_H
 #define OBJEKTINFORMATION_H
 
-#define BILDABLAGE "/home/Student/git/SP3/SweetPicker3/SP3Bildanalysator/SP3Bilderkennung/"
 
 #include <QImage>
 #include <QPixmap>
@@ -30,7 +29,13 @@ public:
     * Erstellt ein Objekt der Klasse und lädt die Bilder in den Speicher.
     *
     */
-    Objektinformation(QString pfad=":/SP3Bilderkennung/");
+    Objektinformation();
+
+    /** @brief Setzt den Dateipfad für die Bildablage
+    *
+    * @return void
+    */
+    void setBildablage(QString pfad);
 
     /** @brief Aktualisiert die geladenen Bilder des Objekts
     *
@@ -106,7 +111,7 @@ public:
 
 private:
     Konfig k;
-    QString dateipfad;
+    QString bildablage;
     QImage AktuelleSzene;
     QImage AktuelleSzeneRahmen;
     QImage Ausschnitt;

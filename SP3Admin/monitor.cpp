@@ -9,6 +9,7 @@ Monitor::Monitor(QWidget *parent) :
 
     KonfigAdmin k;
     Objektinformation info;
+    info.setBildablage(k.getAblageort());
 
     // Aktuelle Parameter auf der Konfigurationsdatei einlesen und zwischenspeichern
     previousBildbreite = k.getBildbreite();

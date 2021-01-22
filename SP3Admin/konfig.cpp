@@ -123,12 +123,27 @@ QString KonfigAdmin::getPasswort()
 {
     QSettings settings(dateipfad,QSettings::IniFormat);
     QString c;
-    settings.beginGroup("Passwort");
+    settings.beginGroup("General");
     if(settings.contains("pw") && settings.status()==0)
     {
         c = settings.value("pw").toString();
     }
     else c = "SP3";
+    settings.endGroup();
+
+    return c;
+}
+
+QString KonfigAdmin::getAblageort()
+{
+    QSettings settings(dateipfad,QSettings::IniFormat);
+    QString c;
+    settings.beginGroup("General");
+    if(settings.contains("Ablage") && settings.status()==0)
+    {
+        c = settings.value("Ablage").toString();
+    }
+    else c = "/home/Student/git/SP3/SweetPicker3/SP3Bildanalysator/SP3Bilderkennung/";
     settings.endGroup();
 
     return c;
