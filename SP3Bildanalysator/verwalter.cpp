@@ -49,15 +49,15 @@ bool Verwalter::warte()
     QFile datei(pfad);
 
     /*20 Prüfe für 20 Sekunden ob die Datei vorhanden ist */
-    for(i = 0; !(QFileInfo::exists(pfad)) && !datei.open(QIODevice::ReadOnly) && (i < 19); i++)
+    for(i = 0; !(QFileInfo::exists(pfad)) && !datei.open(QIODevice::ReadOnly) && (i < 200); i++)
     {
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
     }
     /*Datei vorhanden oder 20 Sekunden vergangen*/
 
-    if(i<19)
+    if(i<200)
     {
-       datei.close();
+        datei.close();
        return true;
     }
     else
@@ -172,7 +172,6 @@ void Verwalter::testTextauswerter()
     {
         for(ii=0;ii<100;ii++)
         {
-
             this->messageReceived(std::to_string(i));
             std::cout << i << " " << ii << std::endl;
         }
