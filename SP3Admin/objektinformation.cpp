@@ -1,10 +1,15 @@
 #include "objektinformation.h"
 
-Objektinformation::Objektinformation(QString pfad)
+Objektinformation::Objektinformation()
 {
-    dateipfad=pfad;
+    bildablage="/home/Student/git/SP3/SweetPicker3/SP3Bildanalysator/SP3Bilderkennung";
     Konfig k;
     aktualisieren();
+}
+
+void Objektinformation::setBildablage(QString pfad)
+{
+    bildablage=pfad;
 }
 
 int Objektinformation::aktualisieren()
@@ -12,28 +17,28 @@ int Objektinformation::aktualisieren()
     QImageReader reader;
     //reader.setFormat("jpg");
 
-    reader.setFileName(QString("%1%2").arg(BILDABLAGE).arg("aktuelleSzene.jpg"));
+    reader.setFileName(QString("%1%2").arg(bildablage).arg("/aktuelleSzene.jpg"));
     AktuelleSzene = reader.read();
 
-    reader.setFileName(QString("%1%2").arg(BILDABLAGE).arg("aktuelleSzeneRahmen.jpg"));
+    reader.setFileName(QString("%1%2").arg(bildablage).arg("/aktuelleSzeneRahmen.jpg"));
     AktuelleSzeneRahmen = reader.read();
 
-    reader.setFileName(QString("%1%2").arg(BILDABLAGE).arg("ausschnitt.jpg"));
+    reader.setFileName(QString("%1%2").arg(bildablage).arg("/ausschnitt.jpg"));
     Ausschnitt = reader.read();
 
-    reader.setFileName(QString("%1%2").arg(BILDABLAGE).arg("ausschnittSW.jpg"));
+    reader.setFileName(QString("%1%2").arg(bildablage).arg("/ausschnittSW.jpg"));
     AusschnittSW = reader.read();
 
-    reader.setFileName(QString("%1%2").arg(BILDABLAGE).arg("ausschnittSWprocessed.jpg"));
+    reader.setFileName(QString("%1%2").arg(bildablage).arg("/ausschnittSWprocessed.jpg"));
     AusschnittSWprocessed = reader.read();
 
-    reader.setFileName(QString("%1%2").arg(BILDABLAGE).arg("ausschnittErgebnis.jpg"));
+    reader.setFileName(QString("%1%2").arg(bildablage).arg("/ausschnittErgebnis.jpg"));
     AusschnittErgebnis = reader.read();
 
     //3;25.2016;0;275.317;226.553
     //Name Winkel Breite x y
 
-    QFile text(QString("%1%2").arg(BILDABLAGE).arg("ausschnittErgebnis.csv"));
+    QFile text(QString("%1%2").arg(bildablage).arg("/ausschnittErgebnis.csv"));
     text.open(QIODevice::ReadOnly);
     QString string = QTextStream(&text).readLine();
 
