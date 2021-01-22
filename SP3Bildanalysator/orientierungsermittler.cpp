@@ -6,19 +6,18 @@ OrientierungsErmittler::OrientierungsErmittler(unsigned short morphOpenSize)
     konfig = new Konfig();
     /*Standardwerte*/
     this->morphOpenSize = cv::Size(morphOpenSize,morphOpenSize);
-    this->bildPfad.append(PWD).append(BILDABLAGE).append(BILD);
+    this->bildPfad.append(ressourcen::PWD).append(BILDABLAGE).append(BILD);
     this->rahmenFarbe = qColor2CVScalar(konfig->getRahmenfarbe());
     this->rahmenDicke = konfig->getRahmendicke();
 }
 
 int OrientierungsErmittler::setzeKoordinaten(double yMin, double xMin, double yMax, double xMax)
 {
-    this->yMin = yMin;
-    this->xMin = xMin;
-    this->yMax = yMax;
-    this->xMax = xMax;
-
-    return 0;
+        this->yMin = yMin;
+        this->xMin = xMin;
+        this->yMax = yMax;
+        this->xMax = xMax;
+        return 0;
 }
 
 int OrientierungsErmittler::setzeBildPfad(const std::string &pfad)
@@ -27,7 +26,7 @@ int OrientierungsErmittler::setzeBildPfad(const std::string &pfad)
     /*Prüfen ob der Pfad zurückgesetzt werden soll*/
     if(pfad.empty())
     {
-        this->bildPfad.append(PWD).append(BILDABLAGE).append(BILD); //Standardpfad
+        this->bildPfad.append(ressourcen::PWD).append(BILDABLAGE).append(BILD); //Standardpfad
         return 0;
     }
 
@@ -45,6 +44,7 @@ int OrientierungsErmittler::setzeBildPfad(const std::string &pfad)
 int OrientierungsErmittler::ladeBild()
 {
     bildInput = imread(bildPfad, cv::IMREAD_COLOR);
+
     if(bildInput.empty())
     {
         std::cout << "error bildInput" << std::endl;
@@ -55,10 +55,12 @@ int OrientierungsErmittler::ladeBild()
 
 std::tuple<int, double, double> OrientierungsErmittler::ermittleOrientierung()
 {
+
+
     /** Parameter für aktuelleSzeneRahmen aktualisieren **/
     this->rahmenFarbe = qColor2CVScalar(konfig->getRahmenfarbe());
     this->rahmenDicke = konfig->getRahmendicke();
-    std::cout << "farbe " << rahmenFarbe << " dicke " << rahmenDicke << std::endl;
+    //std::cout << "farbe " << rahmenFarbe << " dicke " << rahmenDicke << std::endl;
     double breite = konfig->getObjektbreite(wahl);
     //ladeParameter
 
@@ -80,7 +82,6 @@ std::tuple<int, double, double> OrientierungsErmittler::ermittleOrientierung()
     cv::findContours(contourOutput, contours, cv::RETR_LIST, cv::CHAIN_APPROX_NONE);
 
     //Findet die zweitgrößte Fläche und seinen Index im Kontur Feld. Die größte Fläche entspricht der Bildfläche, die zweitgrößte Fläche entspricht mit sehr hoher Wahrscheinlichkeit der gesuchten Fläche
-
     double largestArea = 0;
     double secondlargestArea = 0;
     size_t largestAreaIDX = 0;
@@ -136,24 +137,18 @@ std::tuple<int, double, double> OrientierungsErmittler::ermittleOrientierung()
 
     //Winkel entspricht der Richtung vom grünen Pfeil, Orientierung ist manchmal gedreht. (oben rum -180° unten rum +180°)
     cv::Point p1 = center + 0.02 * cv::Point(static_cast<int>(eigenVecs[0].x * eigenVals[0]), static_cast<int>(eigenVecs[0].y * eigenVals[0]));
-    cv::Point p2 = center - 0.02 * cv::Point(static_cast<int>(eigenVecs[1].x * eigenVals[1]), static_cast<int>(eigenVecs[1].y * eigenVals[1]));
+    //cv::Point p2 = center - 0.02 * cv::Point(static_cast<int>(eigenVecs[1].x * eigenVals[1]), static_cast<int>(eigenVecs[1].y * eigenVals[1]));
     drawAxis(bildAusschnittBreit, center, p1, cv::Scalar(0, 255, 0), 1);
-    //drawAxis(bildAusschnittBreit, center, p2, cv::Scalar(255, 255, 0), 2);
+    drawBreite(bildAusschnittBreit, center, cv::Scalar(255,0,0),contours,secondlargestAreaIDX);
 
-
-
-
-
-    drawBreite(bildAusschnittBreit, center, cv::Scalar(155,155,123),contours,secondlargestAreaIDX);
-
-    cv::imwrite(std::string(PWD).append(BILDABLAGE).append("ausschnittErgebnis.jpg"),bildAusschnittBreit(ROI)); //der weiße Hintergrund wird rausgeschnitten da dieser nur notwendig war um die Kontur richtig einzuzeichnen
-    if(!cv::haveImageReader(std::string(PWD).append(BILDABLAGE).append("ausschnittErgebnis.jpg")))
+    cv::imwrite(std::string(ressourcen::PWD).append(BILDABLAGE).append("ausschnittErgebnis.jpg"),bildAusschnittBreit(ROI)); //der weiße Hintergrund wird rausgeschnitten da dieser nur notwendig war um die Kontur richtig einzuzeichnen
+    if(!cv::haveImageReader(std::string(ressourcen::PWD).append(BILDABLAGE).append("ausschnittErgebnis.jpg")))
     {
         return std::make_tuple(-4,angle,breite); //gespeichertes Bild kann von opencv nicht dekodiert werden (korrupt)
     }
 
 
-    std::string pfadErgebnis = std::string(PWD).append(BILDABLAGE).append("gefundeneObjekte.jpg");
+    std::string pfadErgebnis = std::string(ressourcen::PWD).append(BILDABLAGE).append("gefundeneObjekte.jpg");
     /*Prüfen ob der Pfad ein Bild enthält*/
     if(!cv::haveImageReader(pfadErgebnis))
     {
@@ -162,8 +157,8 @@ std::tuple<int, double, double> OrientierungsErmittler::ermittleOrientierung()
 
     bildAktuelleSzeneRahmen = cv::imread(pfadErgebnis);
     cv::rectangle(bildAktuelleSzeneRahmen, bildInputROI, rahmenFarbe, rahmenDicke, cv::LINE_AA);
-    cv::imwrite(std::string(PWD).append(BILDABLAGE).append("aktuelleSzeneRahmen.jpg"),bildAktuelleSzeneRahmen); //der weiße Hintergrund wird rausgeschnitten da dieser nur notwendig war um die Kontur richtig einzuzeichnen
-    if(!cv::haveImageReader(std::string(PWD).append(BILDABLAGE).append("aktuelleSzeneRahmen.jpg")))
+    cv::imwrite(std::string(ressourcen::PWD).append(BILDABLAGE).append("aktuelleSzeneRahmen.jpg"),bildAktuelleSzeneRahmen); //der weiße Hintergrund wird rausgeschnitten da dieser nur notwendig war um die Kontur richtig einzuzeichnen
+    if(!cv::haveImageReader(std::string(ressourcen::PWD).append(BILDABLAGE).append("aktuelleSzeneRahmen.jpg")))
     {
         return std::make_tuple(-6,angle,breite); //gespeichertes Bild kann von opencv nicht dekodiert werden (korrupt)
     }
@@ -237,9 +232,10 @@ int OrientierungsErmittler::ausschnittROI()
         bildInputROI.width = static_cast<int>(xMax-xMin);
         bildInputROI.height = static_cast<int>(yMax-yMin);
     }
-
-    if(bildInputROI.x == bildInputROI.width || bildInputROI.y == bildInputROI.height) return -1; //Ungültiger Rahmen (Koordinaten liegen auf einer 0px breiten/hohen Linie oder auf einem Punkt
-
+    if(bildInputROI.x == bildInputROI.width || bildInputROI.y == bildInputROI.height || bildInputROI.x <= 0|| bildInputROI.y <= 0|| bildInputROI.width <= 0|| bildInputROI.height <= 0)
+    {
+        return -1; //Ungültiger Rahmen (Koordinaten liegen auf einer 0px breiten/hohen Linie oder auf einem Punkt
+    }
 
     //std::cout << "ROI.x = " << ROI.x << " ROI.y = " << ROI.y << " ROI.width = " << ROI.width << " ROI.height = " << ROI.height << " BildBreite = " << bildInput.size().width << " Bildhöhe = " << bildInput.size().height << std::endl;
 
@@ -251,7 +247,7 @@ int OrientierungsErmittler::ausschnittROI()
 
     //cv::imwrite(std::string(PWD).append(BILDABLAGE).append("ausschnitt2.jpg"),cv::imread("/home/Student/git/SP3/SweetPicker3/SP3Bildanalysator/SP3Bilderkennung/gefundeneObjekte.jpg",cv::IMREAD_COLOR)(ROI));
 
-    cv::imwrite(std::string(PWD).append(BILDABLAGE).append("ausschnitt.jpg"),bildAusschnitt);
+    cv::imwrite(std::string(ressourcen::PWD).append(BILDABLAGE).append("ausschnitt.jpg"),bildAusschnitt);
     cvtColor(bildAusschnitt,bildAusschnitGraustufe,cv::COLOR_BGR2GRAY);
 
     threshold(bildAusschnitGraustufe,bildAusschnittSchwarzWeiss,164,255,cv::THRESH_BINARY);//TODO PARAM
@@ -261,9 +257,9 @@ int OrientierungsErmittler::ausschnittROI()
     bildAusschnittSchwarzWeiss.copyTo(bildAusschnittBreit(cv::Rect(50,50,bildAusschnittSchwarzWeiss.cols, bildAusschnittSchwarzWeiss.rows)));
 
     bildAusschnittBreit.copyTo(bildAusschnittSchwarzWeiss);
-    cv::imwrite(std::string(PWD).append(BILDABLAGE).append("ausschnittSW.jpg"),bildAusschnittSchwarzWeiss(cv::Rect(50,50,bildAusschnitt.cols, bildAusschnitt.rows)));
+    cv::imwrite(std::string(ressourcen::PWD).append(BILDABLAGE).append("ausschnittSW.jpg"),bildAusschnittSchwarzWeiss(cv::Rect(50,50,bildAusschnitt.cols, bildAusschnitt.rows)));
 
-    if(!cv::haveImageReader(std::string(PWD).append(BILDABLAGE).append("ausschnitt.jpg")) || !cv::haveImageReader(std::string(PWD).append(BILDABLAGE).append("ausschnittSW.jpg")))
+    if(!cv::haveImageReader(std::string(ressourcen::PWD).append(BILDABLAGE).append("ausschnitt.jpg")) || !cv::haveImageReader(std::string(ressourcen::PWD).append(BILDABLAGE).append("ausschnittSW.jpg")))
     {
         return -3; //gespeicherte Bilder können von opencv nicht dekodiert werden (korrupt)
     }
@@ -277,9 +273,9 @@ int OrientierungsErmittler::ausschnittROI()
 int OrientierungsErmittler::bearbeiteBild()
 {
     cv::morphologyEx(bildAusschnittSchwarzWeiss,bildAusschnittSchwarzWeissBearbeitet,cv::MORPH_OPEN, cv::getStructuringElement(cv::MORPH_ELLIPSE,morphOpenSize)); //remove noise
-    cv::imwrite(std::string(PWD).append(BILDABLAGE).append("ausschnittSWprocessed.jpg"),bildAusschnittSchwarzWeissBearbeitet(cv::Rect(50,50,bildAusschnitt.cols, bildAusschnitt.rows)));
+    cv::imwrite(std::string(ressourcen::PWD).append(BILDABLAGE).append("ausschnittSWprocessed.jpg"),bildAusschnittSchwarzWeissBearbeitet(cv::Rect(50,50,bildAusschnitt.cols, bildAusschnitt.rows)));
 
-    if(!cv::haveImageReader(std::string(PWD).append(BILDABLAGE).append("ausschnittSWprocessed.jpg")))
+    if(!cv::haveImageReader(std::string(ressourcen::PWD).append(BILDABLAGE).append("ausschnittSWprocessed.jpg")))
     {
         return -1; //gespeichertes Bild kann von opencv nicht dekodiert werden (korrupt)
     }
@@ -311,40 +307,57 @@ void OrientierungsErmittler::drawAxis(cv::Mat &img, cv::Point p, cv::Point q, cv
     //! [visualization]
 }
 
-void OrientierungsErmittler::drawBreite(cv::Mat &img, cv::Point p, cv::Scalar colour, std::vector<std::vector<cv::Point>> contours, size_t secondlargestAreaIDX)
+void OrientierungsErmittler::drawBreite(cv::Mat &img, cv::Point p, cv::Scalar colour, std::vector<std::vector<cv::Point>> contours, size_t idx)
 {
     std::vector<cv::RotatedRect> minRect(contours.size());
-    cv::RotatedRect rotatedRect = cv::minAreaRect(contours[secondlargestAreaIDX]);
+    cv::RotatedRect rotatedRect = cv::minAreaRect(contours[idx]);
     cv::Point2f pointA;
     cv::Point2f pointB;
     pointA = p;
     pointB = p;
     float i;
-    /** Läuft vom Mittelpunkt nach außen mit dem gleichen Winkel bis es die Kontur trifft **/
-    for(i = 1; cv::pointPolygonTest(contours[secondlargestAreaIDX],pointA,1)>=0;i=i+0.5)
+    /* Läuft vom Mittelpunkt nach außen mit dem gleichen Winkel bis es die Kontur trifft */
+    for(i = 1; cv::pointPolygonTest(contours[idx],pointA,1)>=0;i=i+0.5)
     {
         pointA.x = p.x + cos(rotatedRect.angle*CV_PI/180)*i;
         pointA.y = p.y + sin(rotatedRect.angle*CV_PI/180)*i;
     }
-    for(i = 1; cv::pointPolygonTest(contours[secondlargestAreaIDX],pointB,1)>=0;i=i+0.5)
+    for(i = 1; cv::pointPolygonTest(contours[idx],pointB,1)>=0;i=i+0.5)
     {
         pointB.x = p.x - cos(rotatedRect.angle*CV_PI/180)*i;
         pointB.y = p.y - sin(rotatedRect.angle*CV_PI/180)*i;
     }
-    //pointB.x -= cos(rotatedRect.angle*CV_PI/180)*i;
-    //pointB.y -= sin(rotatedRect.angle*CV_PI/180)*i;
-    line(img, pointA, pointB, colour, 3, cv::LINE_AA);
 
-    //Fehlerhaft
+    /* Linien zeichnen */
+    line(img, pointA, pointB, colour, 3, cv::LINE_AA); //Breite
+    cv::Point2f pointTemp1 = pointA;
+    cv::Point2f pointTemp2 = pointA;
+    double breiteBerechnetPixel = sqrt((pointA.x-pointB.x) * (pointA.x-pointB.x) + (pointA.y-pointB.y) * (pointA.y-pointB.y));
+    pointTemp1.x += + cos((rotatedRect.angle+90)*CV_PI/180)*breiteBerechnetPixel/6;
+    pointTemp1.y += + sin((rotatedRect.angle+90)*CV_PI/180)*breiteBerechnetPixel/6;
+    pointTemp2.x += - cos((rotatedRect.angle+90)*CV_PI/180)*breiteBerechnetPixel/6;
+    pointTemp2.y += - sin((rotatedRect.angle+90)*CV_PI/180)*breiteBerechnetPixel/6;
+    line(img, pointTemp1, pointTemp2, colour, 3, cv::LINE_AA);
+
+    pointTemp1 = pointB;
+    pointTemp2 = pointB;
+    pointTemp1.x += + cos((rotatedRect.angle+90)*CV_PI/180)*breiteBerechnetPixel/6;
+    pointTemp1.y += + sin((rotatedRect.angle+90)*CV_PI/180)*breiteBerechnetPixel/6;
+    pointTemp2.x += - cos((rotatedRect.angle+90)*CV_PI/180)*breiteBerechnetPixel/6;
+    pointTemp2.y += - sin((rotatedRect.angle+90)*CV_PI/180)*breiteBerechnetPixel/6;
+    line(img, pointTemp1, pointTemp2, colour, 3, cv::LINE_AA);
+    //cv::imshow("a",img);
+
+    //Fehlerhaft?
     double x1,x2,y1,y2,x,y;
     x1 = pointA.x*ressourcen::BILDBRT/bildInput.cols;
     x2 = pointB.x*ressourcen::BILDBRT/bildInput.cols;
     y1 = pointA.y*ressourcen::BILDHHE/bildInput.rows;
     y2 = pointB.y*ressourcen::BILDHHE/bildInput.rows;
     x = x1-x2;
-    y = x1-y2;
-    double breiteBerechnet = sqrt(x*x + y*y);
-    std::cout << breiteBerechnet;
+    y = y1-y2;
+    double breiteBerechnetMM = sqrt(x*x + y*y);
+    std::cout << breiteBerechnetMM;
 }
 
 cv::Scalar OrientierungsErmittler::qColor2CVScalar(QColor color)

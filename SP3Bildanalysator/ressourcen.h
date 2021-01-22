@@ -2,7 +2,7 @@
 #define RESSOURCEN_H
 
 /* Definition von Konstanten */
-#define PWD "/home/Student/git/SP3/SweetPicker3/SP3Bildanalysator"
+// #define PWD "/home/Student/git/SP3/SweetPicker3/SP3Bildanalysator"
 #define BILD "aktuelleSzene.jpg"
 #define ERKNT "gefundeneObjekte.jpg"
 #define BILDABLAGE "/SP3Bilderkennung/"
@@ -19,13 +19,6 @@
 #define ANZSUCHE 10     // Maximale Anzahl der auszusuchenden Elemente (die Indexe der 10 zuerst auftauchenden Klassen werden ermittelt)
 //#define BILDBRT 354     // Echte Bildbreite in mm
 //#define BILDHHE 274     // Echte Bildhöhe in mm
-
-/* Definition von Variablen */
-namespace ressourcen
-{
-extern unsigned int BILDBRT;
-extern unsigned int BILDHHE;
-}
 
 /* Einbindung von Qt Bibliotheken */
 #include <QApplication>
@@ -59,6 +52,13 @@ extern unsigned int BILDHHE;
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/videoio/videoio.hpp>
 
+/* Definition von Variablen */
+namespace ressourcen
+{
+extern unsigned int BILDBRT;
+extern unsigned int BILDHHE;
+extern std::string PWD;
+}
 /* Selbstdefinierte Strukturen und Enums */
 struct RBox {double a; double b; double c; double d;};
 struct Punkt {int x;int y;int z;};
