@@ -20,6 +20,17 @@ public:
     ~Login() override;
 
 public slots:
+    /** @brief Überprüft, ob der eingegbene Text mit dem Passwort übereinstimmt
+    *
+    * Diese Methode liest den eingegeben Text in der Zeile für das Passwort und überprüft, ob es
+    * mit dem Passwort aus der konfig.ini Datei übereinstimmt
+    *
+    * @param [in] nr Nummer des Objektes,
+    *
+    * @return  Liefert den Namen des Objektes mit der jeweiligen Objektnummer, falls es einen Objektnamen zu dieser Objektnummer gibt
+    *          Falls es zu der Objektnummer keinen Objektnamen gibt, wird ein Leerstring ("") zurückgegeben.
+    *
+    */
     void anmeldeAnfrage();
     //void easteregg();
     void keyPressEvent(QKeyEvent* pe) override;
