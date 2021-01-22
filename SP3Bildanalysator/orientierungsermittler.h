@@ -2,7 +2,10 @@
 #define ORIENTIERUNGSERMITTLER_H
 
 #include "ressourcen.h"
-
+/**
+ * @brief OrientierungsErmittler
+ * @author Sahin Cosgun
+ */
 class OrientierungsErmittler
 {
 public:
@@ -41,7 +44,7 @@ public:
      * @see ausschnittROI()
      * @see bearbeiteBild()
      * @return < 0,x,y> =>  0 = Methode erfolgreich ausgeführt, x = Winkel in °Grad, y = Breite in Milimeter.
-     *         <-1,x,y> => -1 = Methode unerfolgreich ausgeführt.
+     *         <<0,x,y> => -1 = Methode unerfolgreich ausgeführt.
      */
     std::tuple<int, double, double> ermittleOrientierung();
 
@@ -112,13 +115,13 @@ private:
     inline int ladeBild();
 
     /**
-     * @brief ausschnittPOI erzeugt einen Ausschnitt
+     * @brief ausschnittPOI erzeugt einen Ausschnitt -> ausschnittSW.jpg
      * @return 0 = Methode erfolgreich ausgeführt, -1 = Methode unerfolgreich ausgeführt
      */
     int ausschnittROI();
 
     /**
-     * @brief bearbeiteBild
+     * @brief bearbeiteBild denoised das SW Bild -> ausschnittSWprocessed.jpg
      * @return 0 = Methode erfolgreich ausgeführt, -1 = Methode unerfolgreich ausgeführt
      */
     int bearbeiteBild();
