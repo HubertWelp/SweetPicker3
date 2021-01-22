@@ -137,7 +137,17 @@ private:
     void drawAxis(cv::Mat &img, cv::Point p, cv::Point q, cv::Scalar colour, const float scale);
 
     /**
-     * @brief drawBreite zeichnet die Breite der Kontur ein
+     * @brief drawBreiteKontur zeichnet die Breite der Kontur ein
+     * @param img das Bild worin gezeichnet werden soll
+     * @param p Startpunkt des Pfeils (Mittelpunkt)
+     * @param colour Farbe
+     * @param contours zu verwendene Konturliste
+     * @param idx Index der Kontur, welche Kontur verwendet werden soll
+     */
+    void drawBreiteKontur(cv::Mat &img, cv::Point p, cv::Scalar colour, std::vector<std::vector<cv::Point>> contours, size_t idx);
+
+    /**
+     * @brief drawBreite zeichnet die Breite aus der konfig.ini von Mittelpunkt ausgehend aus ein
      * @param img das Bild worin gezeichnet werden soll
      * @param p Startpunkt des Pfeils (Mittelpunkt)
      * @param colour Farbe

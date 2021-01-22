@@ -307,7 +307,7 @@ void OrientierungsErmittler::drawAxis(cv::Mat &img, cv::Point p, cv::Point q, cv
     //! [visualization]
 }
 
-void OrientierungsErmittler::drawBreite(cv::Mat &img, cv::Point p, cv::Scalar colour, std::vector<std::vector<cv::Point>> contours, size_t idx)
+void OrientierungsErmittler::drawBreiteKontur(cv::Mat &img, cv::Point p, cv::Scalar colour, std::vector<std::vector<cv::Point>> contours, size_t idx)
 {
     std::vector<cv::RotatedRect> minRect(contours.size());
     cv::RotatedRect rotatedRect = cv::minAreaRect(contours[idx]);
@@ -327,6 +327,7 @@ void OrientierungsErmittler::drawBreite(cv::Mat &img, cv::Point p, cv::Scalar co
         pointB.x = p.x - cos(rotatedRect.angle*CV_PI/180)*i;
         pointB.y = p.y - sin(rotatedRect.angle*CV_PI/180)*i;
     }
+
 
     /* Linien zeichnen */
     line(img, pointA, pointB, colour, 3, cv::LINE_AA); //Breite
@@ -357,7 +358,44 @@ void OrientierungsErmittler::drawBreite(cv::Mat &img, cv::Point p, cv::Scalar co
     x = x1-x2;
     y = y1-y2;
     double breiteBerechnetMM = sqrt(x*x + y*y);
-    std::cout << breiteBerechnetMM;
+    //std::cout << breiteBerechnetMM << std::endl;
+}
+
+void OrientierungsErmittler::drawBreite(cv::Mat &img, cv::Point p, cv::Scalar colour, std::vector<std::vector<cv::Point> > contours, size_t idx)
+{
+    std::vector<cv::RotatedRect> minRect(contours.size());
+    cv::RotatedRect rotatedRect = cv::minAreaRect(contours[idx]);
+    cv::Point2f pointA;
+    cv::Point2f pointB;
+    pointA = p;
+    pointB = p;
+
+    /* Breite zeichnen */
+    pointA.x = p.x + cos(rotatedRect.angle*CV_PI/180)*konfig->getObjektbreite(wahl)/ressourcen::BILDBRT*bildInput.size().width/2;
+    pointA.y = p.y + sin(rotatedRect.angle*CV_PI/180)*konfig->getObjektbreite(wahl)/ressourcen::BILDHHE*bildInput.size().height/2;
+    pointB.x = p.x - cos(rotatedRect.angle*CV_PI/180)*konfig->getObjektbreite(wahl)/ressourcen::BILDBRT*bildInput.size().width/2;
+    pointB.y = p.y - sin(rotatedRect.angle*CV_PI/180)*konfig->getObjektbreite(wahl)/ressourcen::BILDHHE*bildInput.size().height/2;
+    line(img, pointA, pointB, colour, 3, cv::LINE_AA); //Breite
+
+    /* Linien zeichnen */
+    line(img, pointA, pointB, colour, 3, cv::LINE_AA); //Breite
+    cv::Point2f pointTemp1 = pointA;
+    cv::Point2f pointTemp2 = pointA;
+    double breiteBerechnetPixel = sqrt((pointA.x-pointB.x) * (pointA.x-pointB.x) + (pointA.y-pointB.y) * (pointA.y-pointB.y));
+    pointTemp1.x += + cos((rotatedRect.angle+90)*CV_PI/180)*breiteBerechnetPixel/6;
+    pointTemp1.y += + sin((rotatedRect.angle+90)*CV_PI/180)*breiteBerechnetPixel/6;
+    pointTemp2.x += - cos((rotatedRect.angle+90)*CV_PI/180)*breiteBerechnetPixel/6;
+    pointTemp2.y += - sin((rotatedRect.angle+90)*CV_PI/180)*breiteBerechnetPixel/6;
+    line(img, pointTemp1, pointTemp2, colour, 3, cv::LINE_AA);
+
+    pointTemp1 = pointB;
+    pointTemp2 = pointB;
+    pointTemp1.x += + cos((rotatedRect.angle+90)*CV_PI/180)*breiteBerechnetPixel/6;
+    pointTemp1.y += + sin((rotatedRect.angle+90)*CV_PI/180)*breiteBerechnetPixel/6;
+    pointTemp2.x += - cos((rotatedRect.angle+90)*CV_PI/180)*breiteBerechnetPixel/6;
+    pointTemp2.y += - sin((rotatedRect.angle+90)*CV_PI/180)*breiteBerechnetPixel/6;
+    line(img, pointTemp1, pointTemp2, colour, 3, cv::LINE_AA);
+    //cv::imshow("a",img);
 }
 
 cv::Scalar OrientierungsErmittler::qColor2CVScalar(QColor color)
