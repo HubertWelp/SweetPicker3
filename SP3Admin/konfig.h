@@ -23,6 +23,15 @@ public:
     */
     Konfig(QString pfad = QStandardPaths::writableLocation(QStandardPaths::ConfigLocation)+"/"+"konfig.ini");
 
+    /** @brief Stellt den Speicherort der verwendeten Dateien zur Verfügung
+    *
+    * Diese Methode liest die konfig.ini Datei ein und stellt den Speicherort der von SP3Admin, SP3Bildanalysator und SP3Objekterkenner genutzen Dateien aus.
+    * Der Speicherort wird als Absoluter Pfad in der Konfig.ini  gespeichert und endet ohne einem "/".
+    *
+    * @return  Gibt den Speicherort als Zeichenfolge aus. Falls das Auslesen nicht erfolgreich ist, wird das Standardpasswort "SP3" ausgegeben. Der Pfad endet ohne "/".
+    */
+    QString getAblageort();
+
     /** @brief Gibt Name eines Objekts aus
     *
     * Diese Methode erwartet eine Objektnummer als Eingabeparameter und übersetzt diese mit Hilfe der
@@ -119,15 +128,6 @@ public:
     * @return  Gibt das Passwort als Zeichenfolge aus. Falls das Auslesen nicht erfolgreich ist, wird das Standardpasswort "SP3" ausgegeben
     */
     QString getPasswort();
-
-    /** @brief Stellt den Speicherort der verwendeten Dateien zur Verfügung
-    *
-    * Diese Methode liest die konfig.ini Datei ein und stellt den Speicherort der von SP3Admin, SP3Bildanalysator und SP3Objekterkenner genutzen Dateien aus.
-    * Der Speicherort wird als Absoluter Pfad in der Konfig.ini  gespeichert und endet ohne einem "/".
-    *
-    * @return  Gibt den Speicherort als Zeichenfolge aus. Falls das Auslesen nicht erfolgreich ist, wird das Standardpasswort "SP3" ausgegeben. Der Pfad endet ohne "/".
-    */
-    QString getAblageort();
 
     /** @brief Speichert eine übergebene Rahmendicke in die konfig.ini Datei
     *
