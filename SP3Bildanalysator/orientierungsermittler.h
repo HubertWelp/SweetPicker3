@@ -26,15 +26,6 @@ public:
     int setzeKoordinaten(double yMin, double xMin, double yMax, double xMax);
 
     /**
-     * @brief setzeBildPfad Methode zum ändern des zu verwendenen Bildpfades, falls es nicht am Standardort liegt.
-     * @param pfad - Pfad für das Bild, welches zur Orientierungsermittlung verwendet werden soll (Absoluter Pfad inklusive Dateiname). Wenn ein Leerer String ("") übergeben wird, wird der Standardpfad wiederhergestellt
-     * @return 0 = wenn ein Bild am angegebenen Pfad gelesen werden kann, -1 = wenn kein Bild am angegebenen Pfad gelesen werden kann
-     */
-    inline int setzeBildPfad(const std::string &pfad = "");
-
-    inline int ladeParameter();
-
-    /**
      * @brief ermittleOrientierung Methode zur Ermittlung der Orientierung. Zuvor muss der Rahmen, worin das gewünschte Objekt sich befindet,
      * mit {@link setzeKoordinaten} festgelegt werden und der Pfad des Bildes, falls diese nicht im Standardverzeichnis ist, mit {@link ladeBild}
      * angegeben werden.

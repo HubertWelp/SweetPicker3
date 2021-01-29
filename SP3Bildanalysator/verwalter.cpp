@@ -14,8 +14,7 @@ void Verwalter::loescheAlt()
     //Setze Ordnerpfad
     char* pfad = new char [256];
     strcpy(pfad,ressourcen::PWD.c_str());
-    strcat(pfad,BILDABLAGE);
-
+    strcat(pfad,"/");
     //Öffne Ordner
     DIR *dir;
     struct dirent *ent;
@@ -92,7 +91,7 @@ void Verwalter::messageReceived(std::string msg)
 
     ressourcen::BILDHHE = konfig->getBildhoehe();
     ressourcen::BILDBRT = konfig->getBildbreite();
-    //ressourcen::PWD = konfig->getAblageort();
+    ressourcen::PWD = konfig->getAblageort().toStdString() +"/";
     int maxObjekte;
     for(maxObjekte = 1; konfig->getObjektname(maxObjekte)!="";maxObjekte++);
     maxObjekte--;
@@ -103,10 +102,10 @@ void Verwalter::messageReceived(std::string msg)
         loescheAlt();
         // aktuelles Bild aufnehmen und im folgenden relativen Verzeichnis ablegen
         char* pfad = new char [256];
-        strcpy(pfad,BILDABLAGE);
+        strcpy(pfad,ressourcen::PWD.c_str());
         strcat(pfad,BILD);
         cam->setzeKameraID(konfig->getKameraID());
-        cam->nehmeAuf(pfad);
+        cam->nehmeAufTest(pfad);
         delete [] pfad;
         // Ein Python-Skript vom SP3Objekterkenner ausführen (python programmname TEXTABLAGE wahl)
         fuehreSkriptAus();
@@ -130,7 +129,7 @@ void Verwalter::messageReceived(std::string msg)
                 //Erzeuge Nachrichtenstring für den Roboter
                 //Erzeuge AusschnittErgebnis.csv für Admin Komponente
                 std::ofstream ausschnittErgebnis;
-                ausschnittErgebnis.open(std::string(ressourcen::PWD).append(BILDABLAGE).append("ausschnittErgebnis.csv"));
+                ausschnittErgebnis.open(std::string(ressourcen::PWD).append("ausschnittErgebnis.csv"));
                 if(erfolg <= -1)
                 {
                     ergebnis = "Fehler";
@@ -151,7 +150,7 @@ void Verwalter::messageReceived(std::string msg)
             {
                 std::string ergebnis;
                 std::ofstream ausschnittErgebnis;
-                ausschnittErgebnis.open(std::string(ressourcen::PWD).append(BILDABLAGE).append("ausschnittErgebnis.csv"));
+                ausschnittErgebnis.open(std::string(ressourcen::PWD).append("ausschnittErgebnis.csv"));
                 ergebnis = "Fehler";
                 ausschnittErgebnis << -1 << ";" << -1 << ";" << -1 << ";" << -1 << ";" << -1;
                 ausschnittErgebnis.close();

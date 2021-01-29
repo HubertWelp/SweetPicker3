@@ -8,7 +8,7 @@
 #define BILDABLAGE "/SP3Bilderkennung/"
 #define AUSSCHNITT "Ausschnitt.jpg"
 #define AUSSCHNITTSW "AusschnittSW.jpg"
-#define TEXTABLAGE "/SP3Bilderkennung/gefundeneObjekte.txt"
+#define TEXTABLAGE "/gefundeneObjekte.txt"
 #define PROGNAME "/home/Student/git/SP3/SweetPicker3/SP3Objekterkenner/SP3Objekterkenner.py"
 #define PFAD "/home/Student/Downloads/gefundeneObjekte.txt"
 #define DCLASS "detection_classes"
