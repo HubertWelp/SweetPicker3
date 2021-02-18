@@ -105,7 +105,7 @@ void Verwalter::messageReceived(std::string msg)
         strcpy(pfad,ressourcen::PWD.c_str());
         strcat(pfad,BILD);
         cam->setzeKameraID(konfig->getKameraID());
-        cam->nehmeAufTest(pfad);
+        cam->nehmeAuf(pfad);
         delete [] pfad;
         // Ein Python-Skript vom SP3Objekterkenner ausführen (python programmname TEXTABLAGE wahl)
         fuehreSkriptAus();
@@ -143,7 +143,7 @@ void Verwalter::messageReceived(std::string msg)
                 ausschnittErgebnis.close();
                 //Sende Nachrichtenstring für den Roboter
                 std::cout << ergebnis << std::endl;
-                sendmessage(ergebnis,"127.0.0.1",5843);
+                sendmessage(ergebnis,"192.168.188.20",5843);
 
             }
             else
@@ -155,7 +155,7 @@ void Verwalter::messageReceived(std::string msg)
                 ausschnittErgebnis << -1 << ";" << -1 << ";" << -1 << ";" << -1 << ";" << -1;
                 ausschnittErgebnis.close();
                 std::cout << ergebnis << std::endl;
-                sendmessage(ergebnis,"127.0.0.1",5843);
+                sendmessage(ergebnis,"192.168.188.20",5843);
                 std::cout << "fehlermeldung - textauswerter - " << erg << std::endl;
             }
         }
