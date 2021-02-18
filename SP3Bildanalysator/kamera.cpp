@@ -23,6 +23,14 @@ int Kamera::nehmeAuf(const char* pfad)
         printf("Kamera konnte nicht geoeffnet werden\n");
         return -1;
     }
+
+
+    bool bSuccess;
+    int FramesSkipped = 10;
+    for (int a = 0; a < FramesSkipped; a++)
+        bSuccess = videostream.grab();
+
+
     /** grabs, decodes and returns the next video frame **/
     if(!videostream.read(bild))
     {
